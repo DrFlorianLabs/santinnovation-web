@@ -1,0 +1,42 @@
+---
+import Icon from "./Icon.astro";
+import { doctolib } from "@data/doctolib";
+
+interface Props {
+  /** URL spécifique (pro). Par défaut, la fiche établissement. */
+  href?: string;
+  label?: string;
+  variant?: "primary" | "secondary";
+  size?: "md" | "lg";
+  class?: string;
+}
+
+const {
+  href = doctolib.etablissement,
+  label = "Prendre rendez-vous",
+  variant = "primary",
+  size = "md",
+  class: className = "",
+} = Astro.props;
+
+const base =
+  "btn-3d inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl font-medium focus-visible:outline-2 focus-visible:outline-offset-2";
+const sizes = {
+  md: "px-5 py-2.5 text-base",
+  lg: "px-7 py-3.5 text-lg",
+};
+const variants = {
+  primary: "btn-3d-primary text-white",
+  secondary: "btn-3d-secondary text-blue-900 hover:text-teal-600",
+};
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+  class={`${base} ${sizes[size]} ${variants[variant]} ${className}`}
+>
+  <Icon name="calendar" size={size === "lg" ? 22 : 18} />
+  <span>{label}</span>
+</a>

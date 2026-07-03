@@ -1,0 +1,447 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Icon from "@components/Icon.astro";
+import DoctolibButton from "@components/DoctolibButton.astro";
+import ProfessionalCard from "@components/ProfessionalCard.astro";
+import PartnerStrip from "@components/PartnerStrip.astro";
+import Logo from "@components/Logo.astro";
+import EmergencyNotice from "@components/EmergencyNotice.astro";
+import SiteMap from "@components/SiteMap.astro";
+import { doctolib } from "@data/doctolib";
+
+const lieux = (await getCollection("lieux")).sort(
+  (a, b) => a.data.ordre - b.data.ordre,
+);
+const lieuxLabels = Object.fromEntries(lieux.map((l) => [l.id, l.data.nom]));
+
+const pros = (await getCollection("professionnels"))
+  .filter((p) => p.data.visible)
+  .sort((a, b) => a.data.ordre - b.data.ordre);
+const prosApercu = pros.slice(0, 6);
+
+const piliers = [
+  {
+    icon: "heart-pulse" as const,
+    titre: "Soigner",
+    texte:
+      "Consultations, suivis, soins programmés et non programmés, au plus près des besoins des patients.",
+  },
+  {
+    icon: "users" as const,
+    titre: "Travailler en pluriprofessionnel",
+    texte:
+      "Médecins, infirmiers, kinésithérapeutes et pharmacien coopèrent autour de situations concrètes.",
+  },
+  {
+    icon: "shield" as const,
+    titre: "Prévenir",
+    texte:
+      "Prévention, dépistage, éducation à la santé et accompagnement des patients fragiles.",
+  },
+  {
+    icon: "sparkles" as const,
+    titre: "Innover utilement",
+    texte:
+      "Tester, documenter et améliorer des organisations qui apportent un bénéfice réel sur le terrain.",
+  },
+];
+---
+
+<BaseLayout
+  title="Accueil"
+  description="Maisons de Santé Pluriprofessionnelles Sant'Innovation : soins de proximité, coordination pluriprofessionnelle et innovation utile à Besançon."
+>
+  <!-- ============================================================
+       HERO — identité claire : une maison de santé pluriprofessionnelle
+       Mise en page 100 % grille (aucun positionnement absolu) :
+       pas de chevauchement ni de décalage de texte, à aucune largeur.
+       ============================================================ -->
+  <section class="relative overflow-hidden">
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="dot-field pointer-events-none absolute inset-0 opacity-30" aria-hidden="true"></div>
+    <div class="depth-grid" aria-hidden="true"></div>
+
+    <div
+      class="container-site relative grid items-center gap-12 py-16 md:py-20 lg:grid-cols-[1.1fr_0.9fr] lg:py-24"
+    >
+      <!-- Colonne message -->
+      <div class="reveal">
+        <p class="flex items-center gap-2.5 text-sm font-semibold uppercase tracking-widest text-blue-700">
+          <span
+            class="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-teal-600 shadow-[inset_0_1px_0_rgba(255,255,255,1),0_4px_10px_-3px_rgba(18,50,74,0.25)] ring-1 ring-blue-100"
+          >
+            <Icon name="cross" size={16} />
+          </span>
+          Maison de Santé Pluriprofessionnelle · Besançon
+        </p>
+
+        <h1 class="mt-5 text-4xl font-semibold sm:text-5xl lg:text-[3.4rem]">
+          Une équipe de santé <span class="text-teal-600">pluriprofessionnelle</span>,
+          coordonnée autour de vos soins.
+        </h1>
+
+        <p class="mt-6 max-w-xl text-lg text-ink-700">
+          Sant'Innovation réunit trois sites de soins à Besançon — Palente, Les Cras et
+          Les Orchamps. Une même équipe, plusieurs métiers, pour des soins accessibles,
+          suivis et coordonnés.
+        </p>
+
+        <!-- Les métiers, lisibles au premier coup d'œil -->
+        <ul class="mt-7 flex flex-wrap gap-2.5" aria-label="Professions présentes">
+          {
+            [
+              { icon: "stethoscope" as const, label: "Médecine générale" },
+              { icon: "cross" as const, label: "Soins infirmiers" },
+              { icon: "hand" as const, label: "Kinésithérapie" },
+              { icon: "pill" as const, label: "Pharmacie" },
+            ].map((m) => (
+              <li
+                class="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-sm font-medium text-blue-900 shadow-[inset_0_1px_0_rgba(255,255,255,1),0_4px_10px_-4px_rgba(18,50,74,0.2)] ring-1 ring-blue-100"
+              >
+                <span class="text-teal-600">
+                  <Icon name={m.icon} size={15} />
+                </span>
+                {m.label}
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <DoctolibButton size="lg" label="Prendre rendez-vous" />
+          <a
+            href="/equipe"
+            class="btn-3d btn-3d-secondary inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-lg font-medium text-blue-900"
+          >
+            Découvrir l'équipe <Icon name="arrow-right" size={18} />
+          </a>
+        </div>
+        <p class="mt-4 text-sm text-ink-500">
+          Patients du territoire bisontin, selon les disponibilités de chaque professionnel.
+        </p>
+      </div>
+
+      <!-- Panneau d'identité : la structure en un regard -->
+      <div class="reveal tilt-scene hidden md:block" style="--reveal-delay: 120ms">
+        <div class="tilt surface surface-raised relative overflow-hidden p-6 sm:p-7">
+          <span class="tilt-glare" aria-hidden="true"></span>
+
+          <!-- Filigrane réseau (décor discret) -->
+          <svg
+            viewBox="0 0 200 200"
+            class="pointer-events-none absolute -right-10 -top-10 h-44 w-44 opacity-[0.07]"
+            fill="none"
+            stroke="#12324A"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <circle cx="60" cy="60" r="14"></circle>
+            <circle cx="150" cy="50" r="14"></circle>
+            <circle cx="100" cy="150" r="14"></circle>
+            <path d="M72 66l64 74M74 56l62-4M146 64l-40 72"></path>
+          </svg>
+
+          <div class="tilt-pop-sm relative">
+            <div class="flex items-center gap-3">
+              <Logo size={52} />
+              <div>
+                <p class="font-display text-lg font-semibold text-blue-900">
+                  Sant'<span class="text-brand-gradient">Innovation</span>
+                </p>
+                <p class="text-sm text-ink-700">Une organisation · trois sites · une coordination</p>
+              </div>
+            </div>
+
+            <ul class="mt-6 space-y-2.5">
+              {
+                lieux.map((l) => (
+                  <li>
+                    <a
+                      href="#carte"
+                      class="group/site flex items-center gap-3 rounded-xl bg-ivory px-3.5 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] ring-1 ring-blue-100/70 transition-all duration-200 hover:bg-teal-100/50 hover:ring-teal-600/40"
+                      aria-label={`${l.data.nom} — voir sur la carte`}
+                    >
+                      <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-teal-600 shadow-[0_3px_8px_-3px_rgba(18,50,74,0.25)]">
+                        <Icon name="map-pin" size={16} />
+                      </span>
+                      <span class="min-w-0 flex-1">
+                        <span class="block truncate text-sm font-semibold text-blue-900">
+                          {l.data.nom}
+                        </span>
+                        <span class="block text-xs text-ink-700">
+                          {l.data.secteur ?? l.data.adresse}
+                        </span>
+                      </span>
+                      <span class="text-xs font-medium text-teal-600 opacity-0 transition-opacity duration-200 group-hover/site:opacity-100">
+                        Voir la carte
+                      </span>
+                      <span class="text-ink-500 transition-transform duration-200 group-hover/site:translate-x-0.5">
+                        <Icon name="chevron-right" size={15} />
+                      </span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+
+            <div class="mt-6 grid grid-cols-3 divide-x divide-blue-100 rounded-xl bg-ivory py-3 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] ring-1 ring-blue-100/70">
+              <div>
+                <p class="font-display text-2xl font-semibold text-blue-900">3</p>
+                <p class="text-xs text-ink-700">sites de soins</p>
+              </div>
+              <div>
+                <p class="font-display text-2xl font-semibold text-blue-900">4+</p>
+                <p class="text-xs text-ink-700">métiers</p>
+              </div>
+              <div>
+                <p class="font-display text-2xl font-semibold text-teal-600">1</p>
+                <p class="text-xs text-ink-700">coordination</p>
+              </div>
+            </div>
+
+            <p class="mt-5 flex items-center gap-2 text-sm text-ink-700">
+              <span class="text-teal-600"><Icon name="calendar" size={16} /></span>
+              Rendez-vous en ligne via Doctolib, ou par téléphone auprès de chaque cabinet.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PILIERS
+       ============================================================ -->
+  <section class="relative border-y border-blue-100 bg-gradient-to-b from-white via-white to-teal-100/40 py-16 md:py-20">
+    <div class="container-site">
+      <div class="reveal max-w-prose">
+        <h2 class="text-3xl font-semibold sm:text-4xl">
+          Une organisation pluriprofessionnelle pensée pour le terrain
+        </h2>
+      </div>
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          piliers.map((p, i) => (
+            <div class="reveal tilt-scene h-full" style={`--reveal-delay: ${i * 90}ms`}>
+              <div class="tilt surface relative h-full p-6">
+                <span class="tilt-glare" aria-hidden="true" />
+                <span
+                  class="tilt-pop-sm flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-b from-teal-100 to-teal-500/25 text-teal-600 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_6px_14px_-4px_rgba(47,183,177,0.35)]"
+                >
+                  <Icon name={p.icon} size={22} />
+                </span>
+                <h3 class="mt-4 font-display text-lg font-semibold text-blue-900">{p.titre}</h3>
+                <p class="mt-2 text-sm text-ink-700">{p.texte}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PRENDRE RDV — un seul grand pavé, clic direct vers Doctolib
+       ============================================================ -->
+  <section class="py-16 md:py-20">
+    <div class="container-site">
+      <a
+        href={doctolib.etablissement}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="reveal group relative block overflow-hidden rounded-3xl bg-gradient-to-br from-blue-900 via-blue-950 to-[#0a2438] px-6 py-12 text-white shadow-[var(--shadow-e4)] transition-transform duration-300 hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-500 sm:px-12 sm:py-16"
+        aria-label="Prendre rendez-vous — ouvre la fiche Sant'Innovation sur Doctolib"
+      >
+        <div
+          class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-teal-500/70 to-transparent"
+          aria-hidden="true"
+        >
+        </div>
+        <div
+          class="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-teal-500/20 blur-3xl transition-transform duration-500 group-hover:scale-125"
+          aria-hidden="true"
+        >
+        </div>
+        <div
+          class="pointer-events-none absolute -bottom-32 -left-16 h-72 w-72 rounded-full bg-sage-500/15 blur-3xl"
+          aria-hidden="true"
+        >
+        </div>
+        <div class="relative flex flex-wrap items-center justify-between gap-8">
+          <div class="max-w-2xl">
+            <p class="flex items-center gap-2 text-sm font-medium uppercase tracking-widest text-teal-500">
+              <Icon name="calendar" size={16} /> En ligne, 24h/24
+            </p>
+            <h2 class="mt-3 text-3xl font-semibold text-white sm:text-5xl">
+              Prendre rendez-vous
+            </h2>
+            <p class="mt-4 text-white/80">
+              Accédez directement à la fiche Sant'Innovation sur Doctolib et choisissez
+              votre professionnel et votre créneau.
+            </p>
+          </div>
+          <span
+            class="btn-3d btn-3d-primary inline-flex items-center gap-3 rounded-2xl px-8 py-5 text-xl font-semibold text-white"
+            aria-hidden="true"
+          >
+            Ouvrir Doctolib
+            <Icon name="arrow-right" size={24} class="transition-transform duration-300 group-hover:translate-x-1" />
+          </span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ÉQUIPE
+       ============================================================ -->
+  <section class="py-4 md:py-8">
+    <div class="container-site">
+      <div class="reveal flex flex-wrap items-end justify-between gap-4">
+        <div class="max-w-prose">
+          <h2 class="text-3xl font-semibold sm:text-4xl">L'équipe</h2>
+          <p class="mt-3 text-ink-700">
+            Médecins généralistes, infirmiers, kinésithérapeutes et pharmacien — engagés
+            dans un exercice coordonné, avec une dynamique d'ouverture à d'autres métiers.
+          </p>
+        </div>
+        <a
+          href="/equipe"
+          class="inline-flex items-center gap-2 font-medium text-blue-900 hover:text-teal-600"
+        >
+          Voir toute l'équipe <Icon name="arrow-right" size={18} />
+        </a>
+      </div>
+      <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          prosApercu.map((pro, i) => (
+            <div class="reveal h-full" style={`--reveal-delay: ${(i % 3) * 90}ms`}>
+              <ProfessionalCard pro={pro} lieuxLabels={lieuxLabels} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SITES
+       ============================================================ -->
+  <section class="py-16 md:py-20">
+    <div class="container-site">
+      <div class="reveal max-w-prose">
+        <h2 class="text-3xl font-semibold sm:text-4xl">Plusieurs lieux, une même coordination</h2>
+        <p class="mt-3 text-ink-700">
+          Chaque professionnel peut exercer sur un ou plusieurs sites. Les modalités sont
+          précisées sur chaque fiche.
+        </p>
+      </div>
+      <div class="reveal mt-8">
+        <SiteMap lieux={lieux} id="carte" />
+      </div>
+      <p class="mt-6 text-sm text-ink-500">
+        Sant'Innovation accueille les patients du quartier, des secteurs voisins et plus
+        largement du territoire bisontin, selon les disponibilités de chaque professionnel.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PROJET DE SANTÉ + RECHERCHE — section profonde
+       ============================================================ -->
+  <section class="relative overflow-hidden bg-gradient-to-b from-blue-950 via-blue-900 to-blue-950 py-16 text-white md:py-24">
+    <div
+      class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-teal-500/50 to-transparent"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="dot-field pointer-events-none absolute inset-0 opacity-[0.12] invert"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute -left-32 top-1/3 h-96 w-96 rounded-full bg-blue-500/20 blur-3xl"
+      aria-hidden="true"
+    >
+    </div>
+    <div class="container-site relative grid gap-8 lg:grid-cols-2">
+      <div class="reveal glass-dark rounded-3xl p-8">
+        <span
+          class="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-teal-500 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"
+        >
+          <Icon name="route" size={22} />
+        </span>
+        <h2 class="mt-5 text-3xl font-semibold text-white sm:text-4xl">Notre projet de santé</h2>
+        <p class="mt-4 text-white/80">
+          Une organisation collective qui structure la coordination entre professionnels,
+          la continuité des parcours, le soutien aux patients fragiles et la prévention.
+        </p>
+        <a
+          href="/projet-de-sante"
+          class="mt-6 inline-flex items-center gap-2 font-medium text-teal-500 hover:text-white"
+        >
+          Découvrir le projet <Icon name="arrow-right" size={18} />
+        </a>
+      </div>
+      <div class="reveal glass-dark rounded-3xl p-8" style="--reveal-delay: 110ms">
+        <span
+          class="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-teal-500 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"
+        >
+          <Icon name="sparkles" size={22} />
+        </span>
+        <h2 class="mt-5 text-3xl font-semibold text-white sm:text-4xl">Recherche & innovation</h2>
+        <p class="mt-4 text-white/80">
+          L'innovation n'est pas un slogan : elle part des problèmes rencontrés chaque jour
+          dans les cabinets, au domicile et dans les parcours patients.
+        </p>
+        <a
+          href="/recherche-innovation"
+          class="mt-6 inline-flex items-center gap-2 font-medium text-teal-500 hover:text-white"
+        >
+          Nos axes et projets <Icon name="arrow-right" size={18} />
+        </a>
+      </div>
+    </div>
+
+    <!-- Teaser espace pro / GED -->
+    <div class="container-site relative mt-8">
+      <div class="reveal glass-dark rounded-3xl p-8" style="--reveal-delay: 200ms">
+        <div class="grid items-center gap-6 lg:grid-cols-[1fr_auto]">
+          <div class="flex items-start gap-4">
+            <span
+              class="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/10 text-teal-500 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"
+            >
+              <Icon name="lock" size={22} />
+            </span>
+            <div>
+              <h2 class="text-2xl font-semibold text-white">Espace professionnel</h2>
+              <p class="mt-2 max-w-2xl text-white/75">
+                Protocoles, documents de gouvernance et bibliothèque documentaire interne,
+                avec rôles, permissions et traçabilité. Réservé aux professionnels de
+                Sant'Innovation et à leurs partenaires autorisés.
+              </p>
+            </div>
+          </div>
+          <a
+            href="/pro"
+            class="btn-3d inline-flex items-center justify-center gap-2 rounded-xl bg-white/10 px-6 py-3.5 font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.15)] ring-1 ring-white/20 hover:bg-white/20"
+          >
+            <Icon name="log-in" size={18} /> Accéder à l'espace pro
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTENAIRES -->
+  <PartnerStrip title="Un écosystème territorial, universitaire et institutionnel" />
+
+  <!-- URGENCE -->
+  <section class="pb-8">
+    <div class="container-site">
+      <EmergencyNotice />
+    </div>
+  </section>
+</BaseLayout>

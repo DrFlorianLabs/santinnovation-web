@@ -1,0 +1,24 @@
+---
+/** En-tête de page intérieure : surtitre, titre, description — aligné et sobre. */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+}
+const { eyebrow, title, description } = Astro.props;
+---
+
+<section class="relative overflow-hidden border-b border-blue-100">
+  <div class="aurora opacity-60" aria-hidden="true"></div>
+  <div class="dot-field pointer-events-none absolute inset-0 opacity-25" aria-hidden="true"></div>
+  <div class="container-site relative py-12 md:py-16">
+    {
+      eyebrow && (
+        <p class="text-sm font-semibold uppercase tracking-widest text-teal-600">{eyebrow}</p>
+      )
+    }
+    <h1 class="mt-2 max-w-3xl text-3xl font-semibold sm:text-4xl lg:text-5xl">{title}</h1>
+    {description && <p class="mt-4 max-w-2xl text-lg text-ink-700">{description}</p>}
+    <slot />
+  </div>
+</section>

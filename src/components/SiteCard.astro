@@ -1,0 +1,43 @@
+---
+import Icon from "./Icon.astro";
+import type { CollectionEntry } from "astro:content";
+import { itineraireUrl } from "@lib/format";
+
+interface Props {
+  lieu: CollectionEntry<"lieux">;
+}
+const { lieu } = Astro.props;
+const d = lieu.data;
+const itineraire = d.itineraireUrl ?? itineraireUrl(d.adresse, d.ville);
+---
+
+<div class="tilt-scene h-full">
+  <article class="tilt surface relative flex h-full flex-col p-6">
+    <span class="tilt-glare" aria-hidden="true"></span>
+
+    <div class="tilt-pop-sm flex items-start gap-3">
+      <span
+        class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-b from-teal-100 to-teal-500/20 text-teal-600 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_4px_10px_-2px_rgba(47,183,177,0.3)]"
+      >
+        <Icon name="map-pin" size={20} />
+      </span>
+      <div>
+        <h3 class="font-display text-lg font-semibold text-blue-900">{d.nom}</h3>
+        {d.secteur && <p class="text-xs font-medium uppercase tracking-wide text-sage-700">{d.secteur}</p>}
+        <p class="mt-1 text-sm text-ink-700">{d.adresse}</p>
+        <p class="text-sm text-ink-700">{d.codePostal} {d.ville}</p>
+      </div>
+    </div>
+
+    <div class="mt-auto flex items-center gap-3 border-t border-blue-100 pt-4">
+      <a
+        href={itineraire}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1.5 text-sm font-medium text-blue-900 transition-colors hover:text-teal-600"
+      >
+        <Icon name="navigation" size={16} /> Itinéraire
+      </a>
+    </div>
+  </article>
+</div>

@@ -1,0 +1,332 @@
+---
+import Icon from "./Icon.astro";
+import type { CollectionEntry } from "astro:content";
+
+/**
+ * Carte réelle des sites (Leaflet + fond CARTO clair) présentée en vue
+ * 3D isométrique : la carte est inclinée en perspective au repos et
+ * s'aplanit dès que le pointeur la survole, pour une lecture exacte.
+ *
+ * Les plaquettes de droite s'ouvrent au survol et proposent l'itinéraire
+ * depuis la position de l'utilisateur : transports en commun d'abord,
+ * puis vélo, puis voiture.
+ */
+interface Props {
+  lieux: CollectionEntry<"lieux">[];
+  id?: string;
+}
+const { lieux, id = "carte" } = Astro.props;
+
+/** Coordonnées géocodées (api-adresse.data.gouv.fr, 03/07/2026). */
+const COORDS: Record<string, { lat: number; lng: number }> = {
+  "flutes-agasses": { lat: 47.260824, lng: 6.035409 },
+  "henri-baigue": { lat: 47.253549, lng: 6.025856 },
+  orchamps: { lat: 47.262583, lng: 6.031432 },
+};
+
+const sites = lieux.flatMap((l) => {
+  const coords = COORDS[l.id];
+  if (!coords) return [];
+  return [
+    {
+      id: l.id,
+      nom: l.data.nom,
+      court: l.data.nom
+        .replace("Site des ", "")
+        .replace("Site Henri et Maurice ", "")
+        .replace("Site ", ""),
+      adresse: `${l.data.adresse}, ${l.data.codePostal} ${l.data.ville}`,
+      lat: coords.lat,
+      lng: coords.lng,
+      destination: encodeURIComponent(
+        `${l.data.adresse}, ${l.data.codePostal} ${l.data.ville}`,
+      ),
+    },
+  ];
+});
+
+const MODES = [
+  { mode: "transit", label: "Transports en commun", icon: "route" as const },
+  { mode: "bicycling", label: "Vélo", icon: "activity" as const },
+  { mode: "driving", label: "Voiture", icon: "navigation" as const },
+];
+---
+
+<div
+  {id}
+  class="site-map grid gap-6 lg:grid-cols-[1.2fr_0.8fr]"
+  data-site-map
+  data-sites={JSON.stringify(sites)}
+>
+  <!-- Carte isométrique -->
+  <div class="iso-frame relative" aria-label="Carte des sites Sant'Innovation à Besançon">
+    <div class="iso-map surface surface-raised overflow-hidden !rounded-3xl">
+      <div class="leaflet-root h-[26rem] w-full" data-map-canvas></div>
+    </div>
+    <p
+      class="iso-hint pointer-events-none absolute left-1/2 top-4 z-[500] -translate-x-1/2 rounded-full bg-blue-900/85 px-3.5 py-1.5 text-xs font-medium text-white shadow-[var(--shadow-e2)] backdrop-blur transition-opacity duration-300"
+    >
+      Survolez la carte pour explorer
+    </p>
+  </div>
+
+  <!-- Plaquettes : ouverture au survol -->
+  <div class="flex flex-col justify-center gap-3">
+    {
+      sites.map((s, i) => (
+        <div
+          class="sm-item surface overflow-hidden transition-all duration-200 hover:shadow-[var(--shadow-e3)] data-[active=true]:shadow-[var(--shadow-e3)] data-[active=true]:ring-1 data-[active=true]:ring-teal-600/50"
+          data-site-item={s.id}
+          data-active={i === 0 ? "true" : "false"}
+        >
+          <button
+            type="button"
+            class="sm-toggle flex w-full items-center gap-3 p-4 text-left"
+            data-site-toggle={s.id}
+            aria-expanded={i === 0 ? "true" : "false"}
+          >
+            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-teal-100 to-green-100 text-teal-600 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
+              <Icon name="map-pin" size={17} />
+            </span>
+            <span class="min-w-0 flex-1">
+              <span class="block truncate font-display text-sm font-semibold text-blue-900">{s.nom}</span>
+              <span class="block truncate text-xs text-ink-700">{s.adresse}</span>
+            </span>
+            <span class="sm-chevron text-ink-500 transition-transform duration-200">
+              <Icon name="chevron-right" size={16} />
+            </span>
+          </button>
+
+          <div
+            class="sm-detail grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out data-[open=true]:grid-rows-[1fr]"
+            data-open={i === 0 ? "true" : "false"}
+          >
+            <div class="overflow-hidden">
+              <div class="border-t border-blue-100 bg-ivory/60 p-4">
+                <p class="text-xs font-medium uppercase tracking-wide text-ink-500">
+                  Itinéraire depuis votre position
+                </p>
+                <div class="mt-2.5 flex flex-wrap gap-2">
+                  {MODES.map((m, j) => (
+                    <a
+                      href={`https://www.google.com/maps/dir/?api=1&destination=${s.destination}&travelmode=${m.mode}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class:list={[
+                        "btn-3d inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium",
+                        j === 0 ? "btn-3d-primary text-white" : "btn-3d-secondary text-blue-900",
+                      ]}
+                    >
+                      <Icon name={m.icon} size={14} /> {m.label}
+                    </a>
+                  ))}
+                </div>
+                <p class="mt-2.5 text-[0.7rem] text-ink-500">
+                  Ouvre Google Maps avec votre position actuelle comme départ.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+    <p class="px-1 text-xs text-ink-500">
+      Fond de carte © OpenStreetMap / CARTO, chargé à l'affichage de la carte.
+    </p>
+  </div>
+</div>
+
+<style>
+  /* Vue isométrique : inclinée au repos, à plat dès l'interaction.
+     Uniquement sur dispositifs à pointeur fin ; jamais si reduced-motion. */
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .iso-frame {
+      perspective: 1400px;
+    }
+    .iso-map {
+      transform: rotateX(24deg) rotateZ(-3deg) scale(1.03);
+      transform-origin: center 85%;
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: var(--shadow-e4);
+    }
+    .iso-frame:hover .iso-map,
+    .iso-frame:focus-within .iso-map {
+      transform: none;
+    }
+    .iso-frame:hover .iso-hint,
+    .iso-frame:focus-within .iso-hint {
+      opacity: 0;
+    }
+  }
+  @media not ((hover: hover) and (pointer: fine)) {
+    .iso-hint {
+      display: none;
+    }
+  }
+</style>
+
+<style is:global>
+  /* Marqueurs de marque (rendus par Leaflet hors scope Astro) */
+  .brand-pin {
+    position: relative;
+    display: grid;
+    place-items: center;
+  }
+  .brand-pin__halo {
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(27, 163, 194, 0.25);
+    animation: brand-pin-pulse 2.8s ease-in-out infinite;
+  }
+  .brand-pin__dot {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1ba3c2, #62bb46);
+    border: 3px solid #fff;
+    box-shadow: 0 4px 10px -2px rgba(8, 28, 45, 0.45);
+    transition: transform 0.2s ease;
+  }
+  .brand-pin__label {
+    position: absolute;
+    top: -34px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    background: #12324a;
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    box-shadow: 0 6px 14px -4px rgba(8, 28, 45, 0.4);
+  }
+  .brand-pin--active .brand-pin__dot {
+    transform: scale(1.35);
+  }
+  .brand-pin--active .brand-pin__label {
+    background: linear-gradient(100deg, #1ba3c2, #4aad4e);
+  }
+  @keyframes brand-pin-pulse {
+    0%,
+    100% {
+      transform: scale(0.7);
+      opacity: 0.9;
+    }
+    50% {
+      transform: scale(1.15);
+      opacity: 0.35;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .brand-pin__halo {
+      animation: none;
+    }
+  }
+  .leaflet-root .leaflet-tile-pane {
+    filter: saturate(0.82) contrast(0.98);
+  }
+  .leaflet-root .leaflet-control-attribution {
+    font-size: 0.6rem;
+    background: rgba(255, 255, 255, 0.75);
+  }
+</style>
+
+<script>
+  import L from "leaflet";
+  import "leaflet/dist/leaflet.css";
+
+  interface SiteData {
+    id: string;
+    nom: string;
+    court: string;
+    adresse: string;
+    lat: number;
+    lng: number;
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-site-map]").forEach((root) => {
+    const sites: SiteData[] = JSON.parse(root.dataset.sites ?? "[]");
+    const canvas = root.querySelector<HTMLElement>("[data-map-canvas]");
+    if (!canvas || sites.length === 0) return;
+
+    const map = L.map(canvas, {
+      scrollWheelZoom: false,
+      zoomControl: true,
+      attributionControl: true,
+    });
+
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      maxZoom: 19,
+    }).addTo(map);
+
+    const markers = new Map<string, L.Marker>();
+    for (const s of sites) {
+      const icon = L.divIcon({
+        className: "",
+        html: `<div class="brand-pin" data-pin="${s.id}">
+                 <span class="brand-pin__halo"></span>
+                 <span class="brand-pin__dot"></span>
+                 <span class="brand-pin__label">${s.court}</span>
+               </div>`,
+        iconSize: [34, 34],
+        iconAnchor: [17, 17],
+      });
+      const marker = L.marker([s.lat, s.lng], { icon, title: s.nom }).addTo(map);
+      marker.on("click", () => select(s.id, false));
+      marker.on("mouseover", () => select(s.id, false));
+      markers.set(s.id, marker);
+    }
+
+    map.fitBounds(
+      L.latLngBounds(sites.map((s) => [s.lat, s.lng] as [number, number])),
+      { padding: [56, 56], maxZoom: 15 },
+    );
+
+    const items = root.querySelectorAll<HTMLElement>("[data-site-item]");
+
+    function select(id: string, pan: boolean): void {
+      items.forEach((item) => {
+        const active = item.dataset.siteItem === id;
+        item.dataset.active = String(active);
+        const detail = item.querySelector<HTMLElement>(".sm-detail");
+        if (detail) detail.dataset.open = String(active);
+        item
+          .querySelector<HTMLElement>(".sm-toggle")
+          ?.setAttribute("aria-expanded", String(active));
+        item
+          .querySelector<HTMLElement>(".sm-chevron")
+          ?.classList.toggle("rotate-90", active);
+      });
+      markers.forEach((marker, mid) => {
+        marker
+          .getElement()
+          ?.querySelector(".brand-pin")
+          ?.classList.toggle("brand-pin--active", mid === id);
+      });
+      const site = sites.find((s) => s.id === id);
+      if (pan && site) map.panTo([site.lat, site.lng], { animate: true });
+    }
+
+    items.forEach((item) => {
+      const id = item.dataset.siteItem ?? "";
+      /* Ouverture au survol… */
+      item.addEventListener("pointerenter", (e) => {
+        if ((e as PointerEvent).pointerType === "mouse") select(id, true);
+      });
+      /* …et au clic / clavier / tactile. */
+      item
+        .querySelector<HTMLElement>("[data-site-toggle]")
+        ?.addEventListener("click", () => select(id, true));
+    });
+
+    const first = sites[0];
+    if (first) select(first.id, false);
+  });
+</script>

@@ -1,0 +1,477 @@
+@import "tailwindcss";
+
+/*
+  Design system Sant'Innovation — v2 « Depth »
+  Source : 03_Design_system_SantInnovation.pdf + refonte 3D.
+
+  Principes de la refonte :
+  - Profondeur physique : élévations multi-couches teintées (pas de gris plat).
+  - Lumière venant du haut : liserés clairs en haut des surfaces, ombre portée en bas.
+  - Verre : panneaux translucides avec flou d'arrière-plan pour les couches hautes.
+  - Mouvement sobre : tilt 3D au pointeur, révélations au scroll, flottements lents.
+  - Tout est désactivé proprement via prefers-reduced-motion.
+*/
+@theme {
+  /* --- Couleurs : Bleu (socle / confiance) --- */
+  --color-blue-950: #081c2d;
+  --color-blue-900: #12324a;
+  --color-blue-700: #1e4d68;
+  --color-blue-500: #2f6f91;
+  --color-blue-100: #e7f0f5;
+
+  /* --- Cyan Innovation (carte de visite) : CTA, liens, interactif --- */
+  --color-teal-600: #1ba3c2;
+  --color-teal-500: #3bb7d2;
+  --color-teal-100: #e3f4f9;
+
+  /* --- Vert Sant'Innovation (carte de visite) : accent, dégradé de marque --- */
+  --color-green-600: #53a83b;
+  --color-green-500: #62bb46;
+  --color-green-100: #edf7e6;
+
+  /* --- Dégradé de marque : cyan → vert (logo, wordmark, CTA) --- */
+  --brand-gradient: linear-gradient(100deg, #1ba3c2 0%, #62bb46 100%);
+
+  /* --- Sauge Coordination --- */
+  --color-sage-700: #1e4d3a;
+  --color-sage-500: #7fa99b;
+  --color-sage-100: #eaf2ef;
+
+  /* --- Neutres (chauds) --- */
+  --color-ink-950: #263238;
+  --color-ink-700: #4d5b61;
+  --color-ink-500: #7b878c;
+  --color-ink-200: #eef1f3;
+  --color-ivory: #f7f4ef;
+  --color-white: #ffffff;
+
+  /* --- Couleurs fonctionnelles --- */
+  --color-success: #2e7d5b;
+  --color-warning: #d89a2b;
+  --color-danger: #c44536;
+  --color-info: #2f80ed;
+
+  /* --- Typographies --- */
+  --font-display: "Sora Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  /* --- Largeurs de conteneur --- */
+  --container-site: 75rem;
+  --container-wide: 90rem;
+  --container-prose: 47.5rem;
+
+  /* --- Élévations : ombres multi-couches teintées bleu --- */
+  --shadow-e1:
+    0 1px 2px rgba(8, 28, 45, 0.06),
+    0 2px 6px rgba(8, 28, 45, 0.05);
+  --shadow-e2:
+    0 1px 2px rgba(8, 28, 45, 0.05),
+    0 4px 10px rgba(8, 28, 45, 0.06),
+    0 12px 28px -8px rgba(18, 50, 74, 0.14);
+  --shadow-e3:
+    0 2px 4px rgba(8, 28, 45, 0.05),
+    0 8px 18px rgba(8, 28, 45, 0.07),
+    0 24px 48px -12px rgba(18, 50, 74, 0.22);
+  --shadow-e4:
+    0 4px 8px rgba(8, 28, 45, 0.06),
+    0 16px 32px rgba(8, 28, 45, 0.10),
+    0 40px 80px -16px rgba(18, 50, 74, 0.30);
+  --shadow-teal-glow:
+    0 4px 14px -2px rgba(27, 163, 194, 0.45),
+    0 12px 32px -8px rgba(98, 187, 70, 0.3);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-ivory);
+    color: var(--color-ink-950);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-blue-900);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-teal-600);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-teal-100);
+    color: var(--color-blue-900);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-site {
+    width: 100%;
+    max-width: var(--container-site);
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .container-site {
+      padding-inline: 2rem;
+    }
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+    background: var(--color-blue-900);
+    color: #fff;
+    padding: 0.75rem 1rem;
+    border-radius: 0 0 0.5rem 0;
+  }
+  .skip-link:focus {
+    left: 0;
+  }
+
+  /* ============================================================
+     SURFACES 3D
+     ============================================================ */
+
+  /* Carte élevée : lumière en haut, ombre teintée en bas. */
+  .surface {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.75)),
+      var(--color-white);
+    border: 1px solid rgba(18, 50, 74, 0.08);
+    border-top-color: rgba(255, 255, 255, 0.9);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      var(--shadow-e2);
+    border-radius: 1.25rem;
+  }
+
+  .surface-raised {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      var(--shadow-e3);
+  }
+
+  /* Panneau de verre (couches hautes : header, hero, overlays). */
+  .glass {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.72),
+      rgba(255, 255, 255, 0.5)
+    );
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    backdrop-filter: blur(16px) saturate(1.4);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.85),
+      var(--shadow-e2);
+  }
+
+  .glass-dark {
+    background: linear-gradient(
+      180deg,
+      rgba(18, 50, 74, 0.55),
+      rgba(8, 28, 45, 0.65)
+    );
+    -webkit-backdrop-filter: blur(16px) saturate(1.2);
+    backdrop-filter: blur(16px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.14),
+      var(--shadow-e3);
+  }
+
+  /* ============================================================
+     TILT 3D (piloté par tilt.ts via --rx / --ry / --gx / --gy)
+     ============================================================ */
+  .tilt-scene {
+    perspective: 1100px;
+  }
+  .tilt {
+    transform-style: preserve-3d;
+    transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+    will-change: transform;
+  }
+  .tilt:hover {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      var(--shadow-e3);
+  }
+  /* Reflet qui suit le pointeur */
+  .tilt-glare {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      420px circle at var(--gx, 50%) var(--gy, 20%),
+      rgba(255, 255, 255, 0.5),
+      transparent 55%
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .tilt:hover .tilt-glare {
+    opacity: 1;
+  }
+  /* Éléments enfants poussés vers l'avant dans la scène */
+  .tilt-pop {
+    transform: translateZ(28px);
+  }
+  .tilt-pop-sm {
+    transform: translateZ(14px);
+  }
+
+  @media (prefers-reduced-motion: reduce), (hover: none) {
+    .tilt {
+      transform: none !important;
+    }
+    .tilt-pop,
+    .tilt-pop-sm {
+      transform: none;
+    }
+  }
+
+  /* ============================================================
+     BOUTONS 3D
+     ============================================================ */
+  .btn-3d {
+    position: relative;
+    transform: translateY(0);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  .btn-3d-primary {
+    background: linear-gradient(100deg, #1ba3c2 0%, #2fae8f 55%, #62bb46 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.45),
+      inset 0 -2px 0 rgba(8, 28, 45, 0.18),
+      var(--shadow-teal-glow);
+  }
+  .btn-3d-primary:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.45),
+      inset 0 -2px 0 rgba(8, 28, 45, 0.18),
+      0 8px 20px -2px rgba(27, 163, 194, 0.5),
+      0 18px 44px -8px rgba(98, 187, 70, 0.42);
+  }
+
+  /* Texte au dégradé de marque (wordmark « Innovation ») */
+  .text-brand-gradient {
+    background-image: var(--brand-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .btn-3d:active {
+    transform: translateY(1px) scale(0.99);
+  }
+  .btn-3d-secondary {
+    background: linear-gradient(180deg, #ffffff, #f3f6f8);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 1),
+      inset 0 -1px 0 rgba(18, 50, 74, 0.08),
+      var(--shadow-e1);
+    border: 1px solid rgba(18, 50, 74, 0.12);
+  }
+  .btn-3d-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 1),
+      var(--shadow-e2);
+    border-color: rgba(47, 183, 177, 0.55);
+  }
+
+  /* ============================================================
+     ARRIÈRE-PLANS DE PROFONDEUR
+     ============================================================ */
+
+  /* Aurora : nappes de couleur floues, dérive très lente. */
+  .aurora {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .aurora::before,
+  .aurora::after {
+    content: "";
+    position: absolute;
+    width: 55vw;
+    height: 55vw;
+    min-width: 480px;
+    min-height: 480px;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.5;
+    will-change: transform;
+  }
+  .aurora::before {
+    top: -22%;
+    right: -12%;
+    background: radial-gradient(
+      circle,
+      rgba(69, 199, 193, 0.5),
+      rgba(47, 111, 145, 0.22) 55%,
+      transparent 72%
+    );
+    animation: aurora-drift-a 26s ease-in-out infinite alternate;
+  }
+  .aurora::after {
+    bottom: -30%;
+    left: -14%;
+    background: radial-gradient(
+      circle,
+      rgba(127, 169, 155, 0.42),
+      rgba(231, 240, 245, 0.3) 55%,
+      transparent 75%
+    );
+    animation: aurora-drift-b 32s ease-in-out infinite alternate;
+  }
+  @keyframes aurora-drift-a {
+    to {
+      transform: translate3d(-6%, 9%, 0) scale(1.12);
+    }
+  }
+  @keyframes aurora-drift-b {
+    to {
+      transform: translate3d(8%, -7%, 0) scale(1.08);
+    }
+  }
+
+  /* Grille en perspective (sol) — clin d'œil aux ingénieurs, très discret. */
+  .depth-grid {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 46%;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(18, 50, 74, 0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(18, 50, 74, 0.09) 1px, transparent 1px);
+    background-size: 44px 44px;
+    transform: perspective(600px) rotateX(58deg) scale(1.6);
+    transform-origin: bottom center;
+    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent 85%);
+    mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent 85%);
+  }
+
+  /* Points fins (texture de fond) */
+  .dot-field {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(18, 50, 74, 0.1) 1px,
+      transparent 0
+    );
+    background-size: 28px 28px;
+  }
+
+  /* ============================================================
+     ANIMATIONS
+     ============================================================ */
+
+  /* Révélation au scroll (IntersectionObserver ajoute .in-view). */
+  .reveal {
+    opacity: 0;
+    transform: translateY(26px) scale(0.985);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal.in-view {
+    opacity: 1;
+    transform: none;
+  }
+  /* Sans JS, tout reste visible. */
+  html.no-js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Flottement lent des éléments de la scène hero */
+  .float-slow {
+    animation: float-y 7s ease-in-out infinite;
+  }
+  .float-slower {
+    animation: float-y 9.5s ease-in-out 1.2s infinite;
+  }
+  @keyframes float-y {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  /* Impulsion le long des liens du réseau (SVG) */
+  .pulse-line {
+    stroke-dasharray: 6 14;
+    animation: dash-flow 2.8s linear infinite;
+  }
+  @keyframes dash-flow {
+    to {
+      stroke-dashoffset: -40;
+    }
+  }
+  .pulse-node {
+    animation: node-pulse 3.2s ease-in-out infinite;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+  @keyframes node-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.18);
+      opacity: 0.85;
+    }
+  }
+}

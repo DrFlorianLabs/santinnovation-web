@@ -1,0 +1,21 @@
+---
+import Icon from "./Icon.astro";
+---
+
+<aside
+  class="rounded-2xl border border-warning/30 bg-warning/10 p-5 sm:p-6"
+  role="note"
+  aria-label="Information urgences"
+>
+  <div class="flex items-start gap-3">
+    <span class="mt-0.5 shrink-0 text-warning"><Icon name="alert-triangle" size={22} /></span>
+    <div class="text-sm text-ink-950 sm:text-base">
+      <p class="font-display font-semibold text-blue-900">En cas d'urgence vitale, appelez le 15 ou le 112.</p>
+      <p class="mt-1 text-ink-700">
+        Douleur thoracique, gêne respiratoire importante, malaise sévère, déficit
+        neurologique brutal, saignement important, détresse psychique aiguë. Ce
+        site ne permet pas de traiter les urgences médicales.
+      </p>
+    </div>
+  </div>
+</aside>

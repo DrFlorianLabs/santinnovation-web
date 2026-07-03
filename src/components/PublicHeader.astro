@@ -1,0 +1,115 @@
+---
+import Icon from "./Icon.astro";
+import Logo from "./Logo.astro";
+import DoctolibButton from "./DoctolibButton.astro";
+import { mainNav } from "@data/navigation";
+import { site } from "@data/site";
+
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === "/" ? path === "/" : path.startsWith(href);
+---
+
+<header
+  data-elevate-on-scroll
+  class="glass sticky top-0 z-40 border-b border-white/50 transition-shadow duration-300 data-[elevated=true]:shadow-[var(--shadow-e3)]"
+>
+  <!--
+    Alignement : une seule rangée h-16, tout est centré verticalement,
+    tous les libellés sont en nowrap — rien ne passe sur deux lignes,
+    rien ne déborde. Largeur élargie (1440px) pour laisser respirer.
+  -->
+  <div
+    class="mx-auto flex h-16 w-full max-w-[90rem] items-center justify-between gap-3 px-4 md:px-6"
+  >
+    <a
+      href="/"
+      class="flex shrink-0 items-center gap-2.5"
+      aria-label={`${site.nomCourt} — accueil`}
+    >
+      <Logo size={42} />
+      <span class="whitespace-nowrap font-display text-lg font-semibold leading-none text-blue-900">
+        Sant'<span class="text-brand-gradient">Innovation</span>
+      </span>
+    </a>
+
+    <nav aria-label="Navigation principale" class="hidden min-w-0 lg:block">
+      <ul class="flex items-center justify-center">
+        {
+          mainNav.map((item) => (
+            <li class="flex">
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? "page" : undefined}
+                class:list={[
+                  "relative flex h-10 items-center whitespace-nowrap rounded-lg px-2.5 text-sm font-medium leading-none transition-colors duration-200 xl:px-3 xl:text-[0.92rem]",
+                  isActive(item.href)
+                    ? "text-teal-600"
+                    : "text-ink-700 hover:bg-blue-100/60 hover:text-blue-900",
+                ]}
+              >
+                {item.label}
+                {isActive(item.href) && (
+                  <span
+                    class="absolute inset-x-2.5 bottom-1 h-0.5 rounded-full bg-gradient-to-r from-teal-600 to-green-500"
+                    aria-hidden="true"
+                  />
+                )}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex shrink-0 items-center gap-2.5">
+      <a
+        href="/pro"
+        class="btn-3d btn-3d-secondary hidden h-10 items-center gap-1.5 whitespace-nowrap rounded-xl px-3.5 text-sm font-medium leading-none text-blue-900 md:inline-flex"
+      >
+        <Icon name="lock" size={15} class="text-teal-600" /> Espace pro
+      </a>
+      <DoctolibButton class="hidden h-10 whitespace-nowrap sm:inline-flex" label="Rendez-vous" />
+      <details class="relative lg:hidden">
+        <summary
+          class="btn-3d btn-3d-secondary flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-xl text-blue-900"
+          aria-label="Ouvrir le menu"
+        >
+          <Icon name="menu" size={22} />
+        </summary>
+        <div class="surface surface-raised absolute right-0 mt-2 w-64 p-2">
+          <ul>
+            {
+              mainNav.map((item) => (
+                <li>
+                  <a
+                    href={item.href}
+                    class="block rounded-lg px-3 py-2.5 text-ink-950 hover:bg-blue-100"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+            <li>
+              <a
+                href="/prendre-rendez-vous"
+                class="block rounded-lg px-3 py-2.5 text-ink-950 hover:bg-blue-100"
+              >
+                Prendre rendez-vous
+              </a>
+            </li>
+            <li class="mt-1 border-t border-blue-100 pt-1">
+              <a
+                href="/pro"
+                class="flex items-center gap-2 rounded-lg px-3 py-2.5 text-ink-700 hover:bg-blue-100"
+              >
+                <Icon name="lock" size={15} /> Espace professionnel
+              </a>
+            </li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>

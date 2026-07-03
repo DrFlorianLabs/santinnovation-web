@@ -1,0 +1,47 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import PageHero from "@components/PageHero.astro";
+import SiteMap from "@components/SiteMap.astro";
+import SiteCard from "@components/SiteCard.astro";
+import Icon from "@components/Icon.astro";
+
+const lieux = (await getCollection("lieux")).sort(
+  (a, b) => a.data.ordre - b.data.ordre,
+);
+---
+
+<BaseLayout
+  title="Les lieux"
+  description="Les sites de soins Sant'Innovation à Besançon : Flûtes Agasses, Henri et Maurice Baigue, Les Orchamps. Adresses, accès et itinéraires."
+>
+  <PageHero
+    eyebrow="Plusieurs lieux, une même coordination"
+    title="Nos sites de soins à Besançon"
+    description="Chaque professionnel peut exercer sur un ou plusieurs sites. Cliquez sur un site pour afficher l'itinéraire depuis votre position — transports en commun, vélo ou voiture."
+  />
+
+  <section class="py-12 md:py-16">
+    <div class="container-site">
+      <SiteMap lieux={lieux} id="carte" />
+
+      <div class="mt-10 grid gap-5 md:grid-cols-3">
+        {
+          lieux.map((lieu, i) => (
+            <div class="reveal h-full" style={`--reveal-delay: ${i * 80}ms`}>
+              <SiteCard lieu={lieu} />
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="surface mt-10 flex items-start gap-3 p-5">
+        <span class="mt-0.5 shrink-0 text-teal-600"><Icon name="check" size={18} /></span>
+        <p class="text-sm text-ink-700">
+          Les trois sites sont accessibles aux personnes à mobilité réduite. Les horaires
+          et modalités d'accueil sont précisés sur la fiche de chaque professionnel.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,48 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import PageHero from "@components/PageHero.astro";
+import ProfessionalCard from "@components/ProfessionalCard.astro";
+import DoctolibButton from "@components/DoctolibButton.astro";
+
+const lieux = await getCollection("lieux");
+const lieuxLabels = Object.fromEntries(lieux.map((l) => [l.id, l.data.nom]));
+
+const pros = (await getCollection("professionnels"))
+  .filter((p) => p.data.visible)
+  .sort((a, b) => a.data.ordre - b.data.ordre);
+---
+
+<BaseLayout
+  title="L'équipe"
+  description="Trombinoscope des professionnels de santé Sant'Innovation à Besançon : médecins généralistes, infirmiers, kinésithérapeutes, pharmacien. Prise de rendez-vous directe."
+>
+  <PageHero
+    eyebrow="Trombinoscope"
+    title="L'équipe pluriprofessionnelle"
+    description="Chaque professionnel dispose de sa fiche et, lorsqu'il le propose, d'une prise de rendez-vous en ligne directe."
+  >
+    <div class="mt-6">
+      <DoctolibButton size="lg" label="Fiche établissement sur Doctolib" />
+    </div>
+  </PageHero>
+
+  <section class="py-12 md:py-16">
+    <div class="container-site">
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          pros.map((pro, i) => (
+            <div class="reveal h-full" style={`--reveal-delay: ${(i % 3) * 80}ms`}>
+              <ProfessionalCard pro={pro} lieuxLabels={lieuxLabels} />
+            </div>
+          ))
+        }
+      </div>
+      <p class="mt-8 text-sm text-ink-500">
+        Le bouton « Prendre rendez-vous » de chaque fiche ouvre directement l'agenda du
+        professionnel lorsqu'il est disponible en ligne ; à défaut, la fiche établissement
+        Sant'Innovation.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

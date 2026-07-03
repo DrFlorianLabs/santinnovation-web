@@ -1,0 +1,39 @@
+# build output
+dist/
+.output/
+
+# dependencies
+node_modules/
+
+# astro
+.astro/
+
+# environment
+.env
+.env.production
+.env.*.local
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# macOS / editors
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# misc
+*.local
+
+# Documents internes — NON versionnés (cadrage, audit, sources)
+01_Cahier_des_charges_SantInnovation.pdf
+02_Contenus_site_SantInnovation.pdf
+03_Design_system_SantInnovation.pdf
+04_Prototype_produit_SantInnovation.pdf
+05_Instructions_Claude_Code_SantInnovation.pdf
+PHOTO-2026-04-03-10-04-32.jpg
+docs/AUDIT_TECHNIQUE_2026-07-03.md
+docs/PROMPT_AUDIT_CODEX.md
