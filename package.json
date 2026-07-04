@@ -4,6 +4,9 @@
   "version": "0.1.0",
   "private": true,
   "description": "Site public des Maisons de Santé Pluriprofessionnelles Sant'Innovation (Besançon).",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",

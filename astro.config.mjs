@@ -9,7 +9,15 @@ export default defineConfig({
   trailingSlash: "ignore",
   prefetch: true,
   integrations: [mdx(), sitemap()],
+  build: {
+    // Aucun style inline dans le HTML : la CSP (public/.htaccess) reste stricte.
+    inlineStylesheets: "never",
+  },
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      // Aucun script inline : script-src 'self' (cf. public/.htaccess).
+      assetsInlineLimit: 0,
+    },
   },
 });

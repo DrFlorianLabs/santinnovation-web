@@ -11,7 +11,7 @@ Site statique, sobre et premium, sans données patients, sans prise de rendez-vo
 - **TypeScript strict**
 - Polices auto-hébergées via **Fontsource** (Sora, Inter, IBM Plex Mono) — pas de CDN tiers, conforme RGPD
 - Contenu typé en **Content Collections** (Zod)
-- Hébergement cible : **Cloudflare Pages**
+- Hébergement cible : **OVH** (mutualisé Apache — voir « Déploiement OVH » et `docs/adr/0001`)
 
 ## Démarrage
 
@@ -22,6 +22,33 @@ npm run build    # build statique -> dist/
 npm run preview  # prévisualise le build
 npm run check    # vérification de types Astro
 ```
+
+Version de Node : voir `.nvmrc` (`nvm use`). Le champ `engines` de `package.json` fixe le minimum supporté.
+
+## Déploiement OVH
+
+Le site est 100 % statique : le déploiement consiste à publier le contenu de `dist/`
+sur l'hébergement mutualisé OVH (Apache).
+
+1. `npm ci && npm run build` — la sortie complète est dans `dist/`.
+2. Uploader le **contenu** de `dist/` à la racine web du site (`www/`) par SFTP,
+   ou via CI (GitHub Actions + SFTP/rsync).
+3. Le fichier `public/.htaccess` (copié dans `dist/`) porte la configuration Apache :
+   redirection HTTPS, HSTS, CSP et autres en-têtes de sécurité, compression, cache.
+   **C'est lui qui s'applique sur OVH.**
+4. `public/_headers` porte la même politique pour un éventuel déploiement
+   Cloudflare Pages (prévisualisation) ; il est ignoré par Apache. Les deux fichiers
+   doivent rester synchronisés (cf. `docs/adr/0001-separation-front-back-ovh.md`).
+
+Après chaque mise en production : vérifier les en-têtes (`curl -I https://santinnovation.fr`)
+et l'absence de régression sur les pages clés.
+
+## Frontière front / back
+
+Le site public est sans dépendance serveur. Tout ce qui préfigure le backend pro
+(types GED, contrats d'authentification) vit dans **`src/pro/`** (alias `@pro/*`),
+pensé pour migrer vers une application serveur distincte en V1.5 — voir
+`src/pro/README.md` et les ADR `docs/adr/`.
 
 ## Structure
 

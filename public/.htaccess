@@ -1,0 +1,58 @@
+# ============================================================
+# Sant'Innovation — configuration Apache (OVH hébergement mutualisé)
+#
+# Ce fichier est copié tel quel dans dist/ par le build Astro et
+# s'applique sur OVH (Apache). Le fichier public/_headers porte la
+# même politique pour un éventuel déploiement Cloudflare Pages :
+# les deux doivent rester synchronisés.
+# Voir docs/adr/0001-separation-front-back-ovh.md
+# ============================================================
+
+AddDefaultCharset utf-8
+
+# ---- Redirection HTTP -> HTTPS ----
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+# ---- En-têtes de sécurité ----
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  # CSP calibrée sur les sources réellement utilisées : self (scripts/styles/fontes
+  # auto-hébergés, Leaflet bundlé) + tuiles CARTO en images. Les attributs style
+  # inline (variables CSS --rx/--ry, délais de reveal) imposent 'unsafe-inline'
+  # côté styles ; aucun script inline n'est émis (cf. astro.config.mjs).
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.basemaps.cartocdn.com; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+  Header always set X-Frame-Options "DENY"
+</IfModule>
+
+# ---- Compression ----
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript application/javascript application/json application/xml image/svg+xml
+</IfModule>
+
+# ---- Cache ----
+<IfModule mod_expires.c>
+  ExpiresActive On
+  # HTML : toujours revalidé (contenu éditorial).
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType application/xml "access plus 1 hour"
+  ExpiresByType image/svg+xml "access plus 1 week"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/webp "access plus 1 month"
+</IfModule>
+<IfModule mod_headers.c>
+  # Assets fingerprintés par Astro (/_astro/*.hash.*) : cache long immuable.
+  <FilesMatch "\.(js|css|woff2?)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>

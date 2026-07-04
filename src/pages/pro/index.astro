@@ -10,7 +10,7 @@ import {
   SENSITIVITY_LABELS,
   CATEGORY_LABELS,
   ACTION_LABELS,
-} from "@data/pro";
+} from "@pro/ged";
 import { formatDate } from "@lib/format";
 
 const badgeStyles = {
@@ -284,8 +284,8 @@ const formatIcones = {
   </div>
 
   <script>
-    import { ROLE_LABELS } from "@data/pro";
-    import type { Role } from "@data/pro";
+    import { ROLE_LABELS } from "@pro/ged";
+    import type { Role } from "@pro/ged";
 
     const select = document.getElementById("role-select") as HTMLSelectElement | null;
     const badge = document.getElementById("role-badge");

@@ -5,9 +5,9 @@
  * document patient, aucun secret. Le contrôle d'accès est SIMULÉ côté
  * client à des fins de démonstration produit.
  *
- * V1.5 : ce module devient le contrat de types partagé avec Prisma
- * (PostgreSQL) et le stockage objet compatible S3. Les rôles et niveaux
- * de sensibilité sont pensés pour être portés tels quels en base.
+ * V1.5 : ces types servent de point de départ aux contrats de la future
+ * application serveur séparée (cf. docs/adr/0001). Le contrôle d'accès
+ * réel sera décidé côté serveur, par ressource (cf. src/pro/access.ts).
  */
 
 /** Rôles simulés de l'espace professionnel. */
