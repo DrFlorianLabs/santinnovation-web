@@ -1,0 +1,170 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Icon from "@components/Icon.astro";
+import Logo from "@components/Logo.astro";
+
+/**
+ * Maquette de connexion de l'espace professionnel — DÉMONSTRATION.
+ * Aucune soumission réelle : aucun formulaire n'envoie quoi que ce soit,
+ * aucun identifiant n'est stocké. La cible (Pro Santé Connect + 2FA TOTP,
+ * contrôle serveur) est décrite dans docs/adr/0002 et SECURITY.md.
+ */
+---
+
+<BaseLayout
+  title="Connexion espace professionnel (démonstration)"
+  description="Maquette de la connexion à l'espace professionnel Sant'Innovation : Pro Santé Connect et double authentification (démonstration, aucun accès réel)."
+  noindex
+  chrome="pro"
+>
+  <div class="relative flex min-h-screen flex-col overflow-hidden bg-blue-950 text-white">
+    <div class="dot-field pointer-events-none absolute inset-0 opacity-[0.1] invert" aria-hidden="true"></div>
+    <div
+      class="pointer-events-none absolute -top-40 left-1/2 h-96 w-[50rem] -translate-x-1/2 rounded-full bg-teal-500/10 blur-3xl"
+      aria-hidden="true"
+    >
+    </div>
+
+    <header class="glass-dark relative z-10 border-b border-white/10">
+      <div class="container-site flex h-16 items-center justify-between gap-4">
+        <a href="/" class="flex items-center gap-2.5" style="--logo-house: #ffffff" aria-label="Sant'Innovation — retour au site public">
+          <Logo size={40} static />
+          <span class="hidden font-display text-lg font-semibold text-white sm:inline">
+            Sant'<span class="text-brand-gradient">Innovation</span>
+          </span>
+          <span class="rounded-full bg-white/10 px-2.5 py-0.5 font-mono text-[0.65rem] uppercase tracking-wider text-teal-500 ring-1 ring-white/15">
+            Espace pro
+          </span>
+        </a>
+        <a href="/pro" class="inline-flex items-center gap-1.5 text-sm font-medium text-white/70 transition-colors hover:text-white">
+          <Icon name="arrow-right" size={15} class="rotate-180" /> Bibliothèque (démo)
+        </a>
+      </div>
+    </header>
+
+    <main class="container-site relative z-10 flex flex-1 items-center justify-center py-12">
+      <div class="w-full max-w-md">
+        <!-- Bandeau démonstration -->
+        <div
+          class="flex items-start gap-3 rounded-2xl bg-warning/10 p-4 text-sm text-white/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] ring-1 ring-warning/30"
+          role="note"
+        >
+          <span class="mt-0.5 shrink-0 text-warning"><Icon name="shield-alert" size={18} /></span>
+          <p>
+            <strong class="font-semibold text-white">Maquette de démonstration.</strong>
+            Rien n'est soumis, aucun compte n'existe. L'accès réel (V1.5) exigera une
+            authentification forte vérifiée côté serveur : Pro Santé Connect ou
+            mot de passe <em>plus</em> code TOTP, jamais un mot de passe seul.
+          </p>
+        </div>
+
+        <div class="glass-dark mt-6 rounded-2xl p-6 sm:p-8">
+          <p class="font-mono text-xs uppercase tracking-widest text-teal-500">
+            Connexion · démonstration
+          </p>
+          <h1 class="mt-2 font-display text-2xl font-semibold text-white">
+            Espace professionnel
+          </h1>
+          <p class="mt-2 text-sm text-white/70">
+            Réservé aux professionnels et partenaires autorisés de la MSP.
+          </p>
+
+          <!-- Étape 1 : identification -->
+          <div id="etape-psc" class="mt-6">
+            <button
+              type="button"
+              id="btn-psc"
+              class="btn-3d btn-3d-primary flex w-full items-center justify-center gap-2.5 rounded-xl px-5 py-3 font-medium text-white"
+            >
+              <Icon name="shield" size={18} />
+              S'identifier avec Pro Santé Connect
+            </button>
+            <p class="mt-2 text-center text-xs text-white/50">
+              Identification nationale des professionnels de santé (RPPS) — démonstration.
+            </p>
+
+            <div class="mt-5 flex items-center gap-3 text-xs uppercase tracking-wide text-white/40" aria-hidden="true">
+              <span class="h-px flex-1 bg-white/15"></span> ou <span class="h-px flex-1 bg-white/15"></span>
+            </div>
+
+            <button
+              type="button"
+              id="btn-mdp"
+              class="btn-3d mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-white/10 px-5 py-3 text-sm font-medium text-white ring-1 ring-white/15 hover:bg-white/20"
+            >
+              <Icon name="lock" size={16} /> Mot de passe + code 2FA (démonstration)
+            </button>
+          </div>
+
+          <!-- Étape 2 : 2FA TOTP (révélée par la démo) -->
+          <div id="etape-totp" class="mt-6 hidden" aria-live="polite">
+            <p class="flex items-center gap-2 text-sm font-medium text-white">
+              <span class="text-teal-500"><Icon name="check" size={16} /></span>
+              Premier facteur validé (simulation)
+            </p>
+            <label class="mt-4 block text-sm text-white/70" for="code-totp">
+              Code à 6 chiffres de votre application d'authentification (TOTP)
+            </label>
+            <input
+              id="code-totp"
+              type="text"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              maxlength="6"
+              placeholder="••••••"
+              class="mt-2 w-full rounded-xl border border-white/15 bg-blue-900 px-4 py-3 text-center font-mono text-xl tracking-[0.5em] text-white placeholder:text-white/30 focus-visible:outline-2 focus-visible:outline-teal-500"
+            />
+            <button
+              type="button"
+              id="btn-verifier"
+              class="btn-3d btn-3d-primary mt-4 flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 font-medium text-white"
+            >
+              Vérifier le code
+            </button>
+          </div>
+
+          <!-- Fin de démonstration -->
+          <div id="etape-fin" class="mt-6 hidden rounded-xl bg-teal-500/10 p-4 text-sm text-white/85 ring-1 ring-teal-500/30" role="status">
+            <p class="flex items-start gap-2">
+              <span class="mt-0.5 shrink-0 text-teal-500"><Icon name="check" size={16} /></span>
+              <span>
+                <strong class="font-semibold text-white">Fin de la démonstration.</strong>
+                Aucune session n'a été ouverte : ce parcours illustre l'authentification
+                forte prévue en V1.5.
+                <a href="/pro" class="font-medium text-teal-500 underline-offset-2 hover:underline">
+                  Voir la bibliothèque de démonstration
+                </a>
+              </span>
+            </p>
+          </div>
+
+          <p class="mt-6 border-t border-white/10 pt-4 text-xs leading-relaxed text-white/50">
+            En production, l'accès sera contrôlé côté serveur : Pro Santé Connect (OIDC),
+            second facteur obligatoire, permissions par rôle et par document, journal
+            d'accès immuable. Voir <span class="font-mono">SECURITY.md</span>.
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    /* Parcours de démonstration : révèle l'étape 2FA puis le message final.
+       Aucune donnée n'est envoyée ni stockée. */
+    const etapeTotp = document.getElementById("etape-totp");
+    const etapeFin = document.getElementById("etape-fin");
+    const codeInput = document.getElementById("code-totp") as HTMLInputElement | null;
+
+    const montrerTotp = () => {
+      etapeTotp?.classList.remove("hidden");
+      codeInput?.focus();
+    };
+
+    document.getElementById("btn-psc")?.addEventListener("click", montrerTotp);
+    document.getElementById("btn-mdp")?.addEventListener("click", montrerTotp);
+    document.getElementById("btn-verifier")?.addEventListener("click", () => {
+      etapeFin?.classList.remove("hidden");
+      if (codeInput) codeInput.value = "";
+    });
+  </script>
+</BaseLayout>

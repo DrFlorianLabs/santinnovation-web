@@ -11,6 +11,7 @@ import {
   CATEGORY_LABELS,
   ACTION_LABELS,
 } from "@pro/ged";
+import { ROLE_INTENTS } from "@pro/access";
 import { formatDate } from "@lib/format";
 
 const badgeStyles = {
@@ -75,6 +76,12 @@ const formatIcones = {
             </select>
           </label>
           <a
+            href="/pro/login"
+            class="hidden items-center gap-1.5 text-sm font-medium text-white/70 transition-colors hover:text-white sm:inline-flex"
+          >
+            <Icon name="lock" size={14} /> Connexion (maquette)
+          </a>
+          <a
             href="/"
             class="hidden items-center gap-1.5 text-sm font-medium text-white/70 transition-colors hover:text-white md:inline-flex"
           >
@@ -121,9 +128,12 @@ const formatIcones = {
           <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 text-teal-500">
             <Icon name="user" size={18} />
           </span>
-          <div class="text-sm">
+          <div class="max-w-xs text-sm">
             <p class="text-white/60">Connecté en tant que</p>
             <p id="role-badge" class="font-semibold text-white">Professionnel de santé</p>
+            <p id="role-intent" class="mt-0.5 text-xs text-white/50">
+              {ROLE_INTENTS.professional}
+            </p>
           </div>
         </div>
       </div>
@@ -286,6 +296,7 @@ const formatIcones = {
   <script>
     import { ROLE_LABELS } from "@pro/ged";
     import type { Role } from "@pro/ged";
+    import { ROLE_INTENTS, hasCapability } from "@pro/access";
 
     const select = document.getElementById("role-select") as HTMLSelectElement | null;
     const badge = document.getElementById("role-badge");
@@ -317,6 +328,18 @@ const formatIcones = {
 
     function appliquerRole(role: Role): void {
       if (badge) badge.textContent = ROLE_LABELS[role];
+      const intent = document.getElementById("role-intent");
+      if (intent) intent.textContent = ROLE_INTENTS[role];
+      // Capacité « deposit » de la matrice ACCESS_POLICY (démonstration).
+      const upload = document.getElementById("btn-upload") as HTMLButtonElement | null;
+      if (upload) {
+        const peutDeposer = hasCapability(role, "deposit");
+        upload.disabled = !peutDeposer;
+        upload.classList.toggle("opacity-50", !peutDeposer);
+        upload.title = peutDeposer
+          ? ""
+          : "Votre rôle ne dispose pas de la capacité « déposer »";
+      }
       docs.forEach((doc) => {
         const acces = JSON.parse(doc.dataset.access ?? "[]") as Role[];
         const autorise = acces.includes(role);
