@@ -1,7 +1,7 @@
 export interface Partenaire {
   nom: string;
-  /** URL officielle. */
-  url?: string;
+  /** URL officielle — HTTPS imposé par le type. */
+  url?: `https://${string}`;
   /** Description courte (title / aria). */
   description?: string;
 }

@@ -1,10 +1,85 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import PageHero from "@components/PageHero.astro";
-import PagePlaceholder from "@components/PagePlaceholder.astro";
+
+/**
+ * Structure LCEN complète. Les champs marqués « À COMPLÉTER » exigent une
+ * validation juridique (personne morale, directeur de publication) AVANT
+ * toute mise en production — cf. docs/PLAN_ACTION.md, phase 0.
+ */
 ---
 
-<BaseLayout title="Mentions légales" description="Éditeur, hébergement et responsabilités du site Sant'Innovation.">
-  <PageHero eyebrow="Informations réglementaires" title="Mentions légales" description="Éditeur, hébergement et responsabilités du site Sant'Innovation." />
-  <PagePlaceholder message="Les mentions légales complètes seront publiées avant la mise en ligne officielle du site." />
+<BaseLayout
+  title="Mentions légales"
+  description="Éditeur, directeur de publication, hébergement et responsabilités du site Sant'Innovation."
+>
+  <PageHero
+    eyebrow="Informations réglementaires"
+    title="Mentions légales"
+    description="Éditeur, directeur de publication, hébergement et responsabilités du site."
+  />
+
+  <section class="py-12 md:py-16">
+    <div class="container-site max-w-prose space-y-10">
+      <div>
+        <h2 class="text-2xl font-semibold">Éditeur du site</h2>
+        <p class="mt-3 text-ink-700">
+          Le site santinnovation.fr est édité par
+          <strong>[À COMPLÉTER : dénomination et forme juridique — SISA, association…]</strong>,
+          dont le siège social est situé
+          <strong>[À COMPLÉTER : adresse du siège]</strong>,
+          immatriculée sous le numéro
+          <strong>[À COMPLÉTER : SIREN / RNA]</strong>.
+        </p>
+        <p class="mt-3 text-ink-700">
+          Contact : <a href="mailto:contact@santinnovation.fr" class="font-medium text-teal-600 hover:text-blue-900">contact@santinnovation.fr</a>
+          · Téléphone : <strong>[À COMPLÉTER]</strong>.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-semibold">Directeur de la publication</h2>
+        <p class="mt-3 text-ink-700">
+          <strong>[À COMPLÉTER : nom et qualité du directeur de la publication]</strong>.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-semibold">Hébergement</h2>
+        <p class="mt-3 text-ink-700">
+          Le site est hébergé par <strong>OVH SAS</strong>, 2 rue Kellermann,
+          59100 Roubaix, France — <a href="https://www.ovhcloud.com" target="_blank" rel="noopener noreferrer" class="font-medium text-teal-600 hover:text-blue-900">www.ovhcloud.com</a>.
+          <em>[À CONFIRMER : offre et entité contractuelle exactes.]</em>
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-semibold">Prise de rendez-vous</h2>
+        <p class="mt-3 text-ink-700">
+          La prise de rendez-vous en ligne est assurée par <strong>Doctolib</strong>
+          (Doctolib SAS), sur son propre site. Les données saisies sur Doctolib sont
+          traitées par Doctolib, responsable de son propre traitement — voir la
+          politique de confidentialité de Doctolib.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-semibold">Propriété intellectuelle</h2>
+        <p class="mt-3 text-ink-700">
+          L'ensemble des contenus du site (textes, logo, illustrations) est la
+          propriété de l'éditeur, sauf mention contraire. Toute reproduction non
+          autorisée est interdite. Fond de carte : © OpenStreetMap contributors,
+          © CARTO.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-semibold">Absence de conseil médical</h2>
+        <p class="mt-3 text-ink-700">
+          Les informations publiées sur ce site sont générales et ne remplacent en
+          aucun cas une consultation. En cas d'urgence, composez le 15 ou le 112.
+        </p>
+      </div>
+    </div>
+  </section>
 </BaseLayout>

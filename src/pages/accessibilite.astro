@@ -1,10 +1,88 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import PageHero from "@components/PageHero.astro";
-import PagePlaceholder from "@components/PagePlaceholder.astro";
+
+/**
+ * Trame de déclaration d'accessibilité RGAA 4.1.2. À compléter après
+ * (1) décision sur l'assujettissement (article 47 de la loi n° 2005-102)
+ * et (2) audit RGAA — cf. docs/PLAN_ACTION.md.
+ */
 ---
 
-<BaseLayout title="Accessibilité" description="Engagement d'accessibilité du site Sant'Innovation : contrastes, navigation clavier, lecteurs d'écran.">
-  <PageHero eyebrow="Un site pour tous" title="Accessibilité" description="Engagement d'accessibilité du site Sant'Innovation : contrastes, navigation clavier, lecteurs d'écran." />
-  <PagePlaceholder message="La déclaration d'accessibilité (RGAA) sera publiée après audit." />
+<BaseLayout
+  title="Déclaration d'accessibilité"
+  description="Engagement d'accessibilité du site Sant'Innovation et trame de déclaration RGAA."
+>
+  <PageHero
+    eyebrow="Accessibilité"
+    title="Déclaration d'accessibilité"
+    description="Notre engagement pour un site utilisable par toutes et tous."
+  />
+
+  <section class="py-12 md:py-16">
+    <div class="container-site max-w-prose space-y-10">
+      <div>
+        <h2 class="text-2xl font-semibold">Engagement</h2>
+        <p class="mt-3 text-ink-700">
+          <strong>[À COMPLÉTER : dénomination de la structure]</strong> s'engage à
+          rendre son site accessible conformément à l'article 47 de la loi
+          n° 2005-102 du 11 février 2005
+          <em>[À TRANCHER : assujettissement selon statut, mission et financement]</em>.
+          Indépendamment de l'obligation légale, le site vise le niveau AA du RGAA :
+          navigation clavier, contrastes, focus visibles, alternatives textuelles et
+          respect de <code>prefers-reduced-motion</code>.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-semibold">État de conformité</h2>
+        <p class="mt-3 text-ink-700">
+          <strong>[À COMPLÉTER après audit RGAA 4.1.2 :</strong> totalement /
+          partiellement / non conforme, taux de conformité, échantillon de pages
+          testées, technologies utilisées, outils et méthodologie.<strong>]</strong>
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-semibold">Contenus non accessibles</h2>
+        <p class="mt-3 text-ink-700">
+          <strong>[À COMPLÉTER : liste des non-conformités constatées, dérogations
+          pour charge disproportionnée, contenus exemptés.]</strong> Point connu :
+          la carte interactive des sites dispose d'une alternative textuelle
+          (adresses et itinéraires listés sous forme de liens).
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-semibold">Établissement de la déclaration</h2>
+        <p class="mt-3 text-ink-700">
+          Déclaration établie le <strong>[À COMPLÉTER]</strong>, mise à jour le
+          <strong>[À COMPLÉTER]</strong>. Schéma pluriannuel et plan d'action :
+          <strong>[À COMPLÉTER]</strong>.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-semibold">Retour d'information et contact</h2>
+        <p class="mt-3 text-ink-700">
+          Si vous rencontrez un obstacle d'accessibilité sur ce site, écrivez à
+          <a href="mailto:contact@santinnovation.fr" class="font-medium text-teal-600 hover:text-blue-900">contact@santinnovation.fr</a>
+          en décrivant la page et le problème. Nous nous efforçons de répondre sous
+          <strong>[À COMPLÉTER]</strong> jours.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-semibold">Voies de recours</h2>
+        <p class="mt-3 text-ink-700">
+          Si vous avez signalé un défaut d'accessibilité et n'avez pas obtenu de
+          réponse satisfaisante, vous pouvez saisir le
+          <a href="https://www.defenseurdesdroits.fr" target="_blank" rel="noopener noreferrer" class="font-medium text-teal-600 hover:text-blue-900">Défenseur des droits</a>
+          (formulaire en ligne, délégué territorial ou courrier gratuit sans
+          affranchissement : Défenseur des droits, Libre réponse 71120,
+          75342 Paris CEDEX 07).
+        </p>
+      </div>
+    </div>
+  </section>
 </BaseLayout>

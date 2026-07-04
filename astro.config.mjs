@@ -8,7 +8,11 @@ export default defineConfig({
   site: "https://santinnovation.fr",
   trailingSlash: "ignore",
   prefetch: true,
-  integrations: [mdx(), sitemap()],
+  integrations: [
+    mdx(),
+    // L'espace pro (démo, noindex) n'a rien à faire dans le sitemap.
+    sitemap({ filter: (page) => !page.includes("/pro") }),
+  ],
   build: {
     // Aucun style inline dans le HTML : la CSP (public/.htaccess) reste stricte.
     inlineStylesheets: "never",

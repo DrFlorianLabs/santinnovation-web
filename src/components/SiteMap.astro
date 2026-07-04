@@ -272,13 +272,22 @@ const MODES = [
 
     const markers = new Map<string, L.Marker>();
     for (const s of sites) {
+      // Marqueur construit via DOM (textContent) : le contenu (nom du lieu)
+      // est traité comme non fiable — aucune interpolation HTML (AUD-011).
+      const pin = document.createElement("div");
+      pin.className = "brand-pin";
+      pin.dataset.pin = s.id;
+      const halo = document.createElement("span");
+      halo.className = "brand-pin__halo";
+      const dot = document.createElement("span");
+      dot.className = "brand-pin__dot";
+      const label = document.createElement("span");
+      label.className = "brand-pin__label";
+      label.textContent = s.court;
+      pin.append(halo, dot, label);
       const icon = L.divIcon({
         className: "",
-        html: `<div class="brand-pin" data-pin="${s.id}">
-                 <span class="brand-pin__halo"></span>
-                 <span class="brand-pin__dot"></span>
-                 <span class="brand-pin__label">${s.court}</span>
-               </div>`,
+        html: pin,
         iconSize: [34, 34],
         iconAnchor: [17, 17],
       });

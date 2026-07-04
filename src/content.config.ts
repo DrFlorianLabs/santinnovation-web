@@ -1,5 +1,36 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { z } from "astro/zod";
 import { glob } from "astro/loaders";
+
+/**
+ * URLs durcies : HTTPS obligatoire + allowlist de domaines.
+ * Le contenu (futur CMS compris) est traité comme non fiable : un lien
+ * javascript:, data: ou vers un domaine inattendu fait échouer le build.
+ */
+const httpsUrl = (hosts: readonly string[]) =>
+  z
+    .string()
+    .url()
+    .refine(
+      (value) => {
+        try {
+          const url = new URL(value);
+          return url.protocol === "https:" && hosts.includes(url.hostname);
+        } catch {
+          return false;
+        }
+      },
+      {
+        message: `URL refusée : HTTPS obligatoire et domaine limité à ${hosts.join(", ")}`,
+      },
+    );
+
+const DOCTOLIB_HOSTS = ["www.doctolib.fr", "doctolib.fr"] as const;
+const ITINERAIRE_HOSTS = [
+  "www.google.com",
+  "maps.google.com",
+  "www.openstreetmap.org",
+] as const;
 
 /**
  * Catégories de profession affichables. Pilote les filtres du trombinoscope.
@@ -28,8 +59,8 @@ const professionnels = defineCollection({
     /** Slugs de lieux (collection "lieux") où le pro exerce. */
     lieux: z.array(z.string()).default([]),
     domaines: z.array(z.string()).default([]),
-    /** Lien Doctolib individuel si disponible. */
-    doctolibUrl: z.string().url().optional(),
+    /** Lien Doctolib individuel si disponible (HTTPS, domaine Doctolib). */
+    doctolibUrl: httpsUrl(DOCTOLIB_HOSTS).optional(),
     photo: z.string().optional(),
     accepteNouveauxPatients: z.boolean().default(false),
     soinsADomicile: z.boolean().default(false),
@@ -51,8 +82,8 @@ const lieux = defineCollection({
     accesTransport: z.string().optional(),
     accesPMR: z.boolean().optional(),
     horaires: z.string().optional(),
-    /** URL d'itinéraire (Google Maps / OSM). */
-    itineraireUrl: z.string().url().optional(),
+    /** URL d'itinéraire (HTTPS, Google Maps ou OpenStreetMap). */
+    itineraireUrl: httpsUrl(ITINERAIRE_HOSTS).optional(),
     photo: z.string().optional(),
     ordre: z.number().default(99),
   }),
