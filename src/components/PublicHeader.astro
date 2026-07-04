@@ -69,7 +69,12 @@ const isActive = (href: string) =>
       >
         <Icon name="lock" size={15} class="text-teal-600" /> Espace pro
       </a>
-      <DoctolibButton class="hidden h-10 whitespace-nowrap sm:inline-flex" label="Rendez-vous" />
+      {/* Wrapper : `hidden` sur le bouton lui-même serait neutralisé par son
+          `inline-flex` de base (même spécificité CSS) — cause du débordement
+          horizontal mobile relevé par l'audit (AUD-013). */}
+      <div class="hidden sm:block">
+        <DoctolibButton class="h-10 whitespace-nowrap" label="Rendez-vous" />
+      </div>
       <details class="relative lg:hidden">
         <summary
           class="btn-3d btn-3d-secondary flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-xl text-blue-900"

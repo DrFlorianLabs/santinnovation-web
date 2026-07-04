@@ -128,7 +128,7 @@ const formatIcones = {
         </div>
       </div>
 
-      <div class="mt-8 grid gap-6 lg:grid-cols-[1.65fr_1fr]">
+      <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)]">
         <!-- Liste des documents -->
         <section aria-labelledby="titre-docs">
           <h2 id="titre-docs" class="sr-only">Documents</h2>
@@ -322,7 +322,11 @@ const formatIcones = {
         const autorise = acces.includes(role);
         doc.dataset.locked = String(!autorise);
         doc.classList.toggle("opacity-60", !autorise);
-        doc.querySelector(".doc-ouvrir")?.classList.toggle("hidden", !autorise);
+        // `hidden` seul ne suffit pas : la classe `inline-flex` du bouton le
+        // neutralise (même spécificité). On bascule les deux (AUD-002).
+        const ouvrir = doc.querySelector(".doc-ouvrir");
+        ouvrir?.classList.toggle("hidden", !autorise);
+        ouvrir?.classList.toggle("inline-flex", autorise);
         const verrou = doc.querySelector(".doc-verrou");
         verrou?.classList.toggle("hidden", autorise);
         verrou?.classList.toggle("inline-flex", !autorise);

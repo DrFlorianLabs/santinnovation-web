@@ -19,8 +19,11 @@ const {
   class: className = "",
 } = Astro.props;
 
+// Pas de whitespace-nowrap par défaut : les libellés longs (« Fiche
+// établissement sur Doctolib ») doivent pouvoir passer à la ligne à 320 px.
+// Les usages à libellé court le rajoutent via `class`.
 const base =
-  "btn-3d inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl font-medium focus-visible:outline-2 focus-visible:outline-offset-2";
+  "btn-3d inline-flex max-w-full items-center justify-center gap-2 rounded-xl text-center font-medium focus-visible:outline-2 focus-visible:outline-offset-2";
 const sizes = {
   md: "px-5 py-2.5 text-base",
   lg: "px-7 py-3.5 text-lg",

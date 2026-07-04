@@ -29,7 +29,9 @@ const pros = (await getCollection("professionnels"))
   <section class="py-12 md:py-16">
     <div class="container-site">
       <h2 class="text-2xl font-semibold sm:text-3xl">Directement avec un professionnel</h2>
-      <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+      {/* grid-cols-1 explicite : la piste implicite prendrait sinon la largeur
+          min-content des libellés truncate (débordement mobile, AUD-013). */}
+      <ul class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
         {
           pros.map((pro) => (
             <li class="surface flex items-center gap-4 p-4">

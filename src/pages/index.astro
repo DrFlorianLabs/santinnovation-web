@@ -63,10 +63,10 @@ const piliers = [
     <div class="depth-grid" aria-hidden="true"></div>
 
     <div
-      class="container-site relative grid items-center gap-12 py-16 md:py-20 lg:grid-cols-[1.1fr_0.9fr] lg:py-24"
+      class="container-site relative grid grid-cols-1 items-center gap-12 py-16 md:py-20 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:py-24"
     >
-      <!-- Colonne message -->
-      <div class="reveal">
+      <!-- Colonne message (min-w-0 : ne jamais élargir la grille au-delà de l'écran) -->
+      <div class="reveal min-w-0">
         <p class="flex items-center gap-2.5 text-sm font-semibold uppercase tracking-widest text-blue-700">
           <span
             class="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-teal-600 shadow-[inset_0_1px_0_rgba(255,255,255,1),0_4px_10px_-3px_rgba(18,50,74,0.25)] ring-1 ring-blue-100"
@@ -76,7 +76,9 @@ const piliers = [
           Maison de Santé Pluriprofessionnelle · Besançon
         </p>
 
-        <h1 class="mt-5 text-4xl font-semibold sm:text-5xl lg:text-[3.4rem]">
+        {/* hyphens-auto : « pluriprofessionnelle » dépasse sinon la largeur
+            d'un écran de 320-390 px (mot insécable plus large que la colonne). */}
+        <h1 class="mt-5 hyphens-auto text-4xl font-semibold sm:text-5xl lg:text-[3.4rem]">
           Une équipe de santé <span class="text-teal-600">pluriprofessionnelle</span>,
           coordonnée autour de vos soins.
         </h1>
@@ -216,11 +218,11 @@ const piliers = [
   <section class="relative border-y border-blue-100 bg-gradient-to-b from-white via-white to-teal-100/40 py-16 md:py-20">
     <div class="container-site">
       <div class="reveal max-w-prose">
-        <h2 class="text-3xl font-semibold sm:text-4xl">
+        <h2 class="hyphens-auto text-3xl font-semibold sm:text-4xl">
           Une organisation pluriprofessionnelle pensée pour le terrain
         </h2>
       </div>
-      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {
           piliers.map((p, i) => (
             <div class="reveal tilt-scene h-full" style={`--reveal-delay: ${i * 90}ms`}>
@@ -313,7 +315,7 @@ const piliers = [
           Voir toute l'équipe <Icon name="arrow-right" size={18} />
         </a>
       </div>
-      <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {
           prosApercu.map((pro, i) => (
             <div class="reveal h-full" style={`--reveal-delay: ${(i % 3) * 90}ms`}>
@@ -366,7 +368,7 @@ const piliers = [
       aria-hidden="true"
     >
     </div>
-    <div class="container-site relative grid gap-8 lg:grid-cols-2">
+    <div class="container-site relative grid grid-cols-1 gap-8 lg:grid-cols-2">
       <div class="reveal glass-dark rounded-3xl p-8">
         <span
           class="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-teal-500 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"
@@ -408,7 +410,7 @@ const piliers = [
     <!-- Teaser espace pro / GED -->
     <div class="container-site relative mt-8">
       <div class="reveal glass-dark rounded-3xl p-8" style="--reveal-delay: 200ms">
-        <div class="grid items-center gap-6 lg:grid-cols-[1fr_auto]">
+        <div class="grid grid-cols-1 items-center gap-6 lg:grid-cols-[minmax(0,1fr)_auto]">
           <div class="flex items-start gap-4">
             <span
               class="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/10 text-teal-500 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"

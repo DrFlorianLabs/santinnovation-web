@@ -25,7 +25,7 @@ const lieux = (await getCollection("lieux")).sort(
     <div class="container-site">
       <SiteMap lieux={lieux} id="carte" />
 
-      <div class="mt-10 grid gap-5 md:grid-cols-3">
+      <div class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
         {
           lieux.map((lieu, i) => (
             <div class="reveal h-full" style={`--reveal-delay: ${i * 80}ms`}>
