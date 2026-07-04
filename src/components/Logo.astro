@@ -156,6 +156,23 @@ const uid = `lg${Math.random().toString(36).slice(2, 8)}`;
       opacity: 0.8;
     }
   }
+  /* Respiration d'ensemble très lente (scale ±1 %) — perceptible par un
+     visiteur attentif, invisible en usage courant. Desktop pointeur fin. */
+  @media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+    .logo-live {
+      transform-origin: center;
+      animation: logo-breathe 9s ease-in-out infinite;
+    }
+  }
+  @keyframes logo-breathe {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.012);
+    }
+  }
   @media (prefers-reduced-motion: reduce) {
     .logo-live .logo-wave,
     .logo-live .logo-dot {

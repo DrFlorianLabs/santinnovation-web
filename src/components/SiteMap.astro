@@ -146,7 +146,8 @@ const MODES = [
       perspective: 1400px;
     }
     .iso-map {
-      transform: rotateX(24deg) rotateZ(-3deg) scale(1.03);
+      /* Basculement volontairement subtil (l'ancien 24° était trop marqué). */
+      transform: rotateX(15deg) rotateZ(-2deg) scale(1.02);
       transform-origin: center 85%;
       transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
       box-shadow: var(--shadow-e4);
@@ -180,7 +181,8 @@ const MODES = [
     height: 34px;
     border-radius: 50%;
     background: rgba(27, 163, 194, 0.25);
-    animation: brand-pin-pulse 2.8s ease-in-out infinite;
+    /* Respiration lente, perceptible sans attirer l'œil. */
+    animation: brand-pin-pulse 6s ease-in-out infinite;
   }
   .brand-pin__dot {
     position: relative;

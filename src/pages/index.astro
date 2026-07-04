@@ -58,7 +58,8 @@ const piliers = [
        pas de chevauchement ni de décalage de texte, à aucune largeur.
        ============================================================ -->
   <section class="relative overflow-hidden">
-    <div class="aurora" aria-hidden="true"></div>
+    {/* data-parallax : glissement de profondeur au scroll (interactions.ts). */}
+    <div class="aurora" data-parallax="0.03" aria-hidden="true"></div>
     <div class="dot-field pointer-events-none absolute inset-0 opacity-30" aria-hidden="true"></div>
     <div class="depth-grid" aria-hidden="true"></div>
 
@@ -124,8 +125,11 @@ const piliers = [
         </p>
       </div>
 
-      <!-- Panneau d'identité : la structure en un regard -->
-      <div class="reveal tilt-scene hidden md:block" style="--reveal-delay: 120ms">
+      <!-- Panneau d'identité : la structure en un regard.
+           La parallaxe vit sur .tilt-scene (conteneur dédié) : .reveal
+           transitionne déjà transform, les deux ne doivent pas cohabiter. -->
+      <div class="reveal hidden md:block" style="--reveal-delay: 120ms">
+        <div class="tilt-scene" data-parallax="0.06">
         <div class="tilt surface surface-raised relative overflow-hidden p-6 sm:p-7">
           <span class="tilt-glare" aria-hidden="true"></span>
 
@@ -207,6 +211,7 @@ const piliers = [
               Rendez-vous en ligne via Doctolib, ou par téléphone auprès de chaque cabinet.
             </p>
           </div>
+        </div>
         </div>
       </div>
     </div>

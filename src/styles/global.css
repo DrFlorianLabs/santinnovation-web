@@ -234,7 +234,7 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.9),
       var(--shadow-e3);
   }
-  /* Reflet qui suit le pointeur */
+  /* Reflet qui suit le pointeur — atténué : présent, jamais éblouissant. */
   .tilt-glare {
     position: absolute;
     inset: 0;
@@ -242,14 +242,14 @@
     pointer-events: none;
     background: radial-gradient(
       420px circle at var(--gx, 50%) var(--gy, 20%),
-      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0.32),
       transparent 55%
     );
     opacity: 0;
     transition: opacity 0.35s ease;
   }
   .tilt:hover .tilt-glare {
-    opacity: 1;
+    opacity: 0.75;
   }
   /* Éléments enfants poussés vers l'avant dans la scène */
   .tilt-pop {
@@ -400,6 +400,36 @@
       transparent 0
     );
     background-size: 28px 28px;
+  }
+
+  /* Dérives très lentes des couches de profondeur (motifs périodiques :
+     la boucle est invisible). Desktop pointeur fin uniquement, jamais
+     sous reduced-motion — décor pur, aucun contenu n'en dépend. */
+  @media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+    .depth-grid {
+      animation: grid-flow 18s linear infinite;
+    }
+    .dot-field {
+      animation: dot-drift 26s linear infinite;
+    }
+  }
+  @keyframes grid-flow {
+    to {
+      background-position: 0 44px;
+    }
+  }
+  @keyframes dot-drift {
+    to {
+      background-position: 28px 28px;
+    }
+  }
+
+  /* Parallaxe de profondeur au scroll (variable posée par interactions.ts).
+     Amplitude ≤ 14 px, uniquement pointeur fin + motion autorisée. */
+  @media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+    [data-parallax] {
+      transform: translate3d(0, var(--par-y, 0px), 0);
+    }
   }
 
   /* ============================================================

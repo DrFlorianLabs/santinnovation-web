@@ -4,15 +4,17 @@
  * 1. Tilt : les éléments `.tilt` s'inclinent légèrement vers le pointeur
  *    (variables CSS --rx/--ry) et un reflet suit le curseur (--gx/--gy).
  * 2. Reveal : IntersectionObserver ajoute `.in-view` aux `.reveal`.
+ * 3. Parallaxe : les éléments `[data-parallax]` glissent très légèrement
+ *    au scroll (variable CSS --par-y, amplitude bornée).
  *
- * Les deux respectent prefers-reduced-motion et sont inertes au clavier
+ * Tout respecte prefers-reduced-motion et reste inerte au clavier
  * comme sur écran tactile (aucun contenu n'en dépend).
  */
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const hoverCapable = window.matchMedia("(hover: hover) and (pointer: fine)");
 
-const MAX_TILT_DEG = 5;
+const MAX_TILT_DEG = 2.75;
 
 function setupTilt(): void {
   if (reducedMotion.matches || !hoverCapable.matches) return;
@@ -65,6 +67,40 @@ function setupReveal(): void {
   targets.forEach((el) => observer.observe(el));
 }
 
+/**
+ * Parallaxe de profondeur au scroll : décalage vertical doux (≤ 14 px),
+ * proportionnel à la distance au centre de l'écran. Décoratif uniquement.
+ */
+function setupParallax(): void {
+  if (reducedMotion.matches || !hoverCapable.matches) return;
+  const layers = document.querySelectorAll<HTMLElement>("[data-parallax]");
+  if (layers.length === 0) return;
+
+  const MAX_SHIFT_PX = 14;
+  let frame = 0;
+
+  const update = () => {
+    frame = 0;
+    const mid = window.innerHeight / 2;
+    layers.forEach((el) => {
+      const speed = Number(el.dataset.parallax) || 0.05;
+      const rect = el.getBoundingClientRect();
+      const delta = (mid - (rect.top + rect.height / 2)) * speed;
+      const clamped = Math.max(-MAX_SHIFT_PX, Math.min(MAX_SHIFT_PX, delta));
+      el.style.setProperty("--par-y", `${clamped.toFixed(1)}px`);
+    });
+  };
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    },
+    { passive: true },
+  );
+  update();
+}
+
 function setupHeaderElevation(): void {
   const header = document.querySelector<HTMLElement>("[data-elevate-on-scroll]");
   if (!header) return;
@@ -78,4 +114,5 @@ function setupHeaderElevation(): void {
 document.documentElement.classList.remove("no-js");
 setupTilt();
 setupReveal();
+setupParallax();
 setupHeaderElevation();
