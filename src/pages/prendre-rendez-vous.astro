@@ -2,10 +2,8 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import PageHero from "@components/PageHero.astro";
-import Icon from "@components/Icon.astro";
 import DoctolibButton from "@components/DoctolibButton.astro";
 import EmergencyNotice from "@components/EmergencyNotice.astro";
-import { doctolib } from "@data/doctolib";
 
 const pros = (await getCollection("professionnels"))
   .filter((p) => p.data.visible && p.data.profession !== "a-confirmer")

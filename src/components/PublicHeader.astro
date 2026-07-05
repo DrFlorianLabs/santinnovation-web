@@ -62,13 +62,8 @@ const isActive = (href: string) =>
       </ul>
     </nav>
 
+    {/* /pro (démo) volontairement absent de la navigation publique (AUD-002). */}
     <div class="flex shrink-0 items-center gap-2.5">
-      <a
-        href="/pro"
-        class="btn-3d btn-3d-secondary hidden h-10 items-center gap-1.5 whitespace-nowrap rounded-xl px-3.5 text-sm font-medium leading-none text-blue-900 md:inline-flex"
-      >
-        <Icon name="lock" size={15} class="text-teal-600" /> Espace pro
-      </a>
       {/* Wrapper : `hidden` sur le bouton lui-même serait neutralisé par son
           `inline-flex` de base (même spécificité CSS) — cause du débordement
           horizontal mobile relevé par l'audit (AUD-013). */}
@@ -102,14 +97,6 @@ const isActive = (href: string) =>
                 class="block rounded-lg px-3 py-2.5 text-ink-950 hover:bg-blue-100"
               >
                 Prendre rendez-vous
-              </a>
-            </li>
-            <li class="mt-1 border-t border-blue-100 pt-1">
-              <a
-                href="/pro"
-                class="flex items-center gap-2 rounded-lg px-3 py-2.5 text-ink-700 hover:bg-blue-100"
-              >
-                <Icon name="lock" size={15} /> Espace professionnel
               </a>
             </li>
           </ul>

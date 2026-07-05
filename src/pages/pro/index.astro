@@ -66,6 +66,7 @@ const formatIcones = {
             <span class="hidden sm:inline">Rôle simulé</span>
             <select
               id="role-select"
+              aria-label="Rôle simulé"
               class="rounded-lg border border-white/15 bg-blue-900 px-2.5 py-1.5 text-sm font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] focus-visible:outline-2 focus-visible:outline-teal-500"
             >
               {ROLES.map((r) => (
@@ -281,9 +282,10 @@ const formatIcones = {
               GED V1.5 — prévu
             </h2>
             <ul class="mt-4 space-y-2 font-mono text-xs text-white/55">
-              <li>→ Authentification Pro Santé Connect / SSO</li>
-              <li>→ Contrôle d'accès serveur (RBAC) — Prisma / PostgreSQL</li>
-              <li>→ Stockage objet chiffré compatible S3</li>
+              <li>→ Application serveur séparée du site public</li>
+              <li>→ Authentification Pro Santé Connect + 2FA (TOTP)</li>
+              <li>→ Contrôle d'accès serveur (RBAC) par ressource</li>
+              <li>→ Stockage chiffré — hébergement HDS si documents de soin</li>
               <li>→ Journal d'audit immuable</li>
               <li>→ Recherche plein texte et cycle de validation</li>
             </ul>

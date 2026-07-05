@@ -1,8 +1,15 @@
 # Sant'Innovation — Vision du site public
 
 Document de cadrage (V0). À discuter et amender avant toute génération de code.
-Stack cible : **Astro + MDX**, hébergement **Cloudflare Pages**, dépôt **GitHub**, domaine **santinnovation.fr**.
+Stack cible : **Astro + MDX**, hébergement **OVH**, dépôt **GitHub**, domaine **santinnovation.fr**.
 Nom officiel : **Maisons de Santé Pluriprofessionnelles Sant'Innovation**.
+
+> **Note (04/07/2026)** : la stack effective est **Astro SSG + Tailwind v4 +
+> TypeScript strict + Content Collections (Zod) + Leaflet/CARTO**, hébergée sur
+> **OVH** (Apache, `public/.htaccess`). Les briques serveur (base de données,
+> stockage objet) ne concernent que la **cible V1.5 du backend pro séparé** —
+> voir `ARCHITECTURE.md`, `docs/adr/0001` et `docs/adr/0002`. Ce document garde
+> valeur de cadrage éditorial et produit.
 
 ---
 
@@ -135,12 +142,12 @@ santinnovation-web/
 ```
 
 **Choix techniques**
-- **Astro** en mode statique (SSG) → sortie 100 % statique, idéale Cloudflare Pages (gratuit), ultra-rapide, excellent SEO.
+- **Astro** en mode statique (SSG) → sortie 100 % statique, servie par un simple hébergement statique (OVH mutualisé/Apache), ultra-rapide, excellent SEO.
 - **Tailwind CSS** avec **design tokens** déclarés dans `tailwind.config.ts` (couleurs, espacements, typo) — une seule source de vérité.
 - **TypeScript** strict ; schémas de contenu validés par **Zod** via les Content Collections.
 - **MDX** pour les pages riches et les actualités.
 - **Pas de JS lourd** : Astro n'envoie quasi aucun JS par défaut ; animations en CSS ou micro-îlots seulement si nécessaire.
-- **Aucun tracker tiers**. Analytics éventuel : Cloudflare Web Analytics (sans cookie, RGPD-friendly).
+- **Aucun tracker tiers**. Analytics éventuel : uniquement une solution sans cookie, à valider (RGPD).
 - **CMS différé** : prévoir l'intégration **Decap CMS** ou **Sveltia CMS** (V1.5) pour éditer le contenu sans toucher au code — d'où le contenu structuré dès le départ en collections.
 - **Accessibilité** : HTML sémantique, contrastes AA, focus visibles, navigation clavier, `prefers-reduced-motion`.
 
@@ -246,7 +253,7 @@ Bloquants ou importants avant de figer le contenu :
 
 **Technique / RGPD**
 - Mails pro à activer (dr.sibille@, contact@, secretariat@, coordination@).
-- Hébergeur à mentionner dans les mentions légales (Cloudflare).
+- Hébergeur à mentionner dans les mentions légales (OVH).
 - Analytics souhaité ou non.
 
 ---
@@ -257,7 +264,7 @@ Bloquants ou importants avant de figer le contenu :
 Valider arborescence, ton, palette, périmètre. Récolter les infos du §7.
 
 **Étape 1 — Squelette & design system**
-Init Astro + TS strict + Tailwind + tokens. BaseLayout, Header, Footer, polices auto-hébergées, page d'accueil « coquille ». Déploiement Cloudflare Pages dès cette étape (prévisualisation continue).
+Init Astro + TS strict + Tailwind + tokens. BaseLayout, Header, Footer, polices auto-hébergées, page d'accueil « coquille ». Déploiement OVH dès cette étape (prévisualisation continue).
 
 **Étape 2 — Collections de contenu**
 `content/config.ts` (schémas Zod), données globales (`site`, `navigation`, `partenaires`, `doctolib`). Une fiche pro et un lieu de test.

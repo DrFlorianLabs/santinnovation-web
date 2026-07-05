@@ -6,12 +6,15 @@ Site statique, sobre et premium, sans données patients, sans prise de rendez-vo
 
 ## Stack
 
-- **Astro** (sortie statique) + **MDX**
+- **Astro 7** (sortie statique SSG) + **MDX**
 - **Tailwind CSS v4** (design tokens dans `src/styles/global.css`)
 - **TypeScript strict**
+- Contenu typé en **Content Collections** (Zod — URLs contraintes HTTPS + allowlist)
+- **Leaflet** bundlé + fond de carte **CARTO** (seul appel tiers du site)
 - Polices auto-hébergées via **Fontsource** (Sora, Inter, IBM Plex Mono) — pas de CDN tiers, conforme RGPD
-- Contenu typé en **Content Collections** (Zod)
-- Hébergement cible : **OVH** (mutualisé Apache — voir « Déploiement OVH » et `docs/adr/0001`)
+- Hébergement : **OVH** (mutualisé Apache — voir « Déploiement OVH » et `docs/adr/0001`)
+
+Voir `ARCHITECTURE.md` (frontières, invariants) et `SECURITY.md` (politique de sécurité).
 
 ## Démarrage
 
@@ -61,9 +64,11 @@ src/
 ├── content.config.ts  Schémas Zod des collections
 ├── data/            Données globales (site, navigation, doctolib, partenaires)
 ├── lib/             Helpers (format, itinéraires)
+├── pro/             Contrats du futur backend pro (types GED, auth) — cf. src/pro/README.md
+├── scripts/         interactions.ts (tilt, reveal, parallaxe)
 └── styles/          Design system (tokens, base, composants CSS)
-public/              Fichiers statiques (favicon, robots.txt, images)
-docs/                VISION.md et documentation projet
+public/              Fichiers statiques (.htaccess, _headers, favicon, robots.txt)
+docs/                VISION.md, PLAN_ACTION.md, ADR (docs/adr/)
 ```
 
 ## Design « Depth » (v2)
@@ -76,11 +81,22 @@ Refonte 3D du design system (`src/styles/global.css` + `src/scripts/interactions
 - **Profondeur d'arrière-plan** : nappes aurora, grille en perspective, champ de points.
 - **Révélations au scroll** : IntersectionObserver + fallback complet sans JavaScript (`html.no-js`).
 
-## Espace professionnel (préfiguration GED)
+## Espace professionnel (démonstration GED)
 
-- `/pro` : portail de démonstration de la bibliothèque documentaire interne — **noindex**, séparé du site public (`chrome="pro"`).
-- `src/data/pro.ts` : contrat de types de la GED (rôles `admin | coordination | professional | replacement | external_partner | read_only`, badges de sensibilité `interne | restreint | sensible`, documents, journal d'audit). Pensé pour être porté tel quel vers Prisma/PostgreSQL + stockage S3 en V1.5.
-- Contrôle d'accès **simulé côté client** (bandeau explicite) : changement de rôle, accès refusé, journal d'accès, avertissements au dépôt. Aucun document patient, aucun secret, aucune donnée réelle.
+- `/pro` et `/pro/login` : **démonstration produit** de la future bibliothèque
+  documentaire — **noindex**, hors sitemap et hors navigation publique,
+  chrome séparé (`chrome="pro"`).
+- `src/pro/` : contrats typés de la cible V1.5 — modèle documentaire
+  (`ged.ts` : rôles, sensibilités, journal), authentification
+  (`auth.ts` : Pro Santé Connect, 2FA TOTP, session — aucun secret) et
+  matrice de capacités (`access.ts` : `AccessPolicy`).
+- Contrôle d'accès **simulé côté client** (bandeau explicite). Aucun document
+  patient, aucun secret, aucune donnée réelle.
+- La GED réelle sera une **application serveur séparée** (V1.5) : auth forte
+  (PSC + TOTP), RBAC serveur par ressource, journal immuable, qualification
+  HDS avant tout document lié au soin. Les briques serveur (base de données,
+  stockage objet chiffré) relèvent de ce futur projet, pas de ce dépôt.
+  Voir `docs/adr/0002` et `SECURITY.md`.
 
 ## Modifier le contenu
 
@@ -101,4 +117,7 @@ Une intégration CMS (Decap / Sveltia) est prévue en V1.5 pour éditer ces cont
 
 ## État
 
-Prototype V0 — squelette + page d'accueil. Voir `docs/VISION.md` pour l'arborescence complète et le plan de développement.
+Prototype V0 durci (juillet 2026) : pages principales + carte + démo pro,
+en-têtes de sécurité versionnés, pages légales structurées (champs
+« À COMPLÉTER » en attente de validation juridique). Suivi d'avancement :
+`docs/PLAN_ACTION.md` ; cadrage : `docs/VISION.md`.

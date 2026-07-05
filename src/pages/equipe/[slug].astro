@@ -23,6 +23,7 @@ const initiales = `${d.prenom[0] ?? ""}${d.nom[0] ?? ""}`.toUpperCase();
 <BaseLayout
   title={d.titreAffiche}
   description={`${d.titreAffiche}, ${d.professionLabel} — Maisons de Santé Pluriprofessionnelles Sant'Innovation, Besançon.`}
+  noindex={d.profession === "a-confirmer"}
 >
   <section class="relative overflow-hidden border-b border-blue-100">
     <div class="aurora opacity-60" aria-hidden="true"></div>
