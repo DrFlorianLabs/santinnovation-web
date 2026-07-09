@@ -1,5 +1,6 @@
 ---
 import Icon from "./Icon.astro";
+import { withBase } from "@lib/paths";
 import Logo from "./Logo.astro";
 import { site } from "@data/site";
 import { mainNav, footerNav, legalNav } from "@data/navigation";
@@ -45,7 +46,7 @@ const year = new Date().getFullYear();
         {
           [...footerNav, ...mainNav].map((item) => (
             <li>
-              <a href={item.href} class="text-white/70 transition-colors hover:text-teal-500">
+              <a href={withBase(item.href)} class="text-white/70 transition-colors hover:text-teal-500">
                 {item.label}
               </a>
             </li>
@@ -112,7 +113,7 @@ const year = new Date().getFullYear();
         {
           legalNav.map((item) => (
             <li>
-              <a href={item.href} class="hover:text-teal-500">
+              <a href={withBase(item.href)} class="hover:text-teal-500">
                 {item.label}
               </a>
             </li>

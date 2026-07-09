@@ -1,5 +1,6 @@
 ---
 import "@fontsource-variable/sora";
+import { withBase } from "@lib/paths";
 import "@fontsource-variable/inter";
 import "@fontsource/ibm-plex-mono";
 import "../styles/global.css";
@@ -44,7 +45,7 @@ const jsonLd = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />

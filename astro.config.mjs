@@ -5,7 +5,11 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://santinnovation.fr",
+  // Déploiement GitHub Pages (aperçu pour partage interne).
+  // Pour un vrai domaine (santinnovation.fr), repasser `site` sur le domaine
+  // et supprimer la ligne `base`.
+  site: "https://drflorianlabs.github.io",
+  base: "/santinnovation-web",
   trailingSlash: "ignore",
   prefetch: true,
   integrations: [

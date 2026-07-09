@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { withBase } from "@lib/paths";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import Icon from "@components/Icon.astro";
 import DoctolibButton from "@components/DoctolibButton.astro";
@@ -114,7 +115,7 @@ const piliers = [
         <div class="mt-8 flex flex-wrap items-center gap-3">
           <DoctolibButton size="lg" label="Prendre rendez-vous" />
           <a
-            href="/equipe"
+            href={withBase("/equipe")}
             class="btn-3d btn-3d-secondary inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-lg font-medium text-blue-900"
           >
             Découvrir l'équipe <Icon name="arrow-right" size={18} />
@@ -314,7 +315,7 @@ const piliers = [
           </p>
         </div>
         <a
-          href="/equipe"
+          href={withBase("/equipe")}
           class="inline-flex items-center gap-2 font-medium text-blue-900 hover:text-teal-600"
         >
           Voir toute l'équipe <Icon name="arrow-right" size={18} />
@@ -386,7 +387,7 @@ const piliers = [
           la continuité des parcours, le soutien aux patients fragiles et la prévention.
         </p>
         <a
-          href="/projet-de-sante"
+          href={withBase("/projet-de-sante")}
           class="mt-6 inline-flex items-center gap-2 font-medium text-teal-500 hover:text-white"
         >
           Découvrir le projet <Icon name="arrow-right" size={18} />
@@ -404,7 +405,7 @@ const piliers = [
           dans les cabinets, au domicile et dans les parcours patients.
         </p>
         <a
-          href="/recherche-innovation"
+          href={withBase("/recherche-innovation")}
           class="mt-6 inline-flex items-center gap-2 font-medium text-teal-500 hover:text-white"
         >
           Nos axes et projets <Icon name="arrow-right" size={18} />
@@ -437,7 +438,7 @@ const piliers = [
             </div>
           </div>
           <a
-            href="/pro"
+            href={withBase("/pro")}
             class="btn-3d inline-flex items-center justify-center gap-2 rounded-xl bg-white/10 px-6 py-3.5 font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.15)] ring-1 ring-white/20 hover:bg-white/20"
           >
             <Icon name="log-in" size={18} /> Voir la démonstration

@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { withBase } from "@lib/paths";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import PageHero from "@components/PageHero.astro";
 import Icon from "@components/Icon.astro";
@@ -32,7 +33,7 @@ const actus = (await getCollection("actualites"))
                   <Icon name="sparkles" size={14} /> {a.data.categorie}
                 </p>
                 <h2 class="mt-2 font-display text-lg font-semibold text-blue-900">
-                  <a href={`/actualites/${a.id}`} class="hover:text-teal-600">
+                  <a href={withBase(`/actualites/${a.id}`)} class="hover:text-teal-600">
                     {a.data.titre}
                   </a>
                 </h2>

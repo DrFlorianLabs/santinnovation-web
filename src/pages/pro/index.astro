@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { withBase } from "@lib/paths";
 import Icon from "@components/Icon.astro";
 import Logo from "@components/Logo.astro";
 import {
@@ -49,7 +50,7 @@ const formatIcones = {
     <!-- Barre pro -->
     <header class="glass-dark sticky top-0 z-40 border-b border-white/10">
       <div class="container-site flex h-16 items-center justify-between gap-4">
-        <a href="/" class="flex items-center gap-2.5" style="--logo-house: #ffffff" aria-label="Sant'Innovation — retour au site public">
+        <a href={withBase("/")} class="flex items-center gap-2.5" style="--logo-house: #ffffff" aria-label="Sant'Innovation — retour au site public">
           <Logo size={40} static />
           <span class="hidden font-display text-lg font-semibold text-white sm:inline">
             Sant'<span class="text-brand-gradient">Innovation</span>
@@ -77,13 +78,13 @@ const formatIcones = {
             </select>
           </label>
           <a
-            href="/pro/login"
+            href={withBase("/pro/login")}
             class="hidden items-center gap-1.5 text-sm font-medium text-white/70 transition-colors hover:text-white sm:inline-flex"
           >
             <Icon name="lock" size={14} /> Connexion (maquette)
           </a>
           <a
-            href="/"
+            href={withBase("/")}
             class="hidden items-center gap-1.5 text-sm font-medium text-white/70 transition-colors hover:text-white md:inline-flex"
           >
             <Icon name="arrow-right" size={15} class="rotate-180" /> Site public

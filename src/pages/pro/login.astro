@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { withBase } from "@lib/paths";
 import Icon from "@components/Icon.astro";
 import Logo from "@components/Logo.astro";
 
@@ -27,7 +28,7 @@ import Logo from "@components/Logo.astro";
 
     <header class="glass-dark relative z-10 border-b border-white/10">
       <div class="container-site flex h-16 items-center justify-between gap-4">
-        <a href="/" class="flex items-center gap-2.5" style="--logo-house: #ffffff" aria-label="Sant'Innovation — retour au site public">
+        <a href={withBase("/")} class="flex items-center gap-2.5" style="--logo-house: #ffffff" aria-label="Sant'Innovation — retour au site public">
           <Logo size={40} static />
           <span class="hidden font-display text-lg font-semibold text-white sm:inline">
             Sant'<span class="text-brand-gradient">Innovation</span>
@@ -36,7 +37,7 @@ import Logo from "@components/Logo.astro";
             Espace pro
           </span>
         </a>
-        <a href="/pro" class="inline-flex items-center gap-1.5 text-sm font-medium text-white/70 transition-colors hover:text-white">
+        <a href={withBase("/pro")} class="inline-flex items-center gap-1.5 text-sm font-medium text-white/70 transition-colors hover:text-white">
           <Icon name="arrow-right" size={15} class="rotate-180" /> Bibliothèque (démo)
         </a>
       </div>
@@ -131,7 +132,7 @@ import Logo from "@components/Logo.astro";
                 <strong class="font-semibold text-white">Fin de la démonstration.</strong>
                 Aucune session n'a été ouverte : ce parcours illustre l'authentification
                 forte prévue en V1.5.
-                <a href="/pro" class="font-medium text-teal-500 underline-offset-2 hover:underline">
+                <a href={withBase("/pro")} class="font-medium text-teal-500 underline-offset-2 hover:underline">
                   Voir la bibliothèque de démonstration
                 </a>
               </span>

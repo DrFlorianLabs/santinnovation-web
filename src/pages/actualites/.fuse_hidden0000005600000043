@@ -1,0 +1,53 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Icon from "@components/Icon.astro";
+import { formatDate } from "@lib/format";
+
+export async function getStaticPaths() {
+  const actus = await getCollection("actualites");
+  return actus
+    .filter((a) => !a.data.draft)
+    .map((actu) => ({ params: { slug: actu.id }, props: { actu } }));
+}
+
+const { actu } = Astro.props;
+const { Content } = await render(actu);
+---
+
+<BaseLayout title={actu.data.titre} description={actu.data.resume}>
+  <section class="relative overflow-hidden border-b border-blue-100">
+    <div class="aurora opacity-60" aria-hidden="true"></div>
+    <div class="container-site relative py-12 md:py-16">
+      <a
+        href="/actualites"
+        class="inline-flex items-center gap-1.5 text-sm font-medium text-ink-700 hover:text-teal-600"
+      >
+        <Icon name="arrow-right" size={15} class="rotate-180" /> Toutes les actualités
+      </a>
+      <p class="mt-6 text-sm font-semibold uppercase tracking-widest text-teal-600">
+        {actu.data.categorie} · {formatDate(actu.data.date)}
+      </p>
+      <h1 class="mt-2 max-w-3xl text-3xl font-semibold sm:text-4xl">{actu.data.titre}</h1>
+    </div>
+  </section>
+
+  <section class="py-12 md:py-16">
+    <div class="container-site">
+      <article class="article-content max-w-prose text-ink-950">
+        <Content />
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .article-content :global(p) {
+    margin-block: 1em;
+    line-height: 1.7;
+  }
+  .article-content :global(h2) {
+    margin-top: 1.6em;
+    font-size: 1.35rem;
+  }
+</style>

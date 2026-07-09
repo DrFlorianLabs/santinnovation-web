@@ -1,5 +1,6 @@
 ---
 import Icon from "./Icon.astro";
+import { withBase } from "@lib/paths";
 
 /** Bloc « contenu en préparation » pour les pages en attente de contenu validé. */
 interface Props {
@@ -20,7 +21,7 @@ const {
     <h2 class="mt-4 font-display text-xl font-semibold text-blue-900">Contenu en préparation</h2>
     <p class="mt-2 text-ink-700">{message}</p>
     <a
-      href="/"
+      href={withBase("/")}
       class="btn-3d btn-3d-secondary mt-6 inline-flex items-center gap-2 rounded-xl px-5 py-2.5 font-medium text-blue-900"
     >
       <Icon name="arrow-right" size={16} class="rotate-180" /> Retour à l'accueil

@@ -1,5 +1,6 @@
 ---
 import Icon from "./Icon.astro";
+import { withBase } from "@lib/paths";
 import { doctolib } from "@data/doctolib";
 
 /** Barre d'actions sticky mobile : RDV, Appeler, Itinéraire. */
@@ -23,7 +24,7 @@ const actions = [
   {
     actions.map((a) => (
       <a
-        href={a.href}
+        href={withBase(a.href)}
         target={a.external ? "_blank" : undefined}
         rel={a.external ? "noopener noreferrer" : undefined}
         class:list={[

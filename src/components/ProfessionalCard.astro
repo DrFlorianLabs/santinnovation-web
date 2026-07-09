@@ -1,5 +1,6 @@
 ---
 import Icon from "./Icon.astro";
+import { withBase } from "@lib/paths";
 import DoctolibButton from "./DoctolibButton.astro";
 import type { CollectionEntry } from "astro:content";
 
@@ -82,7 +83,7 @@ const lieuPrincipal = d.lieux[0] ? lieuxLabels[d.lieux[0]] : undefined;
           <>
             <DoctolibButton href={d.doctolibUrl} size="md" class="flex-1" />
             <a
-              href={`/equipe/${pro.id}`}
+              href={withBase(`/equipe/${pro.id}`)}
               class="text-sm font-medium text-blue-900 hover:text-teal-600"
             >
               Voir la fiche

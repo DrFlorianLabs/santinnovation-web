@@ -28,6 +28,9 @@ pnpm-debug.log*
 # misc
 *.local
 
+# artefacts de montage FUSE (apparaissent quand un fichier est ouvert)
+.fuse_hidden*
+
 # Documents internes — NON versionnés (cadrage, audit, sources)
 01_Cahier_des_charges_SantInnovation.pdf
 02_Contenus_site_SantInnovation.pdf
