@@ -7,10 +7,14 @@
     "remote_cms_tested": false
   },
   "cms": {
-    "at": "2026-10-09T10:20:08.081Z",
+    "at": "2026-10-09T10:50:28.138Z",
     "mode": "production-build-start",
-    "passed": 33,
+    "passed": 36,
     "results": [
+      {
+        "scenario": "Authentification initiale — les comptes synthétiques administrateur et éditeur se connectent",
+        "result": "pass"
+      },
       {
         "scenario": "A — horaires publiés présents dans le snapshot",
         "result": "pass"
@@ -76,6 +80,14 @@
         "result": "pass"
       },
       {
+        "scenario": "SQLite — contention déterministe puis écriture suivante persistée; connexions isolées fermées, PRAGMA appliqués et opérations imbriquées atomiques",
+        "result": "pass"
+      },
+      {
+        "scenario": "SQLite — échec réel COMMIT propagé, document/versions/DDL annulés ensemble, connexion fermée et écriture suivante possible",
+        "result": "pass"
+      },
+      {
         "scenario": "M02 — retrait/masquage/archive/période refusés sur liens publiés malgré brouillons plus récents",
         "result": "pass"
       },
@@ -104,7 +116,7 @@
         "result": "pass"
       },
       {
-        "scenario": "SQLite — WAL et FULL vérifiés; timeout initial 5000 puis remise à 0 native libsql caractérisée",
+        "scenario": "SQLite — WAL, FULL et timeout 5000 conservés sur la connexion de lecture",
         "result": "pass"
       },
       {
@@ -146,10 +158,10 @@
     ]
   },
   "unit": {
-    "passed": 26,
+    "passed": 28,
     "failed": 0,
     "content": 9,
-    "publication_processes": 8,
+    "publication_processes": 10,
     "backup_restore": 9
   },
   "public_browser": {
@@ -224,7 +236,7 @@
     "Chromium only; no physical device or screen reader audit"
   ],
   "editor_account_ui": {
-    "at": "2026-10-09T10:22:26.145Z",
+    "at": "2026-10-09T10:51:06.263Z",
     "passed": true,
     "data": "synthetic-only",
     "mode": "chromium-production-3111",
@@ -247,6 +259,110 @@
     "candidateFiles": 83,
     "privateValuesChecked": 6,
     "privateValueMatches": 0,
-    "privateFilesAdded": 0
+    "privateFilesAdded": 0,
+    "revision": "acbb6fc60d6d6a7bdf6284f0f64fdf4c9b702db9"
+  },
+  "code_revision": "8fb575d88592c25943c56f75eeec0526234d0c87",
+  "transaction_regression": {
+    "syntheticOnly": true,
+    "realDeferredCommitFailure": true,
+    "documentAndVersionsRolledBack": true,
+    "nextWriteAfterContentionPersisted": true,
+    "connectionsClosed": true
+  },
+  "rollback_regression": {
+    "freshBaselineAfterFailedBuild": true,
+    "freshBaselineForUnobservedCmsChanges": true,
+    "manualPinWhenExportFails": true,
+    "failedForcedReleaseKeepsPin": true
+  },
+  "source_scan_final": {
+    "candidateFiles": 158,
+    "privateValuesChecked": 4,
+    "privateValueMatches": 0,
+    "privateFilesAdded": 0,
+    "revision": "8fb575d88592c25943c56f75eeec0526234d0c87"
+  },
+  "github_actions": {
+    "runId": 37920073993,
+    "url": "https://github.com/DrFlorianLabs/santinnovation-web/actions/runs/37920073993",
+    "revision": "8fb575d88592c25943c56f75eeec0526234d0c87",
+    "verify": "success",
+    "cms_http_passed": 35,
+    "cms_production_passed": 36,
+    "unit_passed": 28,
+    "unit_failed": 0,
+    "astro_typecheck_files": 75,
+    "cms_typecheck": "pass",
+    "native_editor_account_ui": "pass",
+    "public_browser": "pass",
+    "publication_status_ui": "pass",
+    "dependency_advisories": {
+      "root": 0,
+      "cms": 0
+    },
+    "data": "synthetic-only",
+    "failed_prior_runs": [
+      37917430977,
+      37918546585
+    ],
+    "status": "completed",
+    "conclusion": "success",
+    "verify_completed_at": "2026-10-09T10:56:20Z",
+    "prototype_completed_at": "2026-10-09T10:57:18Z"
+  },
+  "github_pages": {
+    "checkedAt": "2026-10-09T10:58:33.758Z",
+    "url": "https://drflorianlabs.github.io/santinnovation-web/",
+    "prototype": true,
+    "synthetic": true,
+    "revision": "8fb575d88592c25943c56f75eeec0526234d0c87",
+    "homeStatus": 200,
+    "banner": true,
+    "noindex": true,
+    "canonical": true,
+    "realAppointmentActions": false,
+    "privatePaths": [
+      {
+        "path": "pro/",
+        "status": 404
+      },
+      {
+        "path": "admin/",
+        "status": 404
+      },
+      {
+        "path": "api/users",
+        "status": 404
+      },
+      {
+        "path": "cms/",
+        "status": 404
+      },
+      {
+        "path": ".local/",
+        "status": 404
+      },
+      {
+        "path": "secret",
+        "status": 404
+      },
+      {
+        "path": "cms.sqlite",
+        "status": 404
+      }
+    ],
+    "browser": {
+      "checks": 8,
+      "widths": [
+        320,
+        1440
+      ],
+      "failures": 0,
+      "url": "https://drflorianlabs.github.io/santinnovation-web/",
+      "engine": "Chromium",
+      "accessibility": "axe WCAG 2 A/AA, 2.1 A/AA and 2.2 AA tags",
+      "screenshotVisuallyReviewed": true
+    }
   }
 }
