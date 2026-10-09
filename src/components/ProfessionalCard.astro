@@ -7,12 +7,13 @@ import type { CollectionEntry } from "astro:content";
 interface Props {
   pro: CollectionEntry<"professionnels">;
   lieuxLabels?: Record<string, string>;
+  heading?: "h2" | "h3";
 }
-const { pro, lieuxLabels = {} } = Astro.props;
+const { pro, lieuxLabels = {}, heading: Heading = "h3" } = Astro.props;
 const d = pro.data;
 const aConfirmer = d.profession === "a-confirmer";
 const initiales = `${d.prenom[0] ?? ""}${d.nom[0] ?? ""}`.toUpperCase();
-const lieuPrincipal = d.lieux[0] ? lieuxLabels[d.lieux[0]] : undefined;
+const lieuxDuPro = d.lieux.map(id => lieuxLabels[id]).filter(Boolean);
 ---
 
 <div class="tilt-scene h-full">
@@ -22,14 +23,14 @@ const lieuPrincipal = d.lieux[0] ? lieuxLabels[d.lieux[0]] : undefined;
     <div class="tilt-pop-sm flex items-center gap-4">
       {
         d.photo ? (
-          <img
-            src={d.photo}
-            alt={`Portrait de ${d.titreAffiche}`}
+          <figure class="shrink-0"><img
+            src={withBase(d.photo)}
+            alt={d.photoAlt || `Portrait de ${d.titreAffiche}`}
             width="64"
             height="64"
             class="h-16 w-16 rounded-full object-cover shadow-[0_6px_16px_-4px_rgba(18,50,74,0.35)] ring-2 ring-white"
             loading="lazy"
-          />
+          />{d.photoCredit && <figcaption class="mt-2 max-w-32 text-xs text-ink-500">Crédit : {d.photoCredit}</figcaption>}</figure>
         ) : (
           <span
             class="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-b from-sage-100 to-sage-500/30 font-display text-lg font-semibold text-sage-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_6px_16px_-4px_rgba(30,77,58,0.25)] ring-2 ring-white"
@@ -40,7 +41,7 @@ const lieuPrincipal = d.lieux[0] ? lieuxLabels[d.lieux[0]] : undefined;
         )
       }
       <div class="min-w-0">
-        <h3 class="font-display text-lg font-semibold text-blue-900">{d.titreAffiche}</h3>
+        <Heading class="font-display text-lg font-semibold text-blue-900"><a href={withBase(`/equipe/${pro.id}`)} class="hover:underline">{d.titreAffiche}</a></Heading>
         <p
           class:list={[
             "text-sm font-medium",
@@ -53,12 +54,12 @@ const lieuPrincipal = d.lieux[0] ? lieuxLabels[d.lieux[0]] : undefined;
     </div>
 
     {
-      lieuPrincipal && (
+      lieuxDuPro.length > 0 && (
         <p class="mt-4 flex items-center gap-1.5 text-sm text-ink-700">
           <span class="text-sage-500">
             <Icon name="map-pin" size={16} />
           </span>
-          {lieuPrincipal}
+          {lieuxDuPro.join(" · ")}
         </p>
       )
     }

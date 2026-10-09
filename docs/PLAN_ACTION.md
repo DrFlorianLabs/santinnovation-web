@@ -1,3 +1,5 @@
+> Historique de juillet 2026 conservé. Pour la réalisation et la recette du 9 octobre 2026, consulter `../LIVRAISON_SITE_MSP.md` et ADR 0003. Les cases ci-dessous ne sont pas un état actuel.
+
 # Plan d'action — Sant'Innovation Web
 
 > Suivi issu de l'audit technique du 3 juillet 2026. Cocher au fur et à mesure.

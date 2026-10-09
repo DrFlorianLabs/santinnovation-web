@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import EditorialContent from "@components/EditorialContent.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import PageHero from "@components/PageHero.astro";
 import SiteMap from "@components/SiteMap.astro";
@@ -9,20 +10,22 @@ import Icon from "@components/Icon.astro";
 const lieux = (await getCollection("lieux")).sort(
   (a, b) => a.data.ordre - b.data.ordre,
 );
+const page = (await getCollection("pages")).find(p => p.id === "lieux");
 ---
 
 <BaseLayout
   title="Les lieux"
-  description="Les sites de soins Sant'Innovation à Besançon : Flûtes Agasses, Henri et Maurice Baigue, Les Orchamps. Adresses, accès et itinéraires."
+  description="Les lieux de consultation Sant'Innovation à Besançon. Adresses, accès, professionnels et itinéraires."
 >
   <PageHero
     eyebrow="Plusieurs lieux, une même coordination"
     title="Nos sites de soins à Besançon"
-    description="Chaque professionnel peut exercer sur un ou plusieurs sites. Cliquez sur un site pour afficher l'itinéraire depuis votre position — transports en commun, vélo ou voiture."
+    description="Chaque professionnel peut exercer sur plusieurs sites. Retrouvez les adresses et les informations pratiques, puis choisissez votre itinéraire."
   />
 
   <section class="py-12 md:py-16">
     <div class="container-site">
+      {page && <div class="mb-8 max-w-prose"><EditorialContent entry={page} /></div>}
       <SiteMap lieux={lieux} id="carte" />
 
       <div class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
@@ -38,8 +41,8 @@ const lieux = (await getCollection("lieux")).sort(
       <div class="surface mt-10 flex items-start gap-3 p-5">
         <span class="mt-0.5 shrink-0 text-teal-600"><Icon name="check" size={18} /></span>
         <p class="text-sm text-ink-700">
-          Les trois sites sont accessibles aux personnes à mobilité réduite. Les horaires
-          et modalités d'accueil sont précisés sur la fiche de chaque professionnel.
+          Les conditions d’accès sont propres à chaque lieu. Consultez sa fiche et contactez
+          votre professionnel si vous avez besoin de précisions avant votre déplacement.
         </p>
       </div>
     </div>

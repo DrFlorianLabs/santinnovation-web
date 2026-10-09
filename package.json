@@ -3,9 +3,9 @@
   "type": "module",
   "version": "0.1.0",
   "private": true,
-  "description": "Site public des Maisons de Santé Pluriprofessionnelles Sant'Innovation (Besançon).",
+  "description": "Site public des Maisons de Sant\u00e9 Pluriprofessionnelles Sant'Innovation (Besan\u00e7on).",
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "scripts": {
     "dev": "astro dev",
@@ -13,7 +13,16 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "astro": "astro"
+    "astro": "astro",
+    "test:unit": "node --test tests/*.test.mjs",
+    "test:browser": "playwright test",
+    "publish:local": "node scripts/release.mjs",
+    "publication:watch": "node scripts/watch-publication.mjs",
+    "serve:local": "node scripts/serve-local.mjs",
+    "verify": "npm run test:unit && npm run check && npm run build",
+    "test:admin-ui": "node tests/admin-ui.mjs",
+    "test:publication": "node tests/cms-publication.mjs",
+    "test:worker": "node tests/worker.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.2",
@@ -24,11 +33,15 @@
     "@tailwindcss/vite": "^4.0.0",
     "astro": "^7.0.6",
     "leaflet": "^1.9.4",
+    "sanitize-html": "2.18.0",
     "tailwindcss": "^4.0.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.64.0",
     "@types/leaflet": "^1.9.12",
+    "@types/sanitize-html": "2.16.2",
     "typescript": "^5.7.0"
   }
 }

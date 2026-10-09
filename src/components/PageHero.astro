@@ -1,11 +1,16 @@
 ---
+import { getCollection } from "astro:content";
 /** En-tête de page intérieure : surtitre, titre, description — aligné et sobre. */
 interface Props {
   eyebrow?: string;
   title: string;
   description?: string;
 }
-const { eyebrow, title, description } = Astro.props;
+const { eyebrow } = Astro.props;
+const slug = Astro.url.pathname.replace(import.meta.env.BASE_URL, "").replace(/^\/+|\/+$/g, "") || "accueil";
+const page = (await getCollection("pages")).find(p => p.id === slug);
+const title = page?.data.titre ?? Astro.props.title;
+const description = page?.data.resume ?? Astro.props.description;
 ---
 
 <section class="relative overflow-hidden border-b border-blue-100">

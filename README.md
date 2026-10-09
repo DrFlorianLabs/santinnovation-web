@@ -1,123 +1,73 @@
-# Sant'Innovation — site public
+# Sant’Innovation — site public et administration
 
-Site vitrine des **Maisons de Santé Pluriprofessionnelles Sant'Innovation**, organisation pluriprofessionnelle multisite à Besançon.
+Candidat local à la recette indépendante. Astro est conservé ; Payload fournit une administration réelle séparée. Aucun compte patient, formulaire médical, GED ni automatisation de réseaux sociaux. Aucun déploiement effectué.
 
-Site statique, sobre et premium, sans données patients, sans prise de rendez-vous interne : la prise de rendez-vous redirige vers **Doctolib**.
+## Démarrer la recette synthétique
 
-## Stack
+Node 24 LTS recommandé (`.nvmrc`). Deux installations indépendantes et verrouillées :
 
-- **Astro 7** (sortie statique SSG) + **MDX**
-- **Tailwind CSS v4** (design tokens dans `src/styles/global.css`)
-- **TypeScript strict**
-- Contenu typé en **Content Collections** (Zod — URLs contraintes HTTPS + allowlist)
-- **Leaflet** bundlé + fond de carte **CARTO** (seul appel tiers du site)
-- Polices auto-hébergées via **Fontsource** (Sora, Inter, IBM Plex Mono) — pas de CDN tiers, conforme RGPD
-- Hébergement : **OVH** (mutualisé Apache — voir « Déploiement OVH » et `docs/adr/0001`)
-
-Voir `ARCHITECTURE.md` (frontières, invariants) et `SECURITY.md` (politique de sécurité).
-
-## Démarrage
-
-```bash
-npm install
-npm run dev      # serveur de développement
-npm run build    # build statique -> dist/
-npm run preview  # prévisualise le build
-npm run check    # vérification de types Astro
+```sh
+npm ci
+npm --prefix cms ci
+npm --prefix cms run init
+npm --prefix cms run seed:demo
+npm --prefix cms run dev
 ```
 
-Version de Node : voir `.nvmrc` (`nvm use`). Le champ `engines` de `package.json` fixe le minimum supporté.
+Le CMS ouvre `http://127.0.0.1:3001/admin`. Les identifiants générés sont dans `cms/.local/identifiants-locaux.json`, avec permissions privées, jamais affichés dans les journaux. Ce compte ne doit pas être utilisé sur un serveur distant. Le seed ne publie que des données **fictives dans la base locale** ; il refuse une base contenant déjà du contenu.
 
-## Déploiement OVH
+Dans d’autres terminaux :
 
-Le site est 100 % statique : le déploiement consiste à publier le contenu de `dist/`
-sur l'hébergement mutualisé OVH (Apache).
-
-1. `npm ci && npm run build` — la sortie complète est dans `dist/`.
-2. Uploader le **contenu** de `dist/` à la racine web du site (`www/`) par SFTP,
-   ou via CI (GitHub Actions + SFTP/rsync).
-3. Le fichier `public/.htaccess` (copié dans `dist/`) porte la configuration Apache :
-   redirection HTTPS, HSTS, CSP et autres en-têtes de sécurité, compression, cache.
-   **C'est lui qui s'applique sur OVH.**
-4. `public/_headers` porte la même politique pour un éventuel déploiement
-   Cloudflare Pages (prévisualisation) ; il est ignoré par Apache. Les deux fichiers
-   doivent rester synchronisés (cf. `docs/adr/0001-separation-front-back-ovh.md`).
-
-Après chaque mise en production : vérifier les en-têtes (`curl -I https://santinnovation.fr`)
-et l'absence de régression sur les pages clés.
-
-## Frontière front / back
-
-Le site public est sans dépendance serveur. Tout ce qui préfigure le backend pro
-(types GED, contrats d'authentification) vit dans **`src/pro/`** (alias `@pro/*`),
-pensé pour migrer vers une application serveur distincte en V1.5 — voir
-`src/pro/README.md` et les ADR `docs/adr/`.
-
-## Structure
-
-```
-src/
-├── components/      Composants UI réutilisables (.astro)
-├── layouts/         BaseLayout (SEO, header, footer, accessibilité)
-├── pages/           Routage par fichier
-├── content/         Contenu éditorial (professionnels, lieux, actualités)
-├── content.config.ts  Schémas Zod des collections
-├── data/            Données globales (site, navigation, doctolib, partenaires)
-├── lib/             Helpers (format, itinéraires)
-├── pro/             Contrats du futur backend pro (types GED, auth) — cf. src/pro/README.md
-├── scripts/         interactions.ts (tilt, reveal, parallaxe)
-└── styles/          Design system (tokens, base, composants CSS)
-public/              Fichiers statiques (.htaccess, _headers, favicon, robots.txt)
-docs/                VISION.md, PLAN_ACTION.md, ADR (docs/adr/)
+```sh
+npm run publish:local
+npm run serve:local
+npm run publication:watch
 ```
 
-## Design « Depth » (v2)
+Le public local est `http://127.0.0.1:4321`. Le worker vérifie chaque minute la projection publique ; une sauvegarde de brouillon ne change pas cette projection. Il génère une sortie neuve puis bascule le lien local seulement si tout réussit. Statut visible dans le tableau de bord CMS. Aucun push, transfert externe ou déploiement n’est effectué par ces commandes.
 
-Refonte 3D du design system (`src/styles/global.css` + `src/scripts/interactions.ts`) :
+`npm run dev` / `npm run build` sans snapshot restent disponibles pour examiner les sources historiques : **ce mode n’est pas une livraison de contenu validée**. `npm run publish:local` exige les informations générales publiées et les trois rubriques réglementaires publiées et validées dans le CMS. La production utilise ce chemin contrôlé, après validation.
 
-- **Élévations** : ombres multi-couches teintées bleu (`--shadow-e1` → `--shadow-e4`), lumière venant du haut (liserés clairs).
-- **Surfaces** : `.surface` (cartes élevées), `.glass` / `.glass-dark` (panneaux de verre avec flou).
-- **Tilt 3D** : les cartes `.tilt` s'inclinent vers le pointeur avec reflet (`.tilt-glare`) et parallaxe interne (`.tilt-pop`). Désactivé au clavier, au tactile et avec `prefers-reduced-motion`.
-- **Profondeur d'arrière-plan** : nappes aurora, grille en perspective, champ de points.
-- **Révélations au scroll** : IntersectionObserver + fallback complet sans JavaScript (`html.no-js`).
+## Administration quotidienne
 
-## Espace professionnel (démonstration GED)
+[Guide médecin / coordination](GUIDE_ADMINISTRATION_SANTINNOVATION.md) : professionnels, lieux, actualités, activités, innovation, partenaires, informations, rubriques, images, aperçu, versions, dates et accès. Ni Markdown ni Git nécessaires.
 
-- `/pro` et `/pro/login` : **démonstration produit** de la future bibliothèque
-  documentaire — **noindex**, hors sitemap et hors navigation publique,
-  chrome séparé (`chrome="pro"`).
-- `src/pro/` : contrats typés de la cible V1.5 — modèle documentaire
-  (`ged.ts` : rôles, sensibilités, journal), authentification
-  (`auth.ts` : Pro Santé Connect, 2FA TOTP, session — aucun secret) et
-  matrice de capacités (`access.ts` : `AccessPolicy`).
-- Contrôle d'accès **simulé côté client** (bandeau explicite). Aucun document
-  patient, aucun secret, aucune donnée réelle.
-- La GED réelle sera une **application serveur séparée** (V1.5) : auth forte
-  (PSC + TOTP), RBAC serveur par ressource, journal immuable, qualification
-  HDS avant tout document lié au soin. Les briques serveur (base de données,
-  stockage objet chiffré) relèvent de ce futur projet, pas de ce dépôt.
-  Voir `docs/adr/0002` et `SECURITY.md`.
+## Contrôles
 
-## Modifier le contenu
+```sh
+npm run test:unit
+npm run check
+npm run build
+npm --prefix cms run check
+npm --prefix cms run build
+npm --prefix cms test -- --http
+npm run publish:local
+npx playwright install chromium
+npm run test:browser
+# CMS local démarré sur 3001 et fixtures synthétiques uniquement :
+npm run test:admin-ui
+npm run test:publication
+npm run test:worker
+npm audit
+npm --prefix cms audit
+```
 
-- **Un professionnel** : ajouter / éditer un fichier dans `src/content/professionnels/`.
-- **Un site** : `src/content/lieux/`.
-- **Une actualité** : `src/content/actualites/`.
-- **Liens & contacts** : `src/data/`.
+Les tests CMS utilisent une base neuve synthétique à chaque exécution. Les tests navigateur utilisent la release locale synthétique. Le CI ne déploie rien.
 
-Les champs disponibles et leur validation sont décrits dans `src/content.config.ts`.
-Une intégration CMS (Decap / Sveltia) est prévue en V1.5 pour éditer ces contenus sans toucher au code.
+## Fichiers faisant autorité
 
-## Principes
+- `cms/src/collections.ts` : formulaires, champs, statuts, validations, droits.
+- `cms/src/lib/access.ts` : autorisations ; `cms/src/payload.config.ts` : serveur et stockage privé.
+- `cms/scripts/export.ts` : sélection locale du publié et des médias référencés.
+- `scripts/project-content.mjs` : projection de champs autorisés, validation des relations et nettoyage HTML.
+- `src/content.config.ts` : schémas Astro de la projection publique.
+- `scripts/release.mjs` : construction/bascule locale ; `scripts/watch-publication.mjs` : actualisation.
+- `src/pages`, `src/components`, `src/styles` : présentation Astro.
+- `src/content` et les valeurs de repli `src/data` : historique à vérifier, jamais source éditoriale quotidienne du CMS.
+- `src/pro/demo` : sources préservées de la démo GED, absentes des routes générées.
 
-- Aucune donnée patient, aucun formulaire médical, aucune messagerie médicale sur le site.
-- Prise de rendez-vous : redirection vers Doctolib uniquement.
-- Accessibilité (contrastes AA, navigation clavier, focus visible, `prefers-reduced-motion`).
-- SEO local (métadonnées, Open Graph, JSON-LD `MedicalOrganization`, sitemap).
+## Documents
 
-## État
+[Architecture](ARCHITECTURE.md) · [Sécurité](SECURITY.md) · [Choix CMS](docs/adr/0003-administration-payload-astro.md) · [Vérification des contenus](docs/VERIFICATION_CONTENUS.md) · [Maintenance](docs/MAINTENANCE.md) · [Déploiement et retour arrière](docs/DEPLOIEMENT_RETOUR_ARRIERE.md) · [Livraison](LIVRAISON_SITE_MSP.md).
 
-Prototype V0 durci (juillet 2026) : pages principales + carte + démo pro,
-en-têtes de sécurité versionnés, pages légales structurées (champs
-« À COMPLÉTER » en attente de validation juridique). Suivi d'avancement :
-`docs/PLAN_ACTION.md` ; cadrage : `docs/VISION.md`.
+L’hébergement OVHcloud est privilégié mais non commandé/configuré. Payload et le worker nécessitent un serveur Node persistant : le mutualisé statique seul ne suffit pas. Les contenus réels, mentions légales, accès, budget et ouverture publique restent soumis à validation.

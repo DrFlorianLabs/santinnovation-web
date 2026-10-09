@@ -4,7 +4,7 @@ nom: "Vuattoux"
 titreAffiche: "Dr Patrick Vuattoux"
 profession: "medecin-generaliste"
 professionLabel: "Médecin généraliste"
-lieux: ["flutes-agasses"]
+lieux: ["henri-baigue"]
 domaines:
   - "Médecine générale"
   - "Coordination des soins"

@@ -1,4 +1,5 @@
 ---
+import { withBase } from "@lib/paths";
 import { partenaires } from "@data/partenaires";
 
 interface Props {
@@ -21,9 +22,11 @@ const isDark = variant === "dark";
     </p>
     <ul class="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
       {
-        partenaires.map((p) => (
+        partenaires.map((p) => {
+          const Tag = p.url ? "a" : "span";
+          return (
           <li>
-            <a
+            <Tag
               href={p.url}
               target="_blank"
               rel="noopener noreferrer"
@@ -35,10 +38,12 @@ const isDark = variant === "dark";
                   : "bg-white text-blue-900/80 shadow-[inset_0_1px_0_rgba(255,255,255,1),0_4px_12px_-4px_rgba(18,50,74,0.18)] ring-1 ring-blue-100 hover:text-teal-600 hover:shadow-[var(--shadow-e2)] hover:ring-teal-600/40",
               ]}
             >
+              {p.logo && <img src={withBase(p.logo)} alt={p.logoAlt ?? ""} width="96" height="48" loading="lazy" class="mr-2 max-h-12 w-24 object-contain" />}
               {p.nom}
-            </a>
+            </Tag>
+            {p.logo && p.logoCredit && <p class:list={["mt-2 max-w-xs text-center text-xs", isDark ? "text-white/80" : "text-ink-500"]}>Crédit : {p.logoCredit}</p>}
           </li>
-        ))
+        );})
       }
     </ul>
   </div>

@@ -1,10 +1,16 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import PageHero from "@components/PageHero.astro";
-import PagePlaceholder from "@components/PagePlaceholder.astro";
+import EditorialPage from '@components/EditorialPage.astro';
+import EmergencyNotice from '@components/EmergencyNotice.astro';
+import { withBase } from '@lib/paths';
 ---
-
-<BaseLayout title="Informations pratiques" description="Horaires, accès, démarches et informations utiles pour vos soins au sein de Sant'Innovation.">
-  <PageHero eyebrow="Au quotidien" title="Informations pratiques" description="Horaires, accès, démarches et informations utiles pour vos soins au sein de Sant'Innovation." />
-  <PagePlaceholder message="Les informations pratiques détaillées seront publiées ici prochainement." />
-</BaseLayout>
+<EditorialPage slug="informations-pratiques" title="Informations pratiques" eyebrow="Préparer votre venue" description="Rendez-vous, lieux de consultation, horaires et accès : retrouvez les informations utiles pour votre venue.">
+  <h2>Prendre rendez-vous</h2>
+  <p>Les rendez-vous en ligne sont proposés sur Doctolib. Choisissez votre professionnel sur <a href={withBase('/prendre-rendez-vous')}>la page rendez-vous</a> et vérifiez le lieu indiqué lors de la réservation.</p>
+  <h2>Trouver une adresse ou un horaire</h2>
+  <p>Les <a href={withBase('/lieux')}>lieux de consultation</a> disposent chacun d'une fiche avec leur adresse et leur itinéraire. Les horaires d'un professionnel peuvent varier selon le lieu : consultez <a href={withBase('/equipe')}>sa fiche dans l'annuaire</a>.</p>
+  <h2>Accès et besoins particuliers</h2>
+  <p>Les conditions d'accessibilité sont indiquées sur la fiche de chaque lieu lorsqu'elles ont été confirmées. Contactez votre professionnel avant le déplacement si vous avez besoin de précisions.</p>
+  <h2>Contacter la MSP</h2>
+  <p>La <a href={withBase('/contact')}>page contact</a> est réservée aux demandes générales. N'envoyez aucune information médicale par e-mail.</p>
+  <div slot="after" class="mt-10"><EmergencyNotice /></div>
+</EditorialPage>

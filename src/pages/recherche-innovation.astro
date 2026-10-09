@@ -1,10 +1,15 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import PageHero from "@components/PageHero.astro";
-import PagePlaceholder from "@components/PagePlaceholder.astro";
+import { getCollection } from 'astro:content';
+import EditorialPage from '@components/EditorialPage.astro';
+import { withBase } from '@lib/paths';
+const projets = (await getCollection('innovations')).sort((a,b)=>a.data.ordre-b.data.ordre);
 ---
-
-<BaseLayout title="Recherche & innovation" description="Une innovation ancrée dans les problèmes réels des soins primaires : organisation, parcours, outils numériques évalués.">
-  <PageHero eyebrow="Innovation utile" title="Recherche & innovation" description="Une innovation ancrée dans les problèmes réels des soins primaires : organisation, parcours, outils numériques évalués." />
-  <PagePlaceholder message="Les axes de recherche et les projets en cours seront présentés ici après validation." />
-</BaseLayout>
+<EditorialPage slug="recherche-innovation" title="Recherche et innovation" eyebrow="Innovation utile" description="Des innovations technologiques, organisationnelles et dans les parcours de soins.">
+  <h2>L'innovation au service des soins</h2>
+  <p>Sant'Innovation inscrit l'innovation technologique et organisationnelle dans son projet de maison de santé. Cette démarche concerne les outils, la coopération entre métiers et les parcours de soins.</p>
+  <p>Les projets de recherche et d'innovation sont présentés ici après validation par l'équipe, avec leur contexte et leur état d'avancement.</p>
+  <p>Professionnels et partenaires : retrouvez les modalités pour <a href={withBase('/contact')}>contacter la coordination</a>.</p>
+  <div slot="after">
+    {projets.length > 0 && <><h2 class="mt-12 text-2xl font-semibold">Projets de recherche et d'innovation</h2><ul class="mt-6 grid gap-5 md:grid-cols-2">{projets.map(p=><li class="surface p-6"><h3 class="text-xl font-semibold"><a href={withBase(`/innovations/${p.id}`)} class="hover:underline">{p.data.titre}</a></h3><p class="mt-3 text-ink-700">{p.data.resume}</p><a href={withBase(`/innovations/${p.id}`)} class="mt-4 inline-block font-medium text-teal-600 underline underline-offset-4">Découvrir le projet</a></li>)}</ul></>}
+  </div>
+</EditorialPage>

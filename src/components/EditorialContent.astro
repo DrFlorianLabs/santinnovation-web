@@ -1,0 +1,15 @@
+---
+import { withBase } from "@lib/paths";
+import { render, type CollectionEntry, type CollectionKey } from 'astro:content';
+interface Props { entry?: CollectionEntry<CollectionKey>; }
+const { entry } = Astro.props;
+// bodyHtml is produced by the trusted export sanitizer, never by a browser input.
+const html = entry?.data.bodyHtml;
+const rendered = entry?.body && !html ? await render(entry) : undefined;
+const Content = rendered?.Content;
+const liens = entry && "liens" in entry.data ? entry.data.liens : [];
+---
+<div class="editorial-content">
+  {html ? <div set:html={html} /> : Content ? <Content /> : entry ? null : <slot />}
+  {liens.length > 0 && <ul>{liens.map(l => <li><a href={withBase(l.url)} target="_blank" rel="noopener noreferrer">{l.libelle} — nouvelle fenêtre</a></li>)}</ul>}
+</div>

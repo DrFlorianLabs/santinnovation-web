@@ -1,6 +1,10 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import PageHero from "@components/PageHero.astro";
+import { getCollection } from "astro:content";
+import EditorialContent from "@components/EditorialContent.astro";
+import { site } from "@data/site";
+const page = (await getCollection("pages")).find(p => p.id === "accessibilite");
 
 /**
  * Trame de déclaration d'accessibilité RGAA 4.1.2. À compléter après
@@ -20,6 +24,7 @@ import PageHero from "@components/PageHero.astro";
   />
 
   <section class="py-12 md:py-16">
+    {page ? <div class="container-site max-w-prose"><EditorialContent entry={page} /></div> : <>
     <div class="container-site max-w-prose space-y-10">
       <div>
         <h2 class="text-2xl font-semibold">Engagement</h2>
@@ -66,7 +71,7 @@ import PageHero from "@components/PageHero.astro";
         <h2 class="text-2xl font-semibold">Retour d'information et contact</h2>
         <p class="mt-3 text-ink-700">
           Si vous rencontrez un obstacle d'accessibilité sur ce site, écrivez à
-          <a href="mailto:contact@santinnovation.fr" class="font-medium text-teal-600 hover:text-blue-900">contact@santinnovation.fr</a>
+          {site.contact.general ? <a href={`mailto:${site.contact.general}`} class="font-medium text-teal-600 hover:text-blue-900">{site.contact.general}</a> : <span>coordonnées de contact en attente de validation</span>}
           en décrivant la page et le problème. Nous nous efforçons de répondre sous
           <strong>[À COMPLÉTER]</strong> jours.
         </p>
@@ -84,5 +89,6 @@ import PageHero from "@components/PageHero.astro";
         </p>
       </div>
     </div>
+    </>}
   </section>
 </BaseLayout>

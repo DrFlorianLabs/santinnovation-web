@@ -1,10 +1,11 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import PageHero from "@components/PageHero.astro";
-import PagePlaceholder from "@components/PagePlaceholder.astro";
+import EditorialPage from '@components/EditorialPage.astro';
+import { withBase } from '@lib/paths';
 ---
-
-<BaseLayout title="Projet de santé" description="Le projet de santé structure la coordination entre professionnels, la continuité des parcours et la prévention.">
-  <PageHero eyebrow="Notre organisation collective" title="Projet de santé" description="Le projet de santé structure la coordination entre professionnels, la continuité des parcours et la prévention." />
-  <PagePlaceholder message="Le projet de santé sera intégré ici après transmission et validation par l'équipe." />
-</BaseLayout>
+<EditorialPage slug="projet-de-sante" title="Projet de santé" eyebrow="Notre organisation collective" description="La coordination entre professionnels, les parcours de soins et la prévention au cœur de Sant'Innovation.">
+  <h2>Une équipe autour des parcours de soins</h2>
+  <p>Sant'Innovation est une maison de santé pluriprofessionnelle implantée à Besançon. Son projet associe soins de proximité, coordination entre professionnels et innovation technologique et organisationnelle.</p>
+  <p>Les professionnels exercent dans plusieurs lieux. Pour préparer votre consultation, retrouvez les coordonnées et les modalités de rendez-vous dans <a href={withBase('/equipe')}>l'annuaire de l'équipe</a>.</p>
+  <h2>Le projet de santé de la MSP</h2>
+  <p>La présentation détaillée du projet de santé sera publiée ici après validation par l'équipe. Les projets et les dispositifs de prise en charge doivent être confirmés auprès des professionnels concernés.</p>
+</EditorialPage>

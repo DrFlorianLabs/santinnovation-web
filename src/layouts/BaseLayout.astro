@@ -1,8 +1,9 @@
 ---
 import "@fontsource-variable/sora";
+import { getCollection } from "astro:content";
 import { withBase } from "@lib/paths";
 import "@fontsource-variable/inter";
-import "@fontsource/ibm-plex-mono";
+import "@fontsource/ibm-plex-mono/400.css";
 import "../styles/global.css";
 
 import PublicHeader from "@components/PublicHeader.astro";
@@ -26,7 +27,11 @@ const {
   chrome = "public",
 } = Astro.props;
 
-const pageTitle = title ? `${title} — ${site.nomCourt}` : `${site.nom}`;
+const slug = Astro.url.pathname.replace(import.meta.env.BASE_URL, "").replace(/^\/+|\/+$/g, "") || "accueil";
+const editorial = (await getCollection("pages")).find(p => p.id === slug);
+const actualTitle = editorial?.data.titre ?? title;
+const actualDescription = editorial?.data.resume || description;
+const pageTitle = actualTitle ? `${actualTitle} — ${site.nomCourt}` : `${site.nom}`;
 const canonical = new URL(Astro.url.pathname, site.url).href;
 
 const jsonLd = {
@@ -47,7 +52,7 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
     <title>{pageTitle}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={actualDescription} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
@@ -55,12 +60,12 @@ const jsonLd = {
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:site_name" content={site.nomCourt} />
     <meta property="og:title" content={pageTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={actualDescription} />
     <meta property="og:url" content={canonical} />
     <meta name="twitter:card" content="summary_large_image" />
 
     <meta name="theme-color" content="#12324a" />
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd).replace(/</g, "\\u003c")} />
   </head>
   <body class="min-h-screen">
     <a href="#contenu" class="skip-link">Aller au contenu</a>

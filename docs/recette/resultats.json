@@ -1,0 +1,168 @@
+{
+  "date": "2026-10-09",
+  "environment": "macOS; Node24.21.0; local loopback; données synthétiques uniquement",
+  "cms": {
+    "scenarios": [
+      {
+        "scenario": "A — horaires publiés présents dans le snapshot",
+        "result": "pass"
+      },
+      {
+        "scenario": "B — changement de lieu et horaires cohérents",
+        "result": "pass"
+      },
+      {
+        "scenario": "C — nouveau professionnel exporté",
+        "result": "pass"
+      },
+      {
+        "scenario": "D — image privée exportée seulement après publication",
+        "result": "pass"
+      },
+      {
+        "scenario": "E — version antérieure restaurée par API CMS",
+        "result": "pass"
+      },
+      {
+        "scenario": "F — API locale: anonymes refusés, versions et médias privés, élévation de rôle refusée",
+        "result": "pass"
+      },
+      {
+        "scenario": "Brouillon plus récent ne remplace pas la version publiée",
+        "result": "pass"
+      },
+      {
+        "scenario": "Dates, masquage et archivage exclus du snapshot public",
+        "result": "pass"
+      },
+      {
+        "scenario": "Adresse modifiée: vérification réinitialisée, publication immédiate refusée",
+        "result": "pass"
+      },
+      {
+        "scenario": "PATCH sans statut — validation légale/adresse/contacts/horaires maintenue; brouillons natifs conservés",
+        "result": "pass"
+      },
+      {
+        "scenario": "Identité des rubriques fixe — déplacements légal vers courant et inverse refusés",
+        "result": "pass"
+      },
+      {
+        "scenario": "Validation réglementaire: administrateur obligatoire et invalidation après modification",
+        "result": "pass"
+      },
+      {
+        "scenario": "Dépublication enlève le contenu du snapshot",
+        "result": "pass"
+      },
+      {
+        "scenario": "Médias immuables: remplacement ou métadonnées ne contournent pas la publication",
+        "result": "pass"
+      },
+      {
+        "scenario": "E étendu — restauration adresse et mentions en brouillon avec nouvelle validation requise",
+        "result": "pass"
+      },
+      {
+        "scenario": "Relation vers établissement masqué bloque l’export sans produire de snapshot incohérent",
+        "result": "pass"
+      },
+      {
+        "scenario": "F HTTP — admin redirigé, drafts/versions/médias refusés anonymes; login et aperçu autorisés; GraphQL absent",
+        "result": "pass"
+      },
+      {
+        "scenario": "HTTP PATCH sans statut — validations serveur et routes fixes, proposition éditoriale privée sans altérer le publié",
+        "result": "pass"
+      },
+      {
+        "scenario": "HTTP renforcé — CSRF cookie refusé, upload SVG refusé, restauration légale en brouillon réussie",
+        "result": "pass"
+      }
+    ],
+    "passed": 19
+  },
+  "unit": {
+    "passed": 8
+  },
+  "browser": {
+    "groupsPassed": 8,
+    "failed": 0,
+    "routes": 21,
+    "widths": [
+      320,
+      768,
+      1440
+    ],
+    "engine": "Chromium 156 via Playwright1.64",
+    "scope": "axe WCAG2A/AA et WCAG2.1AA; navigation, débordements, filtres, clavier, carte au clic, mode sans JS"
+  },
+  "administration": {
+    "syntheticOnly": true,
+    "results": [
+      "Connexion graphique réelle et tableau de bord",
+      "Modification horaire par formulaire, brouillon conservant le publié, aperçu authentifié",
+      "Publication par bouton natif Payload; valeur publiée vérifiée par relecture",
+      "Aperçu anonyme redirigé vers connexion, API brouillon refusée HTTP403"
+    ]
+  },
+  "publication": {
+    "syntheticOnly": true,
+    "results": [
+      "A — nouveaux horaires relus dans la page Astro après publication CMS",
+      "B — nouveau lieu et itinéraire cohérents sur fiche publique",
+      "C — nouveau professionnel présent dans annuaire et fiche publique",
+      "D — brouillon absent puis actualité avec image présente après publication",
+      "E — version restaurée puis republiée, ancienne valeur relue dans Astro",
+      "F — APIs, versions et image CMS refusées anonymes ; brouillon absent du public",
+      "Dépublication — page et image devenue orpheline absentes de la release suivante"
+    ]
+  },
+  "worker": {
+    "syntheticOnly": true,
+    "passed": true,
+    "seconds": 68,
+    "noReleaseWhenUnchanged": true
+  },
+  "restoration": {
+    "syntheticOnly": true,
+    "sqliteConsistentBackup": true,
+    "mediaCopied": true,
+    "restoredProjectionEqualsCurrent": true
+  },
+  "dependencies": {
+    "site": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "cms": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    }
+  },
+  "additionalEvidence": [
+    "Aperçu privé ouvert par le bouton graphique puis titre fictif relu",
+    "Build Astro21routes Node24 réussi",
+    "Build CMS Node24 réussi avec toutes routes sensibles dynamiques",
+    "Migration CMS initiale sur base vide exécutée avec succès",
+    "58 fichiers Astro contrôlés : 0 erreur, 0 warning, 0 hint",
+    "208 fichiers candidats inspectés : aucun secret local généré retrouvé",
+    "59 fichiers générés inspectés : aucun marqueur de brouillon ni secret"
+  ],
+  "limits": [
+    "Pas de déploiement ni de validation OVH/TLS/proxy distant",
+    "Chromium seul; pas de Safari/Firefox ni appareil physique",
+    "Contrôle axe ne constitue pas audit RGAA complet",
+    "Liens externes: couverture et exceptions dans VERIFICATION_CONTENUS.md",
+    "CI configurée mais non exécutée sur GitHub",
+    "Aucun contenu institutionnel réel publié par le CMS de recette"
+  ]
+}

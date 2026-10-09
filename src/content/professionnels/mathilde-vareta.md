@@ -7,7 +7,7 @@ professionLabel: "Profession à confirmer"
 lieux: []
 domaines: []
 ordre: 5
-visible: true
+visible: false
 ---
 
 Professionnelle de santé à Sant'Innovation. Profession, site et présentation à confirmer.

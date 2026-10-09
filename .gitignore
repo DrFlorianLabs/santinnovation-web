@@ -12,6 +12,16 @@ node_modules/
 .env
 .env.production
 .env.*.local
+.env.*
+!.env.example
+.local/
+.generated/
+.releases/
+test-results/
+playwright-report/
+cms/.next/
+cms/node_modules/
+cms/*.tsbuildinfo
 
 # logs
 npm-debug.log*

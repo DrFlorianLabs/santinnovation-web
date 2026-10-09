@@ -1,3 +1,5 @@
+> 9 octobre 2026 : les sources de démonstration sont conservées dans `src/pro/demo`, hors de `src/pages`. Elles ne sont plus générées ni exposées par le site public. Le CMS éditorial privé Payload (`cms/`) est un produit distinct, sans GED.
+
 # `src/pro/` — contrats de l'espace professionnel (frontière front/back)
 
 Ce dossier isole **tout ce qui préfigure le backend pro** (GED, authentification) du

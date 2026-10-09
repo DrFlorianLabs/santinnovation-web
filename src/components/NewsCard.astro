@@ -1,0 +1,19 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { withBase } from '@lib/paths';
+import { formatDate, formatDateTime } from '@lib/format';
+interface Props { actu: CollectionEntry<'actualites'>; heading?: 'h2' | 'h3'; }
+const { actu, heading: Heading = 'h2' } = Astro.props;
+const d = actu.data;
+---
+<article class="surface flex h-full flex-col overflow-hidden">
+  {d.image && <img src={withBase(d.image)} alt={d.imageAlt ?? ""} width="640" height="360" loading="lazy" class="aspect-video w-full object-cover" />}
+  {d.image && d.imageCredit && <p class="px-6 pt-3 text-xs text-ink-500">Crédit : {d.imageCredit}</p>}
+  <div class="flex flex-1 flex-col p-6">
+    <p class="text-xs font-semibold uppercase tracking-wide text-teal-600">{d.categorie}</p>
+    <Heading class="mt-2 text-lg font-semibold"><a href={withBase(`/actualites/${actu.id}`)} class="hover:underline">{d.titre}</a></Heading>
+    <p class="mt-3 text-sm text-ink-700">{d.resume}</p>
+    {d.debutEvenement && <p class="mt-3 text-sm font-medium text-blue-900">Événement : {formatDateTime(d.debutEvenement)}{d.finEvenement && <> au {formatDateTime(d.finEvenement)}</>}</p>}
+    <p class="mt-auto pt-4 text-xs text-ink-500">Publié le <time datetime={d.date.toISOString()}>{formatDate(d.date)}</time></p>
+  </div>
+</article>

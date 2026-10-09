@@ -1,10 +1,10 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import PageHero from "@components/PageHero.astro";
-import PagePlaceholder from "@components/PagePlaceholder.astro";
+import EditorialPage from '@components/EditorialPage.astro';
+import { withBase } from '@lib/paths';
 ---
-
-<BaseLayout title="Rejoindre la MSP" description="Professionnels de santé, internes, remplaçants : rejoignez une équipe pluriprofessionnelle coordonnée à Besançon.">
-  <PageHero eyebrow="Exercer avec nous" title="Rejoindre la MSP" description="Professionnels de santé, internes, remplaçants : rejoignez une équipe pluriprofessionnelle coordonnée à Besançon." />
-  <PagePlaceholder message="Les modalités pour rejoindre l'équipe (installation, remplacement, stage) seront détaillées ici." />
-</BaseLayout>
+<EditorialPage slug="rejoindre" title="Rejoindre la MSP" eyebrow="Exercer ensemble" description="Professionnels de santé et partenaires : découvrir Sant'Innovation et échanger avec la coordination.">
+  <h2>Découvrir notre organisation</h2>
+  <p>Sant'Innovation réunit une équipe pluriprofessionnelle à Besançon autour des soins et des parcours. Découvrez <a href={withBase('/equipe')}>les professionnels</a>, <a href={withBase('/lieux')}>les lieux de consultation</a> et <a href={withBase('/projet-de-sante')}>le projet de santé</a>.</p>
+  <h2>Échanger avec la coordination</h2>
+  <p>Pour une question sur l'exercice au sein de la MSP, les remplacements, les stages ou un partenariat, consultez <a href={withBase('/contact')}>les coordonnées de contact</a>. Les possibilités d'accueil et les modalités seront confirmées directement par l'équipe.</p>
+</EditorialPage>

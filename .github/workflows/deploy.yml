@@ -1,38 +1,29 @@
-name: Déploiement GitHub Pages
-
+name: Qualité locale et CI (aucun déploiement)
 on:
-  push:
-    branches: [main]
+  pull_request:
   workflow_dispatch:
-
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-# Un seul déploiement à la fois ; on n'annule pas celui en cours.
-concurrency:
-  group: pages
-  cancel-in-progress: false
-
 jobs:
-  build:
+  verify:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Build Astro
-        uses: withastro/action@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 22
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy
-        id: deployment
-        uses: actions/deploy-pages@v4
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm --prefix cms ci
+      - run: npm --prefix cms run init
+      - run: npm --prefix cms run seed:demo
+      - run: npm --prefix cms run check
+      - run: npm --prefix cms test -- --http
+      - run: npm --prefix cms run build
+      - run: npm run check
+      - run: npm run test:unit
+      - run: npm run publish:local
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+      - run: npm audit --audit-level=moderate
+      - run: npm --prefix cms audit --audit-level=moderate

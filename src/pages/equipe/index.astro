@@ -1,48 +1,56 @@
 ---
-import { getCollection } from "astro:content";
-import BaseLayout from "@layouts/BaseLayout.astro";
-import PageHero from "@components/PageHero.astro";
-import ProfessionalCard from "@components/ProfessionalCard.astro";
-import DoctolibButton from "@components/DoctolibButton.astro";
-
-const lieux = await getCollection("lieux");
+import { getCollection } from 'astro:content';
+import EditorialContent from "@components/EditorialContent.astro";
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import ProfessionalCard from '@components/ProfessionalCard.astro';
+const lieux = (await getCollection('lieux')).sort((a,b) => a.data.ordre-b.data.ordre);
 const lieuxLabels = Object.fromEntries(lieux.map((l) => [l.id, l.data.nom]));
-
-const pros = (await getCollection("professionnels"))
-  .filter((p) => p.data.visible)
-  .sort((a, b) => a.data.ordre - b.data.ordre);
+const pros = (await getCollection('professionnels')).filter((p) => p.data.visible).sort((a,b) => a.data.ordre-b.data.ordre);
+const professions = [...new Map(pros.map(p => [p.data.profession, p.data.professionLabel])).entries()];
+const page = (await getCollection("pages")).find(p => p.id === "equipe");
 ---
-
-<BaseLayout
-  title="L'équipe"
-  description="Trombinoscope des professionnels de santé Sant'Innovation à Besançon : médecins généralistes, infirmiers, kinésithérapeutes, pharmacien. Prise de rendez-vous directe."
->
-  <PageHero
-    eyebrow="Trombinoscope"
-    title="L'équipe pluriprofessionnelle"
-    description="Chaque professionnel dispose de sa fiche et, lorsqu'il le propose, d'une prise de rendez-vous en ligne directe."
-  >
-    <div class="mt-6">
-      <DoctolibButton size="lg" label="Fiche établissement sur Doctolib" />
-    </div>
-  </PageHero>
-
+<BaseLayout title="L'équipe" description="Trouvez un professionnel Sant'Innovation à Besançon, ses lieux de consultation, ses horaires et ses modalités de rendez-vous.">
+  <PageHero eyebrow="Votre professionnel" title="L'équipe pluriprofessionnelle" description="Retrouvez les lieux de consultation, les horaires et les modalités de rendez-vous de chaque professionnel." />
   <section class="py-12 md:py-16">
-    <div class="container-site">
-      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {
-          pros.map((pro, i) => (
-            <div class="reveal h-full" style={`--reveal-delay: ${(i % 3) * 80}ms`}>
-              <ProfessionalCard pro={pro} lieuxLabels={lieuxLabels} />
-            </div>
-          ))
-        }
-      </div>
-      <p class="mt-8 text-sm text-ink-500">
-        Le bouton « Prendre rendez-vous » de chaque fiche ouvre directement l'agenda du
-        professionnel lorsqu'il est disponible en ligne ; à défaut, la fiche établissement
-        Sant'Innovation.
-      </p>
+    <div class="container-site" data-directory>
+      {page && <div class="mb-8 max-w-prose"><EditorialContent entry={page} /></div>}
+      <form class="surface mb-8 grid gap-4 p-5 md:grid-cols-3" data-filters hidden role="search" aria-label="Filtrer les professionnels">
+        <div><label for="pro-name" class="block text-sm font-semibold">Nom ou compétence</label><input id="pro-name" type="search" autocomplete="off" class="filter-input" placeholder="Rechercher un professionnel" /></div>
+        <div><label for="pro-profession" class="block text-sm font-semibold">Profession</label><select id="pro-profession" class="filter-input"><option value="">Toutes les professions</option>{professions.map(([id,label])=><option value={id}>{label}</option>)}</select></div>
+        <div><label for="pro-lieu" class="block text-sm font-semibold">Lieu de consultation</label><select id="pro-lieu" class="filter-input"><option value="">Tous les lieux</option>{lieux.map(l=><option value={l.id}>{l.data.nom}</option>)}</select></div>
+      </form>
+      <p class="mb-5 text-sm text-ink-700" role="status" aria-live="polite" data-results>{pros.length} professionnel{pros.length > 1 ? 's' : ''}</p>
+      <ul class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {pros.map(pro => <li data-pro data-name={`${pro.data.titreAffiche} ${pro.data.domaines.join(' ')}`} data-profession={pro.data.profession} data-lieux={JSON.stringify(pro.data.lieux)}><ProfessionalCard pro={pro} lieuxLabels={lieuxLabels} heading="h2" /></li>)}
+      </ul>
+      <p data-empty hidden class="surface p-6">Aucun professionnel ne correspond à ces critères. Essayez une autre recherche.</p>
+      {pros.length === 0 && <p>Les fiches de l'équipe seront affichées après validation.</p>}
+      <noscript><p class="mt-5 text-sm text-ink-700">Tous les professionnels sont affichés. Les filtres nécessitent JavaScript ; les fiches et les rendez-vous restent accessibles.</p></noscript>
     </div>
   </section>
 </BaseLayout>
+<script>
+  const root = document.querySelector<HTMLElement>('[data-directory]');
+  if (root) {
+    const form = root.querySelector<HTMLFormElement>('[data-filters]')!;
+    const name = root.querySelector<HTMLInputElement>('#pro-name')!;
+    const profession = root.querySelector<HTMLSelectElement>('#pro-profession')!;
+    const lieu = root.querySelector<HTMLSelectElement>('#pro-lieu')!;
+    const normalize = (s:string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('fr').trim();
+    const filter = () => {
+      let count = 0;
+      root.querySelectorAll<HTMLElement>('[data-pro]').forEach(card => {
+        const matches = normalize(card.dataset.name ?? '').includes(normalize(name.value)) && (!profession.value || card.dataset.profession === profession.value) && (!lieu.value || JSON.parse(card.dataset.lieux ?? '[]').includes(lieu.value));
+        card.hidden = !matches;
+        if (matches) count++;
+      });
+      root.querySelector('[data-results]')!.textContent = `${count} professionnel${count > 1 ? 's' : ''}`;
+      root.querySelector<HTMLElement>('[data-empty]')!.hidden = count !== 0;
+    };
+    form.hidden = false;
+    form.addEventListener('submit',event => event.preventDefault());
+    form.addEventListener('input',filter);
+    form.addEventListener('change',filter);
+  }
+</script>

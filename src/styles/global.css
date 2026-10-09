@@ -20,7 +20,7 @@
   --color-blue-100: #e7f0f5;
 
   /* --- Cyan Innovation (carte de visite) : CTA, liens, interactif --- */
-  --color-teal-600: #1ba3c2;
+  --color-teal-600: #08768b;
   --color-teal-500: #3bb7d2;
   --color-teal-100: #e3f4f9;
 
@@ -40,7 +40,7 @@
   /* --- Neutres (chauds) --- */
   --color-ink-950: #263238;
   --color-ink-700: #4d5b61;
-  --color-ink-500: #7b878c;
+  --color-ink-500: #59686f;
   --color-ink-200: #eef1f3;
   --color-ivory: #f7f4ef;
   --color-white: #ffffff;
@@ -278,7 +278,7 @@
     transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
   }
   .btn-3d-primary {
-    background: linear-gradient(100deg, #1ba3c2 0%, #2fae8f 55%, #62bb46 100%);
+    background: linear-gradient(100deg, #08768b 0%, #176a60 55%, #3a6c2e 100%);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.45),
       inset 0 -2px 0 rgba(8, 28, 45, 0.18),
@@ -438,11 +438,10 @@
 
   /* Révélation au scroll (IntersectionObserver ajoute .in-view). */
   .reveal {
-    opacity: 0;
-    transform: translateY(26px) scale(0.985);
-    transition:
-      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    /* Keep readable text at full contrast throughout its decorative movement. */
+    opacity: 1;
+    transform: translateY(14px);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     transition-delay: var(--reveal-delay, 0ms);
   }
   .reveal.in-view {
@@ -505,3 +504,23 @@
     }
   }
 }
+
+/* Content remains usable when a script fails or is disabled. */
+[hidden] { display: none !important; }
+.filter-input { width: 100%; min-height: 2.75rem; margin-top: .4rem; padding: .6rem .75rem; border: 1px solid #7b878c; border-radius: .6rem; background: #fff; color: var(--color-ink-950); }
+.editorial-content { overflow-wrap: anywhere; }
+.editorial-content p { margin-block: 1em; line-height: 1.75; }
+.editorial-content h2 { margin-block: 1.8em .7em; font-size: 1.5rem; font-weight: 600; }
+.editorial-content h3 { margin-block: 1.5em .6em; font-size: 1.2rem; font-weight: 600; }
+.editorial-content ul, .editorial-content ol { padding-left: 1.5rem; margin-block: 1em; }
+.editorial-content ul { list-style: disc; }
+.editorial-content ol { list-style: decimal; }
+.editorial-content li + li { margin-top: .4rem; }
+.editorial-content a { color: var(--color-teal-600); text-decoration: underline; text-underline-offset: .2em; }
+.editorial-content img { max-width: 100%; height: auto; border-radius: 1rem; }
+.editorial-content blockquote { padding-left: 1rem; border-left: 3px solid var(--color-teal-600); }
+.editorial-content table { display: block; overflow-x: auto; width: 100%; }
+.editorial-content td, .editorial-content th { padding: .65rem; border: 1px solid var(--color-blue-100); }
+html { scroll-padding-top: 6rem; }
+body { overflow-wrap: break-word; }
+@media (max-width: 639px) { .skip-link:focus { position: fixed; } }

@@ -1,6 +1,9 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import PageHero from "@components/PageHero.astro";
+import { getCollection } from "astro:content";
+import EditorialContent from "@components/EditorialContent.astro";
+const page = (await getCollection("pages")).find(p => p.id === "confidentialite");
 
 /**
  * Politique de confidentialité — trame article 13 RGPD.
@@ -20,6 +23,7 @@ import PageHero from "@components/PageHero.astro";
   />
 
   <section class="py-12 md:py-16">
+    {page ? <div class="container-site max-w-prose"><EditorialContent entry={page} /></div> : <>
     <div class="container-site max-w-prose space-y-10">
       <div>
         <h2 class="text-2xl font-semibold">Responsable de traitement</h2>
@@ -42,7 +46,7 @@ import PageHero from "@components/PageHero.astro";
 
       <div>
         <h2 class="text-2xl font-semibold">Traitements effectués</h2>
-        <div class="mt-4 overflow-x-auto">
+        <div class="mt-4 overflow-x-auto" tabindex="0" role="region" aria-label="Tableau des traitements de données personnelles">
           <table class="w-full min-w-[36rem] text-left text-sm text-ink-700">
             <thead>
               <tr class="border-b border-blue-100 font-display text-blue-900">
@@ -86,7 +90,7 @@ import PageHero from "@components/PageHero.astro";
           <li>
             <strong>CARTO</strong> — fourniture du fond de carte : votre navigateur
             transmet votre adresse IP et des en-têtes techniques aux serveurs de
-            CARTO au chargement de la carte. Aucun cookie n'est déposé par ces
+            CARTO uniquement après votre clic sur « Afficher la carte interactive ». Aucun cookie n'est déposé par ces
             requêtes. <em>[À COMPLÉTER : localisation du traitement et garanties
             de transfert éventuelles.]</em>
           </li>
@@ -122,5 +126,6 @@ import PageHero from "@components/PageHero.astro";
         </p>
       </div>
     </div>
+    </>}
   </section>
 </BaseLayout>

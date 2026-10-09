@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import { withBase } from '@lib/paths';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import EditorialContent from '@components/EditorialContent.astro';
+import ProfessionalCard from '@components/ProfessionalCard.astro';
+export async function getStaticPaths() { return (await getCollection('lieux')).map(lieu => ({params:{slug:lieu.id},props:{lieu}})); }
+const { lieu } = Astro.props;
+const d = lieu.data;
+const lieux = await getCollection('lieux');
+const lieuxLabels = Object.fromEntries(lieux.map(l => [l.id,l.data.nom]));
+const pros = (await getCollection('professionnels')).filter(p => p.data.visible && p.data.lieux.includes(lieu.id)).sort((a,b)=>a.data.ordre-b.data.ordre);
+const direction = d.itineraireUrl ?? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${d.adresse}, ${d.codePostal} ${d.ville}`)}`;
+---
+<BaseLayout title={d.nom} description={`${d.nom} : adresse, accès et professionnels à ${d.ville}.`}>
+  <PageHero eyebrow="Lieu de consultation" title={d.nom} description={`${d.adresse}, ${d.codePostal} ${d.ville}`}>
+    <div class="mt-6 flex flex-wrap gap-4"><a href={direction} target="_blank" rel="noopener noreferrer" class="btn-3d btn-3d-primary rounded-xl px-5 py-3 font-medium text-white">Itinéraire sur Google Maps</a><a href={withBase('/lieux')} class="btn-3d btn-3d-secondary rounded-xl px-5 py-3 font-medium">Tous les lieux</a></div>
+  </PageHero>
+  <section class="py-12 md:py-16"><div class="container-site">
+    <div class="grid gap-8 md:grid-cols-2">
+      <div class="surface p-6">
+        <h2 class="text-2xl font-semibold">Préparer votre venue</h2>
+        {!d.adresseVerifiee && <p class="mt-4 text-sm">Adresse à confirmer auprès du professionnel avant votre déplacement.</p>}
+        <dl class="mt-5 space-y-5 text-sm">
+          <div><dt class="font-semibold">Horaires d'ouverture</dt><dd class="mt-1 whitespace-pre-line text-ink-700">{d.horaires || 'Consultez les modalités de chaque professionnel.'}</dd></div>
+          {d.accesTransport && <div><dt class="font-semibold">Transports</dt><dd class="mt-1 whitespace-pre-line text-ink-700">{d.accesTransport}</dd></div>}
+          <div><dt class="font-semibold">Accessibilité du lieu</dt><dd class="mt-1 whitespace-pre-line text-ink-700">{d.accessibilite || (d.accesPMR === true ? 'Accès aux personnes à mobilité réduite indiqué par le lieu.' : 'Contactez le professionnel pour vérifier les conditions d’accès adaptées à votre situation.')}</dd></div>
+          {d.infosPratiques && <div><dt class="font-semibold">Informations pratiques</dt><dd class="mt-1 whitespace-pre-line text-ink-700">{d.infosPratiques}</dd></div>}
+        </dl>
+        {d.telephone && <p class="mt-5 text-sm"><a href={`tel:${d.telephone.replace(/[^+0-9]/g, '')}`} class="font-medium underline">{d.telephone}</a></p>}
+        {d.email && <p class="mt-3 break-all text-sm"><a href={`mailto:${d.email}`} class="font-medium underline">{d.email}</a></p>}
+        {d.email && <p class="mt-2 text-xs text-ink-700">Contact administratif uniquement : aucune information médicale par e-mail.</p>}
+      </div>
+      <div>{d.photo && <figure class="mb-5"><img src={withBase(d.photo)} alt={d.photoAlt || `Le lieu ${d.nom}`} width="800" height="500" class="w-full rounded-2xl object-cover" />{d.photoCredit && <figcaption class="mt-2 text-sm text-ink-500">Crédit : {d.photoCredit}</figcaption>}</figure>}<EditorialContent entry={lieu} /></div>
+    </div>
+    {d.photos.length > 0 && <div class="mt-8 grid gap-5 sm:grid-cols-2">{d.photos.map(photo => <figure><img src={withBase(photo.image)} alt={photo.imageAlt || photo.legende || ''} width="800" height="500" loading="lazy" class="w-full rounded-2xl" />{(photo.legende || photo.imageCredit) && <figcaption class="mt-2 text-sm text-ink-700">{photo.legende}{photo.legende && photo.imageCredit && " — "}{photo.imageCredit && <>Crédit : {photo.imageCredit}</>}</figcaption>}</figure>)}</div>}
+    <h2 class="mt-12 text-2xl font-semibold">Les professionnels de ce lieu</h2>
+    <ul class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{pros.map(pro => <li><ProfessionalCard pro={pro} lieuxLabels={lieuxLabels} /></li>)}</ul>
+    {pros.length === 0 && <p class="mt-5">Consultez l'annuaire pour retrouver les professionnels et leurs lieux de consultation.</p>}
+  </div></section>
+</BaseLayout>

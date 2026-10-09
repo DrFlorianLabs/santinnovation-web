@@ -8,7 +8,7 @@ import { site } from "@data/site";
 
 const path = Astro.url.pathname;
 const isActive = (href: string) =>
-  href === "/" ? path === "/" : path.startsWith(href);
+  href === "/" ? path === withBase("/") : path.startsWith(withBase(href));
 ---
 
 <header
@@ -30,11 +30,11 @@ const isActive = (href: string) =>
     >
       <Logo size={42} />
       <span class="whitespace-nowrap font-display text-lg font-semibold leading-none text-blue-900">
-        Sant'<span class="text-brand-gradient">Innovation</span>
+        {site.nomCourt === "Sant'Innovation" ? <>Sant'<span class="text-brand-gradient">Innovation</span></> : site.nomCourt}
       </span>
     </a>
 
-    <nav aria-label="Navigation principale" class="hidden min-w-0 lg:block">
+    <nav aria-label="Navigation principale" class="hidden min-w-0 xl:block">
       <ul class="flex items-center justify-center">
         {
           mainNav.map((item) => (
@@ -71,14 +71,14 @@ const isActive = (href: string) =>
       <div class="hidden sm:block">
         <DoctolibButton class="h-10 whitespace-nowrap" label="Rendez-vous" />
       </div>
-      <details class="relative lg:hidden">
+      <details class="relative xl:hidden" data-mobile-menu>
         <summary
           class="btn-3d btn-3d-secondary flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-xl text-blue-900"
-          aria-label="Ouvrir le menu"
+          aria-label="Menu de navigation"
         >
           <Icon name="menu" size={22} />
         </summary>
-        <div class="surface surface-raised absolute right-0 mt-2 w-64 p-2">
+        <div class="surface surface-raised absolute right-0 mt-2 max-h-[70dvh] w-64 max-w-[calc(100vw-2rem)] overflow-y-auto p-2">
           <ul>
             {
               mainNav.map((item) => (
@@ -106,3 +106,18 @@ const isActive = (href: string) =>
     </div>
   </div>
 </header>
+
+<script>
+  document.querySelectorAll<HTMLDetailsElement>('[data-mobile-menu]').forEach(menu => {
+    const summary = menu.querySelector('summary')!;
+    menu.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && menu.open) { menu.open = false; summary.focus(); event.stopPropagation(); }
+    });
+    document.addEventListener('click', event => {
+      if (event.target instanceof Node && !menu.contains(event.target)) menu.open = false;
+    });
+    menu.addEventListener('focusout', event => {
+      if (event.relatedTarget instanceof Node && !menu.contains(event.relatedTarget)) menu.open = false;
+    });
+  });
+</script>

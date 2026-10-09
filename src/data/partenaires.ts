@@ -1,5 +1,9 @@
+import { editorialSettings } from "@lib/editorial-settings";
 export interface Partenaire {
   nom: string;
+  logo?: string;
+  logoAlt?: string;
+  logoCredit?: string;
   /** URL officielle — HTTPS imposé par le type. */
   url?: `https://${string}`;
   /** Description courte (title / aria). */
@@ -10,7 +14,7 @@ export interface Partenaire {
  * Partenaires affichés sur le site public.
  * URLs vérifiées le 03/07/2026. Logos à confirmer avant publication (autorisations).
  */
-export const partenaires: Partenaire[] = [
+const fallbackPartenaires: Partenaire[] = [
   {
     nom: "Digital Medical Hub",
     url: "https://www.digitalmedicalhub.com/",
@@ -42,3 +46,5 @@ export const partenaires: Partenaire[] = [
     description: "Groupement interrégional de recherche clinique et d'innovation",
   },
 ];
+
+export const partenaires = editorialSettings<Partenaire[]>("partenaires", fallbackPartenaires);

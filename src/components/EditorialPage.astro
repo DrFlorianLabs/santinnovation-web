@@ -1,0 +1,20 @@
+---
+import { withBase } from "@lib/paths";
+import { getCollection } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from './PageHero.astro';
+import EditorialContent from './EditorialContent.astro';
+interface Props { slug: string; title: string; description: string; eyebrow?: string; }
+const { slug, title, description, eyebrow } = Astro.props;
+const entry = (await getCollection('pages')).find((page) => page.id === slug);
+---
+<BaseLayout title={entry?.data.titre ?? title} description={entry?.data.resume ?? description}>
+  <PageHero title={entry?.data.titre ?? title} description={entry?.data.resume ?? description} eyebrow={eyebrow} />
+  <section class="py-12 md:py-16">
+    <div class="container-site max-w-prose">
+      {entry?.data.image && <figure class="mb-8"><img src={withBase(entry.data.image)} alt={entry.data.imageAlt ?? ""} width="960" height="540" class="w-full rounded-2xl" />{entry.data.imageCredit && <figcaption class="mt-2 text-sm text-ink-500">Crédit : {entry.data.imageCredit}</figcaption>}</figure>}
+      <EditorialContent entry={entry}><slot /></EditorialContent>
+    </div>
+    <div class="container-site"><slot name="after" /></div>
+  </section>
+</BaseLayout>

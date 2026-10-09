@@ -4,7 +4,7 @@ adresse: "32 chemin de Vieilley"
 codePostal: "25000"
 ville: "Besançon"
 secteur: "Les Orchamps"
-accesPMR: true
+accessibilite: "Conditions d’accès à confirmer auprès du cabinet avant votre déplacement."
 itineraireUrl: "https://www.google.com/maps/search/?api=1&query=32%20chemin%20de%20Vieilley%2C%20Besan%C3%A7on"
 ordre: 3
 ---

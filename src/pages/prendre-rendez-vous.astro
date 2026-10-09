@@ -1,5 +1,7 @@
 ---
+import { withBase } from "@lib/paths";
 import { getCollection } from "astro:content";
+import EditorialContent from "@components/EditorialContent.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import PageHero from "@components/PageHero.astro";
 import DoctolibButton from "@components/DoctolibButton.astro";
@@ -8,6 +10,7 @@ import EmergencyNotice from "@components/EmergencyNotice.astro";
 const pros = (await getCollection("professionnels"))
   .filter((p) => p.data.visible && p.data.profession !== "a-confirmer")
   .sort((a, b) => a.data.ordre - b.data.ordre);
+const page = (await getCollection("pages")).find(p => p.id === "prendre-rendez-vous");
 ---
 
 <BaseLayout
@@ -26,17 +29,18 @@ const pros = (await getCollection("professionnels"))
 
   <section class="py-12 md:py-16">
     <div class="container-site">
+      {page && <div class="mb-8 max-w-prose"><EditorialContent entry={page} /></div>}
       <h2 class="text-2xl font-semibold sm:text-3xl">Directement avec un professionnel</h2>
       {/* grid-cols-1 explicite : la piste implicite prendrait sinon la largeur
           min-content des libellés truncate (débordement mobile, AUD-013). */}
       <ul class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
         {
           pros.map((pro) => (
-            <li class="surface flex items-center gap-4 p-4">
+            <li class="surface flex flex-wrap items-center gap-4 p-4">
               <span class="min-w-0 flex-1">
-                <span class="block truncate font-display font-semibold text-blue-900">
+                <a href={withBase(`/equipe/${pro.id}`)} class="block font-display font-semibold text-blue-900 hover:underline">
                   {pro.data.titreAffiche}
-                </span>
+                </a>
                 <span class="block text-sm text-teal-600">{pro.data.professionLabel}</span>
               </span>
               <DoctolibButton
@@ -49,8 +53,8 @@ const pros = (await getCollection("professionnels"))
         }
       </ul>
       <p class="mt-5 text-sm text-ink-500">
-        « Via l'établissement » : ce professionnel n'a pas encore d'agenda en ligne
-        individuel ; la fiche Sant'Innovation vous oriente vers le bon créneau.
+        « Via l’établissement » ouvre la fiche collective lorsque le lien individuel
+        n’est pas renseigné. Vérifiez le professionnel et le lieu avant de réserver.
       </p>
 
       <div class="mt-12">

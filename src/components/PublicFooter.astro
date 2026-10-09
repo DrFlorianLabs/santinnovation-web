@@ -30,7 +30,7 @@ const year = new Date().getFullYear();
       <div class="flex items-center gap-2.5 text-white" style="--logo-house: #ffffff">
         <Logo size={44} static />
         <span class="font-display text-lg font-semibold">
-          Sant'<span class="text-brand-gradient">Innovation</span>
+          {site.nomCourt === "Sant'Innovation" ? <>Sant'<span class="text-brand-gradient">Innovation</span></> : site.nomCourt}
         </span>
       </div>
       <p class="mt-3 max-w-xs text-sm text-white/70">{site.baseline}</p>
@@ -67,9 +67,9 @@ const year = new Date().getFullYear();
                 <Icon name="map-pin" size={16} />
               </span>
               <span>
-                {l.data.nom}
+                <a href={withBase(`/lieux/${l.id}`)} class="hover:underline">{l.data.nom}</a>
                 <br />
-                <span class="text-white/55">
+                <span class="text-white/75">
                   {l.data.adresse}, {l.data.codePostal} {l.data.ville}
                 </span>
               </span>
@@ -84,16 +84,18 @@ const year = new Date().getFullYear();
         Contact
       </h2>
       <ul class="mt-4 space-y-2 text-sm text-white/70">
-        <li>
+        {site.contact.general && <li>
           <a href={`mailto:${site.contact.general}`} class="hover:text-teal-500">
             {site.contact.general}
           </a>
-        </li>
-        <li>
+        </li>}
+        {site.contact.secretariat && <li>
           <a href={`mailto:${site.contact.secretariat}`} class="hover:text-teal-500">
             {site.contact.secretariat}
           </a>
-        </li>
+        </li>}
+        {site.telephone && <li><a href={`tel:${site.telephone.replace(/[^+0-9]/g, "")}`} class="hover:underline">{site.telephone}</a></li>}
+        <li><a href={withBase("/contact")} class="underline underline-offset-4">Informations de contact</a></li>
       </ul>
       <div
         class="mt-5 flex items-start gap-2 rounded-xl bg-white/5 p-3 text-xs text-white/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] ring-1 ring-white/10"
@@ -106,7 +108,7 @@ const year = new Date().getFullYear();
 
   <div class="relative border-t border-white/10">
     <div
-      class="container-site flex flex-col items-center justify-between gap-3 py-5 text-xs text-white/50 sm:flex-row"
+      class="container-site flex flex-col items-center justify-between gap-3 py-5 text-xs text-white/75 sm:flex-row"
     >
       <p>© {year} {site.nomCourt}. Tous droits réservés.</p>
       <ul class="flex flex-wrap items-center gap-4">
