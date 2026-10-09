@@ -1,0 +1,17 @@
+# Exit failure is an alert signal for the operator's existing monitoring system.
+# No e-mail, message, remote request or notification provider is configured here.
+[Unit]
+Description=SantInnovation publication and backup freshness probe
+
+[Service]
+Type=oneshot
+User=santinnovation
+Group=santinnovation
+WorkingDirectory=/srv/santinnovation/app
+Environment=CMS_DATA_DIR=/srv/santinnovation/cms-data
+Environment=BACKUP_DIR=/srv/santinnovation/backups
+ExecStart=/usr/bin/node ops/check-health.mjs
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true

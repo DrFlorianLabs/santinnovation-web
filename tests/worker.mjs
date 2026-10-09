@@ -1,7 +1,8 @@
+import { testCMSURL, testCredentials } from './helpers/runtime.mjs';
 import { spawn } from 'node:child_process';
 import { readFile, readdir, writeFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
-const base='http://127.0.0.1:3001';const credentials=JSON.parse(await readFile('cms/.local/identifiants-locaux.json','utf8'));
+const base=testCMSURL;const credentials=await testCredentials();
 const auth=await fetch(base+'/api/users/login',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(credentials)});const {token}=await auth.json();
 const headers={'content-type':'application/json',Authorization:`JWT ${token}`,Origin:base};
 const fetchDoc=async(slug)=>(await (await fetch(`${base}/api/${slug}`,{headers})).json()).docs[0];

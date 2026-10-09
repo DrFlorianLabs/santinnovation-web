@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.1.0",
   "private": true,
-  "description": "Site public des Maisons de Sant\u00e9 Pluriprofessionnelles Sant'Innovation (Besan\u00e7on).",
+  "description": "Site public des Maisons de Santé Pluriprofessionnelles Sant'Innovation (Besançon).",
   "engines": {
     "node": ">=24"
   },
@@ -19,10 +19,24 @@
     "publish:local": "node scripts/release.mjs",
     "publication:watch": "node scripts/watch-publication.mjs",
     "serve:local": "node scripts/serve-local.mjs",
-    "verify": "npm run test:unit && npm run check && npm run build",
+    "verify": "npm run test:unit && npm run check && npm run publish:local",
     "test:admin-ui": "node tests/admin-ui.mjs",
     "test:publication": "node tests/cms-publication.mjs",
-    "test:worker": "node tests/worker.mjs"
+    "test:worker": "node tests/worker.mjs",
+    "build:prototype": "node scripts/build-prototype.mjs",
+    "test:prototype": "node tests/prototype.mjs",
+    "rollback": "node scripts/rollback.mjs",
+    "releases:prune": "node scripts/releases-prune.mjs",
+    "test:publication-robustness": "node --test tests/publication-robustness.test.mjs",
+    "backup": "node ops/backup.mjs",
+    "restore": "node ops/restore.mjs",
+    "test:prototype-browser": "node tests/prototype-browser.mjs",
+    "test:dashboard": "node tests/publication-dashboard.mjs",
+    "test:publication-status-ui": "node tests/publication-robustness-ui.mjs",
+    "backups:rotate": "node ops/rotate-backups.mjs",
+    "health": "node ops/check-health.mjs",
+    "test:ops": "node --test tests/ops*.test.mjs",
+    "scan:public": "node scripts/scan-public.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.2",

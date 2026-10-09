@@ -1,0 +1,33 @@
+# Linux/VPS reference, NOT OVHcloud Web Pro shared hosting. Do not enable as-is.
+[Unit]
+Description=SantInnovation private editorial CMS
+After=network.target
+
+[Service]
+Type=simple
+User=santinnovation
+Group=santinnovation
+WorkingDirectory=/srv/santinnovation/app/cms
+Environment=NODE_ENV=production
+Environment=CMS_DATA_DIR=/srv/santinnovation/cms-data
+Environment=CMS_SERVER_URL=https://admin.example.invalid
+EnvironmentFile=/etc/santinnovation/cms.env
+# Node 24 LTS and built .next directory are prerequisites. Bound to loopback only.
+ExecStart=/usr/bin/node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3001
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+UMask=0007
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+ReadWritePaths=/srv/santinnovation/cms-data /srv/santinnovation/app/cms/.next/cache
+
+[Install]
+WantedBy=multi-user.target

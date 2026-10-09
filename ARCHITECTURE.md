@@ -31,10 +31,10 @@ Brouillons et versions sont natifs Payload. Aperçu distinct authentifié, rendu
 6. Seuls champs autorisés sortent dans la projection. Rich text nettoyé ; pas de scripts, HTML arbitraire ni média embarqué privé. Images par champs typés.
 7. `cms/.local`, `.local`, `.releases` et le dépôt ne sont jamais racines web. Seul `.local/site-current` est servi. Les builds précédents restent privés.
 8. Sources `/pro` déplacées vers `src/pro/demo`, conservées mais non routées. Aucune sécurité simulée n’est proposée au public.
-9. GitHub Actions fait des contrôles, aucun déploiement automatique.
+9. GitHub Actions contrôle le code puis déploie uniquement un prototype synthétique marqué et non indexable, sur `main`, selon la nouvelle autorisation utilisateur. Le CMS et ses données ne sont pas déployés sur GitHub Pages.
 
 ## Hébergement et limites
 
-VPS OVHcloud proposé, non validé contractuellement. Le même VPS peut servir Astro et héberger les processus CMS/worker sous utilisateurs dédiés, derrière HTTPS. Le mutualisé seul n’exécute pas Payload. La maintenance éditoriale est sans code, l’exploitation reste technique : supervision, TLS, mises à jour, stockage, migrations, sauvegarde et restauration.
+L’utilisateur a souscrit **OVHcloud Hébergement Web Pro**, offre mutualisée. Elle est la cible confirmée du site Astro statique. L’exécution de Payload/Next et du worker Node persistants sur cet abonnement n’est pas établie ; l’architecture d’administration distante reste à adapter ou à arbitrer. Les modèles de serveur Node/Linux sont des références testables, sans achat ni déploiement, et ne décrivent pas les capacités du mutualisé. La maintenance éditoriale est sans code, l’exploitation reste technique : supervision, TLS, mises à jour, stockage, migrations, sauvegarde et restauration.
 
 Publication nominale : prochain cycle de 60 s + build. Une erreur conserve l’ancien site et affiche un statut d’échec ; une panne peut retarder une dépublication/fin d’affichage. Pas de cache persistant côté public en V1. La version distante, TLS, reverse proxy, protection de préproduction, sauvegarde et reprise doivent être testés dans l’environnement retenu.

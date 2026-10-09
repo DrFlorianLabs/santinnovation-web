@@ -1,0 +1,98 @@
+# REFERENCE ONLY: Linux with root access and persistent Node processes.
+# NOT installable on the purchased OVHcloud Web Pro shared hosting offer.
+# No host, certificate, port or access rule has been deployed or validated remotely.
+# Include this file inside nginx's http {} block AFTER replacing example.invalid
+# and certificate paths. Keep administration network-restricted before any start.
+
+map $uri $sant_public_cache {
+    default "no-cache, max-age=0, must-revalidate";
+    ~^/_astro/ "public, max-age=31536000, immutable";
+}
+limit_req_zone $binary_remote_addr zone=sant_cms_login:10m rate=5r/m;
+limit_req_zone $binary_remote_addr zone=sant_cms_general:10m rate=20r/s;
+
+server {
+    listen 443 ssl;
+    server_name site.example.invalid;
+    ssl_certificate /etc/santinnovation/tls/site.fullchain.pem;
+    ssl_certificate_key /etc/santinnovation/tls/site.key.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    # The static service runs as the application's UID: nginx cannot traverse
+    # its private 0700 release directories. The service's ONLY root is the
+    # complete site-current release, never the repository or CMS data.
+    server_tokens off;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.basemaps.cartocdn.com; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests" always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy strict-origin-when-cross-origin always;
+    add_header Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()" always;
+    add_header X-Frame-Options DENY always;
+    add_header Cache-Control $sant_public_cache always;
+    proxy_hide_header Cache-Control;
+    proxy_hide_header Content-Security-Policy;
+    proxy_hide_header X-Content-Type-Options;
+    proxy_hide_header X-Powered-By;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto https;
+    proxy_set_header X-Forwarded-For $remote_addr;
+    gzip on;
+    gzip_vary on;
+    gzip_types text/plain text/css application/javascript application/json application/xml image/svg+xml;
+    # Every dot-file, including .htaccess, remains inaccessible through HTTP.
+    location ~ /\. { deny all; }
+    location / { proxy_pass http://127.0.0.1:4321; }
+}
+
+server {
+    # Loopback binding AND deny-all by default: the CMS is never Internet-open
+    # merely by installing this template. A reviewed VPN/IP policy is mandatory.
+    listen 127.0.0.1:8443 ssl;
+    server_name admin.example.invalid;
+    ssl_certificate /etc/santinnovation/tls/admin.fullchain.pem;
+    ssl_certificate_key /etc/santinnovation/tls/admin.key.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    allow 127.0.0.1;
+    allow ::1;
+    # Allow ONLY an approved VPN subnet or explicit operator source IPs here.
+    # An alternative is a reviewed SSO access proxy with MFA for ALL routes.
+    deny all;
+    satisfy all;
+    server_tokens off;
+    client_max_body_size 6m;
+    limit_req_status 429;
+    limit_req zone=sant_cms_general burst=80 nodelay;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    # Next currently requires inline bootstrap scripts: nonce-based hardening is
+    # not claimed by this reference. Browser compatibility must be tested first.
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header X-Frame-Options DENY always;
+    add_header Referrer-Policy no-referrer always;
+    add_header X-Robots-Tag "noindex, nofollow, noarchive" always;
+    add_header Cache-Control "private, no-store" always;
+    proxy_hide_header Cache-Control;
+    proxy_hide_header Content-Security-Policy;
+    proxy_hide_header X-Powered-By;
+    proxy_hide_header X-Frame-Options;
+    proxy_hide_header X-Content-Type-Options;
+    proxy_hide_header Referrer-Policy;
+    proxy_hide_header X-Robots-Tag;
+    proxy_cache off;
+    proxy_no_cache 1;
+    proxy_buffering off;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto https;
+    # Overwrite untrusted incoming forwarding headers, do not append them.
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_set_header X-Real-IP $remote_addr;
+    location ~ /\. { deny all; }
+    location ~ ^/api/users/(login|forgot-password|reset-password)/?$ {
+        limit_req zone=sant_cms_login burst=5 nodelay;
+        proxy_pass http://127.0.0.1:3001;
+    }
+    # Restriction covers /admin, /api, /apercu AND framework assets/endpoints.
+    location / { proxy_pass http://127.0.0.1:3001; }
+}

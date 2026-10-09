@@ -43,3 +43,10 @@ test('global external links and logos reject executable URLs',()=>{
 test('missing legal approval blocks complete publication, never falls back to historical text',()=>{
   const f=fixture();f.pages[0].validationLegale=false;assert.throws(()=>projectContent(f),/réglementaire/);
 });
+
+test('publication errors identify the editable record without dumping content',()=>{
+  const f=fixture();f.pages[0].validationLegale=false;
+  assert.throws(()=>projectContent(f),error=>error.code==='LEGAL_VALIDATION_REQUIRED' && error.details.collection==='pages' && error.details.slug===f.pages[0].slug);
+  f.pages[0].validationLegale=true;f.professionnels[0].lieux=['missing'];
+  assert.throws(()=>projectContent(f),error=>error.code==='LOCATION_UNAVAILABLE' && error.details.collection==='professionnels' && error.details.slug===f.professionnels[0].slug);
+});

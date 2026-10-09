@@ -1,6 +1,8 @@
 node_modules/
 .next/
 .next-test/
+.next-test-production/
+.next-root-test/
 .local/
 .env*
 !.env.example

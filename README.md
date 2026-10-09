@@ -1,6 +1,6 @@
 # Sant’Innovation — site public et administration
 
-Candidat local à la recette indépendante. Astro est conservé ; Payload fournit une administration réelle séparée. Aucun compte patient, formulaire médical, GED ni automatisation de réseaux sociaux. Aucun déploiement effectué.
+Astro fournit le site statique ; Payload fournit une administration réelle séparée. Aucun compte patient, formulaire médical, GED ni automatisation de réseaux sociaux. Le prototype public GitHub Pages est autorisé pour les présentations à l’équipe ; il est construit exclusivement depuis des données fictives, avec un bandeau de démonstration et `noindex`. Le CMS et les contenus réels restent privés.
 
 ## Démarrer la recette synthétique
 
@@ -26,7 +26,7 @@ npm run publication:watch
 
 Le public local est `http://127.0.0.1:4321`. Le worker vérifie chaque minute la projection publique ; une sauvegarde de brouillon ne change pas cette projection. Il génère une sortie neuve puis bascule le lien local seulement si tout réussit. Statut visible dans le tableau de bord CMS. Aucun push, transfert externe ou déploiement n’est effectué par ces commandes.
 
-`npm run dev` / `npm run build` sans snapshot restent disponibles pour examiner les sources historiques : **ce mode n’est pas une livraison de contenu validée**. `npm run publish:local` exige les informations générales publiées et les trois rubriques réglementaires publiées et validées dans le CMS. La production utilise ce chemin contrôlé, après validation.
+`npm run build` refuse désormais de fonctionner sans snapshot. `ALLOW_HISTORICAL_BUILD=1 npm run build` conserve un mode historique explicitement marqué et non indexable ; `npm run dev` reste un examen local de ces sources. **Ce mode ne doit pas être déployé.** `npm run publish:local` exige les informations générales publiées et les trois rubriques réglementaires publiées et validées dans le CMS. La production utilise ce chemin contrôlé, après validation.
 
 ## Administration quotidienne
 
@@ -37,7 +37,7 @@ Le public local est `http://127.0.0.1:4321`. Le worker vérifie chaque minute la
 ```sh
 npm run test:unit
 npm run check
-npm run build
+npm run publish:local
 npm --prefix cms run check
 npm --prefix cms run build
 npm --prefix cms test -- --http
@@ -52,7 +52,7 @@ npm audit
 npm --prefix cms audit
 ```
 
-Les tests CMS utilisent une base neuve synthétique à chaque exécution. Les tests navigateur utilisent la release locale synthétique. Le CI ne déploie rien.
+Les tests CMS utilisent une base neuve synthétique à chaque exécution. Les tests navigateur utilisent la release locale synthétique. La CI contrôle le code avant de déployer uniquement le prototype fictif GitHub Pages sur un push autorisé vers `main`. Aucun déploiement OVH ni accès à un CMS distant dans ce workflow.
 
 ## Fichiers faisant autorité
 
@@ -70,4 +70,10 @@ Les tests CMS utilisent une base neuve synthétique à chaque exécution. Les te
 
 [Architecture](ARCHITECTURE.md) · [Sécurité](SECURITY.md) · [Choix CMS](docs/adr/0003-administration-payload-astro.md) · [Vérification des contenus](docs/VERIFICATION_CONTENUS.md) · [Maintenance](docs/MAINTENANCE.md) · [Déploiement et retour arrière](docs/DEPLOIEMENT_RETOUR_ARRIERE.md) · [Livraison](LIVRAISON_SITE_MSP.md).
 
-L’hébergement OVHcloud est privilégié mais non commandé/configuré. Payload et le worker nécessitent un serveur Node persistant : le mutualisé statique seul ne suffit pas. Les contenus réels, mentions légales, accès, budget et ouverture publique restent soumis à validation.
+L’utilisateur a confirmé l’achat d’un **Hébergement Web Pro OVHcloud** le 9 octobre 2026. Cette offre reste la cible du site public statique. Payload et son worker nécessitent un environnement Node persistant : leur fonctionnement sur cette offre mutualisée n’est pas établi et les modèles VPS fournis ne s’y appliquent pas. Aucun achat supplémentaire ni déploiement OVH n’est engagé. Le choix d’une administration compatible avec l’offre souscrite doit être résolu avant la mise en production complète. Voir [la décision actualisée](docs/adr/0004-prototype-github-et-ovh-pro.md).
+
+## Prototype et reprise après incident
+
+`npm run build:prototype` crée une base fictive neuve et une sortie `prototype-dist/` ; `npm run test:prototype` vérifie le bandeau, les liens, l’absence de routes privées et de marqueurs de brouillon. Pour conserver une sortie précédente, choisir un dossier neuf avec `PROTOTYPE_OUT_DIR`. La commande refuse d’écraser un dossier existant.
+
+Publication robuste, retour arrière, sauvegardes chiffrées et restauration sont documentés dans [la maintenance](docs/MAINTENANCE.md), [les outils d’exploitation](ops/README.md) et [le rapport de corrections](docs/recette/CORRECTIONS_AUDIT_2026-10-09.md). Les opérations destructives restent explicites ; une restauration ne remplace jamais une base existante.

@@ -1,0 +1,31 @@
+# Linux/VPS reference, NOT OVHcloud Web Pro shared hosting. Do not enable as-is.
+# Same dedicated UID as CMS/worker/backup: release paths are private mode 0700.
+# Separation is logical, not an OS security boundary between those processes.
+[Unit]
+Description=SantInnovation public static release on loopback
+After=network.target
+
+[Service]
+Type=simple
+User=santinnovation
+Group=santinnovation
+WorkingDirectory=/srv/santinnovation/app
+Environment=NODE_ENV=production
+Environment=PORT=4321
+# ONLY this root is served. No CMS environment or secrets are passed.
+ExecStart=/usr/bin/node scripts/serve-local.mjs /srv/santinnovation/app/.local/site-current
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+
+[Install]
+WantedBy=multi-user.target

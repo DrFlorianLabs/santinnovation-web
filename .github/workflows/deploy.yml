@@ -1,9 +1,19 @@
-name: Qualité locale et CI (aucun déploiement)
+name: Vérifications et prototype GitHub Pages
 on:
+  push:
+    branches: [main]
+    # Recording deployment evidence does not change the deployed application.
+    paths-ignore:
+      - LIVRAISON_SITE_MSP.md
+      - docs/recette/CORRECTIONS_AUDIT_2026-10-09.md
+      - docs/recette/corrections-resultats-2026-10-09.json
   pull_request:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: site-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -13,17 +23,54 @@ jobs:
         with:
           node-version: 24
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            cms/package-lock.json
       - run: npm ci
       - run: npm --prefix cms ci
       - run: npm --prefix cms run init
       - run: npm --prefix cms run seed:demo
       - run: npm --prefix cms run check
       - run: npm --prefix cms test -- --http
-      - run: npm --prefix cms run build
+      - run: npm --prefix cms test -- --prod
       - run: npm run check
       - run: npm run test:unit
       - run: npm run publish:local
+      - run: node scripts/scan-public.mjs
       - run: npx playwright install --with-deps chromium
+      - run: npm --prefix cms run test:account-ui
       - run: npm run test:browser
+      - run: npm run test:publication-status-ui
       - run: npm audit --audit-level=moderate
       - run: npm --prefix cms audit --audit-level=moderate
+  prototype:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            cms/package-lock.json
+      - run: npm ci
+      - run: npm --prefix cms ci
+      # Never reads editorial data or credentials from a remote CMS.
+      - run: npm run build:prototype
+      - run: npm run test:prototype
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: prototype-dist
+      - id: deployment
+        uses: actions/deploy-pages@v4

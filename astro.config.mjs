@@ -11,7 +11,16 @@ export default defineConfig({
   outDir: process.env.BUILD_OUT_DIR || './dist',
   trailingSlash: 'always',
   prefetch: false,
-  integrations: [mdx(), sitemap()],
+  integrations: [{
+    name: 'require-published-snapshot',
+    hooks: {
+      'astro:config:setup': ({ command }) => {
+        if (command === 'build' && !process.env.CMS_CONTENT_DIR && process.env.ALLOW_HISTORICAL_BUILD !== '1') {
+          throw new Error('Construction refusée sans instantané publié. Utiliser npm run publish:local ou npm run build:prototype. Pour examiner l’historique : ALLOW_HISTORICAL_BUILD=1.');
+        }
+      },
+    },
+  }, mdx(), sitemap()],
   build: { inlineStylesheets: 'never' },
   vite: { plugins: [tailwindcss()], build: { assetsInlineLimit: 0 } },
 });

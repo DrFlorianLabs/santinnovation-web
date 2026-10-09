@@ -13,6 +13,7 @@
     "check": "tsc --noEmit",
     "init": "node --import tsx scripts/init.ts",
     "test": "node --import tsx scripts/test.ts",
+    "test:account-ui": "node --import tsx scripts/test-account-ui.ts",
     "export": "node --import tsx scripts/export.ts",
     "generate:importmap": "payload generate:importmap",
     "generate:types": "payload generate:types",

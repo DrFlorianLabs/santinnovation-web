@@ -1,0 +1,31 @@
+# Linux/VPS reference, NOT OVHcloud Web Pro shared hosting. Do not enable as-is.
+[Unit]
+Description=SantInnovation encrypted CMS and static site backup
+
+[Service]
+Type=oneshot
+User=santinnovation
+Group=santinnovation
+WorkingDirectory=/srv/santinnovation/app
+Environment=NODE_ENV=production
+Environment=CMS_DATA_DIR=/srv/santinnovation/cms-data
+Environment=PUBLICATION_ROOT=/srv/santinnovation/app
+Environment=BACKUP_DIR=/srv/santinnovation/backups
+EnvironmentFile=/etc/santinnovation/cms.env
+# BACKUP_KEY_HEX is generated out of band and escrowed separately, never in Git.
+EnvironmentFile=/etc/santinnovation/backup.env
+ExecStart=/usr/bin/node ops/backup.mjs
+TimeoutStartSec=20min
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+# The connection is read-only, but SQLite WAL shared-memory locking can need
+# writable sidecars. Backup never intentionally edits the source database.
+ReadWritePaths=/srv/santinnovation/backups /srv/santinnovation/cms-data

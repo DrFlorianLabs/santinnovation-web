@@ -6,6 +6,8 @@ import { randomBytes } from 'node:crypto'
 import { spawn } from 'node:child_process'
 
 const cmsRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
+const production = process.argv.includes('--prod')
+if (production) Object.assign(process.env, { NODE_ENV: 'production' })
 const testDir = path.join(cmsRoot, '.local', 'tests', String(Date.now()))
 await fs.mkdir(testDir, { recursive: true, mode: 0o700 })
 process.env.CMS_DATA_DIR = testDir
@@ -15,14 +17,18 @@ process.env.CMS_SERVER_URL = 'http://127.0.0.1:3111'
 const { getPayload, restoreVersionOperation, createLocalReq } = await import('payload')
 const { default: config } = await import('../src/payload.config')
 const { exportSnapshot } = await import('./export')
+const { hardeningLocal, hardeningInit, runChild } = await import('./test-hardening')
 const payload = await getPayload({ config })
+const initialTimeout = await (payload.db as any).client.execute('PRAGMA busy_timeout')
+assert.equal(Number(initialTimeout.rows[0].timeout), 5000)
+if (production) await payload.db.migrate()
 const results: { scenario: string; result: string }[] = []
 const ok = (scenario: string) => { results.push({ scenario, result: 'pass' }); console.log(`PASS ${scenario}`) }
 const adminPassword = randomBytes(24).toString('base64url')
 const admin = await payload.create({ collection: 'users', overrideAccess: true, data: { email: 'admin-test@example.invalid', password: adminPassword, nom: 'Responsable fictif', role: 'admin' } })
 await fs.writeFile(path.join(testDir, 'identifiants-locaux.json'), JSON.stringify({ email: admin.email, password: adminPassword }), { mode: 0o600 })
 const adminUser = { ...admin, collection: 'users' as const }
-const editorPassword = randomBytes(24).toString('base64url')
+let editorPassword = randomBytes(24).toString('base64url')
 const editor = await payload.create({ collection: 'users', user: adminUser, overrideAccess: false, data: { email: 'editeur-test@example.invalid', password: editorPassword, nom: 'Éditeur fictif', role: 'editor' } })
 const editorUser = { ...editor, collection: 'users' as const }
 const create = (collection: any, data: any) => payload.create({ collection, data, overrideAccess: false, user: adminUser }) as Promise<any>
@@ -109,13 +115,20 @@ try {
   const restoredPlace = await payload.findByID({ collection: 'lieux', id: lieu1.id, draft: true, user: adminUser, overrideAccess: false })
   assert.equal(restoredPlace.adresse, '1 rue de démonstration'); assert.equal(restoredPlace._status, 'draft'); assert.equal(restoredPlace.coordonneesVerifiees, false)
   ok('E étendu — restauration adresse et mentions en brouillon avec nouvelle validation requise')
-  await update('lieux', lieu2.id, { visible: false, _status: 'published' })
-  await assert.rejects(snapshot, /Lieu non publiable/)
-  await update('lieux', lieu2.id, { visible: true, _status: 'published' })
-  ok('Relation vers établissement masqué bloque l’export sans produire de snapshot incohérent')
+  await assert.rejects(() => update('lieux', lieu2.id, { visible: false, _status: 'published' }), /fiche publiée/)
+  ok('Relation publiée bloque le masquage avant écriture en base')
+  editorPassword = await hardeningLocal(payload, adminUser, editorUser, testDir, ok)
+  await hardeningInit(cmsRoot, testDir, ok)
   await snapshot()
-  if (process.argv.includes('--http')) {
-    const child = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'dev', '--webpack', '--hostname', '127.0.0.1', '--port', '3111'], { cwd: cmsRoot, env: { ...process.env, NODE_ENV: 'development', CMS_TEST_DIST: '1' }, stdio: ['ignore', 'pipe', 'pipe'] })
+  if (process.argv.includes('--http') || production) {
+    const serverEnv: NodeJS.ProcessEnv = { ...process.env, NODE_ENV: production ? 'production' : 'development', CMS_TEST_DIST: production ? 'production' : '1', CMS_DIST_DIR: undefined }
+    if (production) {
+      const build = await runChild(['node_modules/next/dist/bin/next', 'build', '--webpack'], cmsRoot, serverEnv)
+      await fs.writeFile(path.join(testDir, 'production-build.log'), build.output)
+      assert.equal(build.code, 0, 'Build Next de production isolé doit réussir (log privé dans le test)')
+      ok('Production — migration versionnée et next build réel avant next start')
+    }
+    const child = spawn(process.execPath, ['node_modules/next/dist/bin/next', production ? 'start' : 'dev', ...production ? [] : ['--webpack'], '--hostname', '127.0.0.1', '--port', '3111'], { cwd: cmsRoot, env: serverEnv, stdio: ['ignore', 'pipe', 'pipe'] })
     const logs: string[] = []
     child.stdout.on('data', b => logs.push(String(b))); child.stderr.on('data', b => logs.push(String(b)))
     const base = 'http://127.0.0.1:3111'
@@ -123,13 +136,24 @@ try {
       let ready = false
       for (let i = 0; i < 90; i++) { try { const r = await fetch(`${base}/admin/login`); if (r.status === 200) { ready = true; break } } catch {} await new Promise(resolve => setTimeout(resolve, 500)) }
       assert.ok(ready, 'Serveur CMS HTTP doit démarrer')
-      const anon = ['/api/actualites', `/api/actualites/${article.id}?draft=true`, '/api/actualites/versions', '/api/medias', String(media.url).replace(base, ''), '/api/users']
+      const anon = ['/api/access', '/api/actualites', `/api/actualites/${article.id}?draft=true`, '/api/actualites/versions', '/api/medias', String(media.url).replace(base, ''), '/api/users']
       for (const url of anon) { const r = await fetch(new URL(url, base)); assert.ok([401, 403, 404].includes(r.status), `Anonyme refusé ${url} (${r.status})`) }
       const preview = await fetch(`${base}/apercu/actualites/${article.id}`, { redirect: 'manual' }); assert.ok([302, 303, 307, 308].includes(preview.status)); assert.match(preview.headers.get('location') || '', /admin\/login/)
       const adminPage = await fetch(`${base}/admin`, { redirect: 'manual' }); if (adminPage.status === 200) { const html = await adminPage.text(); assert.match(html, /admin\/login/); assert.doesNotMatch(html, /Responsable fictif/) } else assert.ok([302, 303, 307, 308].includes(adminPage.status))
       const login = await fetch(`${base}/api/users/login`, { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: base }, body: JSON.stringify({ email: admin.email, password: adminPassword }) })
       assert.equal(login.status, 200); const { token } = await login.json() as any
       const authHeaders = { Authorization: `JWT ${token}` }
+      assert.equal((await fetch(`${base}/api/access`, { headers: authHeaders })).status, 200)
+      const recoveryResults = []
+      for (const email of [admin.email, 'absent-http@example.invalid']) {
+        const response = await fetch(`${base}/api/users/forgot-password`, { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: base }, body: JSON.stringify({ email }) })
+        recoveryResults.push({ status: response.status, body: await response.text() })
+      }
+      assert.deepEqual(recoveryResults[0], recoveryResults[1]); assert.equal(recoveryResults[0].status, 200); assert.doesNotMatch(recoveryResults[0].body, /token|resetPasswordToken/)
+      const recoveryPage = await fetch(`${base}/admin/forgot`); assert.equal(recoveryPage.status, 200)
+      const recoveryHtml = await recoveryPage.text(); assert.match(recoveryHtml, /récupération par courriel est désactivée/); assert.doesNotMatch(recoveryHtml, /<form[ >]|name="email"/)
+      const resetPage = await fetch(`${base}/admin/reset/jeton-fictif-de-test`); assert.equal(resetPage.status, 200); assert.match(await resetPage.text(), /récupération par courriel est désactivée/)
+      ok('M03 HTTP — récupération existant/absent identique, /api/access privé puis disponible authentifié')
       const draft = await fetch(`${base}/api/actualites/${article.id}?draft=true`, { headers: authHeaders }); assert.equal(draft.status, 200)
       const imageResponse = await fetch(new URL(String(media.url), base), { headers: authHeaders }); assert.equal(imageResponse.status, 200)
       const editScreen = await fetch(`${base}/admin/collections/actualites/${article.id}`, { headers: authHeaders }); assert.equal(editScreen.status, 200); const editHtml = await editScreen.text(); assert.match(editHtml, /Aperçu privé/); assert.match(editHtml, /private-preview-link/)
@@ -143,7 +167,27 @@ try {
       const editorLogin = await fetch(`${base}/api/users/login`, { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: base }, body: JSON.stringify({ email: editor.email, password: editorPassword }) }); assert.equal(editorLogin.status, 200)
       const { token: editorToken } = await editorLogin.json() as any
       const editorHeaders = { Authorization: `JWT ${editorToken}`, 'Content-Type': 'application/json', Origin: base }
+      const deniedUnlock = await fetch(`${base}/api/users/unlock`, { method: 'POST', headers: editorHeaders, body: JSON.stringify({ email: editor.email }) }); assert.equal(deniedUnlock.status, 403)
       const patch = (collection: string, id: string | number, data: any, headers = { ...authHeaders, 'Content-Type': 'application/json', Origin: base }, query = '') => fetch(`${base}/api/${collection}/${id}${query}`, { method: 'PATCH', headers, body: JSON.stringify(data) })
+      const heldTransaction = await (payload.db as any).client.transaction('write')
+      try {
+        const conflict = await patch('actualites', article.id, { titre: 'Conflit fictif non enregistré', _status: 'published' })
+        assert.equal(conflict.status, 409); const message = await conflict.text(); assert.match(message, /réessayer/); assert.doesNotMatch(message, /SQLITE|stack|\/Users\/|cms\.sqlite/)
+      } finally { await heldTransaction.rollback() }
+      ok('SQLite HTTP — verrou concurrent réel : réponse 409 compréhensible, aucune donnée technique exposée')
+      for (const data of [{ _status: 'draft' }, { visible: false, _status: 'published' }, { archive: true, _status: 'published' }, { finAffichage: '2099-01-01T00:00:00Z', _status: 'published' }]) assert.equal((await patch('lieux', lieu2.id, data)).status, 400)
+      ok('M02 HTTP — retrait/masquage/archive/période lieu dépendant refusés')
+      const selfPassword = randomBytes(24).toString('base64url')
+      const ownAccount = await (await fetch(`${base}/api/users/${editor.id}`, { headers: editorHeaders })).json() as any
+      const nativeForm = new FormData(); nativeForm.set('_payload', JSON.stringify({ password: selfPassword, 'confirm-password': selfPassword, nom: editor.nom, email: editor.email, role: editor.role, updatedAt: ownAccount.updatedAt, createdAt: ownAccount.createdAt }))
+      const ownPassword = await fetch(`${base}/api/users/${editor.id}`, { method: 'PATCH', headers: { Authorization: `JWT ${editorToken}`, Origin: base }, body: nativeForm })
+      assert.equal(ownPassword.status, 200)
+      assert.equal((await patch('users', editor.id, { password: selfPassword, 'confirm-password': 'confirmation-fictive-differente' }, editorHeaders)).status, 400)
+      for (const data of [{ role: 'admin' }, { email: 'interdit@example.invalid' }, { nom: 'Autre' }, { loginAttempts: 0 }, { resetPasswordToken: 'fictif' }]) assert.equal((await patch('users', editor.id, { password: selfPassword, ...data }, editorHeaders)).status, 403)
+      assert.equal((await patch('users', admin.id, { password: selfPassword }, editorHeaders)).status, 403)
+      const newLogin = await fetch(`${base}/api/users/login`, { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: base }, body: JSON.stringify({ email: editor.email, password: selfPassword }) }); assert.equal(newLogin.status, 200)
+      const oldLogin = await fetch(`${base}/api/users/login`, { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: base }, body: JSON.stringify({ email: editor.email, password: editorPassword }) }); assert.equal(oldLogin.status, 401)
+      ok('M03 HTTP — mot de passe propre changé, ancien refusé, identité/rôle/champs internes/autre compte refusés')
       // A published legal document with a newer draft must also be protected.
       assert.equal((await patch('pages', legal.id, { titre: 'Modification légale HTTP non validée' }, editorHeaders)).status, 403)
       assert.equal((await patch('pages', legal.id, { slug: 'contact' }, editorHeaders)).status, 400)
@@ -159,7 +203,7 @@ try {
       ok('HTTP renforcé — CSRF cookie refusé, upload SVG refusé, restauration légale en brouillon réussie')
     } finally { child.kill('SIGTERM'); await new Promise(resolve => setTimeout(resolve, 500)); await fs.writeFile(path.join(testDir, 'http-server.log'), logs.join('')) }
   }
-  const report = { at: new Date().toISOString(), data: 'synthetic-only', testDir, snapshot: path.join(testDir, 'bundle.json'), results }
+  const report = { at: new Date().toISOString(), mode: production ? 'production-build-start' : process.argv.includes('--http') ? 'development-http' : 'local', data: 'synthetic-only', testDir, snapshot: path.join(testDir, 'bundle.json'), results }
   await fs.writeFile(path.join(cmsRoot, '.local', 'last-test-report.json'), JSON.stringify(report, null, 2))
   console.log(`${results.length} scénarios réussis. Rapport local : cms/.local/last-test-report.json`)
 } finally { await payload.destroy() }

@@ -32,7 +32,9 @@ const editorial = (await getCollection("pages")).find(p => p.id === slug);
 const actualTitle = editorial?.data.titre ?? title;
 const actualDescription = editorial?.data.resume || description;
 const pageTitle = actualTitle ? `${actualTitle} — ${site.nomCourt}` : `${site.nom}`;
-const canonical = new URL(Astro.url.pathname, site.url).href;
+const canonical = new URL(Astro.url.pathname, Astro.site || site.url).href;
+const prototype = process.env.PUBLIC_DEMO === '1';
+const historical = !process.env.CMS_CONTENT_DIR;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -54,7 +56,7 @@ const jsonLd = {
     <title>{pageTitle}</title>
     <meta name="description" content={actualDescription} />
     <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {(noindex || prototype || historical) && <meta name="robots" content="noindex, nofollow, noarchive" />}
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="fr_FR" />
@@ -65,10 +67,14 @@ const jsonLd = {
     <meta name="twitter:card" content="summary_large_image" />
 
     <meta name="theme-color" content="#12324a" />
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd).replace(/</g, "\\u003c")} />
+    {!prototype && !historical && <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd).replace(/</g, "\\u003c")} />}
   </head>
   <body class="min-h-screen">
     <a href="#contenu" class="skip-link">Aller au contenu</a>
+    {(prototype || historical) && <aside id="prototype-info" aria-label="Version de démonstration" class="border-b border-blue-200 bg-blue-950 px-5 py-3 text-center text-sm text-white">
+      <strong>{prototype ? 'Prototype Sant’Innovation — présentation à l’équipe' : 'Version de démonstration non validée'}</strong>
+      <p>{prototype ? 'Les professionnels, lieux et actualités sont fictifs. Aucun rendez-vous ni demande de soins sur ce prototype.' : 'Informations historiques non validées. Cette version ne doit pas servir à organiser des soins.'}</p>
+    </aside>}
     {chrome === "public" && <PublicHeader />}
     <main id="contenu" class:list={[chrome === "public" && "pb-20 sm:pb-0"]}>
       <slot />

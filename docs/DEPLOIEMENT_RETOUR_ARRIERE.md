@@ -1,35 +1,65 @@
-# Déploiement et retour arrière — candidat à auditer
+# Déploiement et retour arrière
 
-Aucun serveur distant n’a été configuré ni publié. L’offre OVHcloud, le domaine, les comptes, les accès et le budget restent à approuver. La configuration historique GitHub Pages est remplacée par une CI de contrôle sans déploiement.
+## Périmètre autorisé et environnement réel
 
-## Architecture à approuver
+Le 9 octobre 2026, l’utilisateur autorise le push sur `main` et le déploiement **du prototype GitHub Pages** pour présentation à l’équipe. Il confirme l’achat d’un **Hébergement Web Pro OVHcloud**. Aucun accès OVH, transfert SFTP, modification DNS, achat supplémentaire ou mise en production du CMS n’est effectué par ce lot.
 
-Un VPS Linux OVHcloud avec Node 24 LTS, reverse proxy HTTPS et stockage persistant. Le public est du HTML Astro ; le CMS Payload reste un processus distinct, avec sa base SQLite et ses images privées. Deux noms d’hôtes : site public et administration. Le CMS et le worker écoutent/accèdent uniquement localement ; le reverse proxy est seul exposé. L’édition quotidienne se fait dans le navigateur, sans accès terminal au serveur.
+Le site Astro statique reste compatible avec une cible Apache mutualisée. Le CMS Payload/Next et son worker Node persistants ne sont pas démontrés exécutables sur l’offre Pro : l’administration distante doit être adaptée ou son hébergement arbitré avant production. Voir [ADR 0004](adr/0004-prototype-github-et-ovh-pro.md). Les modèles de serveur Linux dans `ops/templates` ne sont pas des instructions applicables au mutualisé Pro.
 
-Le mutualisé Apache peut servir la sortie Astro, mais ne sait pas lancer Payload ni le worker. Ajouter un transfert SFTP vers un mutualisé est possible mais n’est **pas** livré ni testé ici. La cible opérationnelle proposée est le VPS unique, avec responsabilité d’exploitation désignée.
+## Prototype GitHub Pages
 
-## Préproduction protégée
+Le workflow `.github/workflows/deploy.yml` contrôle le code, puis crée une base synthétique neuve et construit uniquement le prototype. Il n’accède jamais à une base éditoriale distante. Le seul dossier transféré est `prototype-dist/`, vérifié par `test:prototype` : bandeau explicite, meta `noindex`, aucun CMS, identifiant, brouillon ou action de rendez-vous réelle. Cette URL est **publique** ; `noindex` ne constitue pas une protection d’accès.
 
-Le candidat local est lié à `127.0.0.1` : aucune écoute réseau externe. Le CMS exige une session réelle. Pour une préproduction distante, créer un hôte séparé avec protection HTTP du reverse proxy **sur toutes les routes et médias**, TLS et `X-Robots-Tag: noindex`. `robots.txt`/`noindex` ne sont pas des protections d’accès. Tester depuis un navigateur non authentifié. Ne jamais exposer `.local`, `.releases`, `cms`, la base ou le dépôt : seule la cible `site-current` est racine publique.
+Retour arrière : choisir un commit vérifié qui contient ce mode de génération synthétique, rejouer son workflow puis vérifier la valeur `revision` de `prototype.json` sur GitHub.io. Ne pas réinstaller aveuglément l’ancien prototype historique avec mentions incomplètes. Le workflow ne déploie rien chez OVH.
 
-## Installation technique après accord
+## Préproduction privée du CMS, après décision d’hébergement
 
-1. Choisir l’offre, la sauvegarde indépendante et les noms d’hôtes. Préparer utilisateurs système non privilégiés, pare-feu, TLS et mises à jour automatiques de sécurité. Ne pas placer la racine Git dans une racine web.
-2. Installer le commit validé, Node 24 LTS et exécuter `npm ci` puis `npm --prefix cms ci`. Configurer les secrets hors Git et les répertoires persistants protégés. Ne jamais réutiliser les comptes synthétiques.
-3. Sur une base neuve encore protégée, avec les variables serveur et le secret déjà définis, appliquer `NODE_ENV=production npm --prefix cms run migrate`, puis amorcer le CMS avec `NODE_ENV=production npm --prefix cms run init`. Le script crée un compte initial à identité fictive : le convertir dans l’interface en compte nominatif avec une adresse réelle et un nouveau mot de passe avant toute ouverture des accès ; créer ensuite les autres comptes nécessaires. Ne pas exécuter `seed:demo` sur ce serveur. Conserver le secret de session dans le gestionnaire de secrets retenu. Configurer `CMS_SERVER_URL` HTTPS. Préparer les migrations de base avant démarrage production selon le guide CMS.
-4. Construire le CMS (`npm --prefix cms run build`) et démarrer `npm --prefix cms start` sous un superviseur. Configurer le proxy pour transmettre les cookies et l’hôte sans cache sur l’administration, `/api` et `/apercu`. Limiter l’accès réseau à l’administration si possible (VPN ou restriction du proxy).
-5. Importer ou saisir les contenus réels **en brouillon**, vérifier les coordonnées, droits photos, lieux, horaires, liens et textes juridiques. Publication par responsable autorisé seulement.
-6. Installer le worker `NODE_ENV=production npm run publication:watch` comme service supervisé (redémarrage sur panne). Il vérifie les contenus chaque minute et construit seulement si la projection publique change. Sur échec, il conserve la dernière version ; le tableau de bord signale l’erreur. Prévoir alerte de service et surveillance du dernier contrôle, espace disque et sauvegardes.
-7. La racine web est `.local/site-current`, lien atomique vers une sortie complète. Le proxy/serveur web doit revalider HTML et images (pas de cache conservant des contenus dépubliés). Pas de CDN/service worker en V1. Transposer les en-têtes de `public/.htaccess` au proxy choisi.
-8. Effectuer la recette A–F, navigateur, droits, dates, images et restauration sur cette préproduction. Vérifier TLS, cookies Secure/HttpOnly/SameSite, CSP et refus anonymes depuis l’extérieur. Aucun de ces contrôles distants n’est établi par les tests locaux.
+Le CMS local écoute sur `127.0.0.1`. Avant toute exposition distante, **restriction réseau/VPN ou authentification du proxy avec MFA obligatoire**, couvrant `/admin`, `/api`, `/apercu` et toutes les autres routes du serveur CMS ; limitation de débit par IP. Préproduction publique statique également protégée si elle contient des contenus non destinés à Internet. `robots.txt` et `noindex` ne protègent pas les brouillons.
 
-Le délai éditorial nominal est un cycle de 60 secondes plus la construction. Une panne bloque l’actualisation et peut laisser visible la version précédente, y compris une actualité arrivée à échéance : le statut et l’alerte d’exploitation sont indispensables. Les dates sont des instants UTC, affichés en heure de Paris. Ne pas présenter la planification comme une garantie pendant une panne.
+Les modèles `ops/templates` proposent Nginx, unités systemd et minuteurs pour un serveur Node/Linux distinct, à adapter et valider. Ils ne valent pas configuration distante vérifiée. Secrets dans un fichier d’environnement privé, hors dépôt et hors racine web. Ne servir que la sortie statique courante, jamais `.local`, `.releases`, `cms`, la base ou un bundle d’export.
 
-## Retour arrière
+Sur un serveur neuf **non exposé**, après installation de Node 24 et `npm ci` dans les deux applications :
 
-- **Contenu** : ouvrir la fiche dans Payload → Versions → restaurer la version voulue → contrôler l’aperçu → Publier. Le worker reconstruit le site. Les trois rubriques réglementaires doivent avoir une version publiée et validée ; sinon la génération est refusée. Les pages légales demandent à nouveau une validation administrateur si le texte change.
-- **Version du site** : arrêter le worker, noter la cible actuelle du lien `.local/site-current`, choisir une sortie antérieure vérifiée dans `.releases/<date>/site`, créer un lien temporaire puis le renommer atomiquement vers `site-current`. Recontrôler le site avant reprise. Une ancienne sortie peut contenir un contenu depuis dépublié : ne jamais choisir aveuglément une ancienne release.
-- **Code/base** : avant une mise à jour, sauvegarder ensemble la base SQLite, tous les médias et le secret ; conserver le commit/package-lock et la release publique correspondants. Restaurer d’abord en préproduction, appliquer la migration inverse uniquement si elle existe, puis basculer. Une base récente n’est pas présumée compatible avec un code ancien.
-- **Sauvegarde** : arrêter CMS et worker pendant une copie cohérente SQLite (ou utiliser l’API de sauvegarde SQLite prévue par l’exploitant) ; sauvegarder hors VPS avec chiffrement, accès restreint et rétention validée. Tester la restauration. Les 50 versions natives par fiche ne remplacent pas les sauvegardes.
+1. Configurer `CMS_DATA_DIR` absolu, `CMS_SERVER_URL` HTTPS et `PAYLOAD_SECRET` dans l’environnement privé.
+2. Appliquer `NODE_ENV=production npm --prefix cms run migrate`.
+3. Fournir `CMS_INIT_ADMIN_EMAIL`, `CMS_INIT_ADMIN_PASSWORD` (au moins 20 caractères) et éventuellement `CMS_INIT_ADMIN_NAME`, puis `NODE_ENV=production npm --prefix cms run init`. Aucun fichier d’identifiants n’est créé en production. Ne jamais lancer `seed:demo` sur cette base.
+4. Construire le CMS, démarrer les services supervisés, puis saisir les contenus réels en brouillon. Publication uniquement après validation humaine des coordonnées, horaires, textes juridiques et droits d’images.
+5. Configurer sauvegardes chiffrées indépendantes, conservation privée de la clé, sonde de fraîcheur et dispositif d’alerte externe. Les minuteurs fournis ne transmettent pas à eux seuls une alerte à une personne.
+6. Rejouer la recette depuis l’extérieur : refus des accès anonymes, TLS, cookies, en-têtes, chemins privés, revalidation des caches, redémarrage serveur, restauration et retour arrière. Ces essais distants restent **non réalisés**.
 
-Aucune suppression automatique des anciennes releases n’est activée. Prévoir une rétention et une purge approuvées ; surveiller l’espace disque. Les sorties intermédiaires et bundles sont privés et ne doivent pas être archivés dans un dépôt public.
+## Publication et arrêt
+
+`npm run publication:watch` exécute un cycle chaque minute ; export et build ont chacun un délai maximal de 10 minutes, configurable par `PUBLICATION_TIMEOUT_MS`. Les interruptions arrêtent les groupes enfants avant de libérer le verrou. Un propriétaire vivant n’est jamais évincé simplement parce que son verrou est ancien. Un verrou vide historique ou invérifiable nécessite une intervention technique ; conserver sa copie et vérifier les processus avant toute remise en état.
+
+Les états sont atomiques et horodatés : construction, prêt, inchangé, verrouillé, erreur, retour arrière. Le tableau de bord signale une absence de contrôle depuis 5 minutes ; un onglet ouvert actualise sa fraîcheur. Les causes éditoriales indiquent la collection et la fiche, sans journal technique brut. Un lieu encore requis par un professionnel publié ne peut plus être retiré ni recevoir des dates incompatibles ; les brouillons restent éditables.
+
+Une panne, une erreur légale ou une incohérence introduite hors des interfaces peut encore retarder un retrait. Le site précédent est conservé et le problème est signalé. Aucun retrait urgent universel malgré n’importe quelle panne n’est garanti : l’exploitant doit intervenir.
+
+## Retour arrière du site local ou du futur serveur Node
+
+```sh
+npm run rollback -- --list
+npm run rollback -- IDENTIFIANT_DE_RELEASE_VERIFIEE
+```
+
+Le script vérifie le manifeste et les SHA-256, prend le verrou partagé et bascule atomiquement le lien relatif `site-current`. Le statut désigne la version réellement servie. Cette version reste sélectionnée tant que le contenu CMS publié ne change pas ; `npm run publish:local -- --force` reconstruit explicitement depuis le CMS. Les anciennes sorties sans manifeste ne sont pas proposées.
+
+Avant bascule, vérifier que l’ancienne version ne réintroduit pas des coordonnées ou contenus depuis retirés. Pour revenir après un rollback erroné, sélectionner la release notée avant l’opération ou reconstruire la projection courante.
+
+## Sauvegarde et restauration
+
+Voir [le mode d’emploi des outils](../ops/README.md). `npm run backup` effectue une sauvegarde SQLite cohérente, copie médias et secret dans une archive authentifiée et chiffrée, et peut inclure la sortie publique courante. La clé `BACKUP_KEY_HEX` provient d’un environnement privé et doit être conservée séparément de l’archive. Ni clé ni archive dans Git.
+
+`npm run restore -- --archive /chemin/prive/archive --target /chemin/prive/nouveau-dossier --require-projection` exige une cible inexistante, authentifie l’archive, vérifie empreintes et base, puis recalcule la projection au même instant que la sauvegarde. Il ne remplace aucun CMS actif et n’active pas le site restauré. Une restauration doit d’abord être examinée en environnement privé ; une ancienne page peut contenir un contenu depuis dépublié.
+
+Une archive peut conserver les données même lorsque la projection éditoriale est incohérente ; ce cas est explicitement signalé et n’est pas une restauration éditoriale validée. Pour une mise à jour de code/base, conserver aussi commit, fichiers de verrouillage et migrations. Une base récente n’est pas présumée compatible avec un ancien code.
+
+## Rétention explicite
+
+```sh
+npm run releases:prune -- --keep 10
+# Seulement après examen du plan et autorisation de suppression :
+npm run releases:prune -- --keep 10 --apply --confirm-prune
+```
+
+Le mode par défaut ne supprime rien. La version servie et les 10 autres releases complètes les plus récentes sont conservées ; les anciens dossiers sans manifeste sont signalés et préservés. Le tampon média ne perd que les fichiers hashés devenus inutiles selon les références contrôlées. La rotation des archives chiffrées possède également un mode à blanc et une confirmation explicite. Aucune purge de contenu réel n’a été effectuée dans la recette.

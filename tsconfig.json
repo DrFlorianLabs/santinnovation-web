@@ -1,7 +1,20 @@
 {
   "extends": "astro/tsconfigs/strict",
-  "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "cms", ".local", ".generated", ".releases", "tests", "playwright.config.ts"],
+  "include": [
+    ".astro/types.d.ts",
+    "**/*"
+  ],
+  "exclude": [
+    "dist",
+    "cms",
+    ".local",
+    ".generated",
+    ".releases",
+    "tests",
+    "playwright.config.ts",
+    "prototype-dist",
+    "test-results"
+  ],
   "compilerOptions": {
     "strict": true,
     "strictNullChecks": true,
@@ -9,12 +22,24 @@
     "verbatimModuleSyntax": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@components/*": ["src/components/*"],
-      "@layouts/*": ["src/layouts/*"],
-      "@data/*": ["src/data/*"],
-      "@lib/*": ["src/lib/*"],
-      "@pro/*": ["src/pro/*"]
+      "@/*": [
+        "src/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@layouts/*": [
+        "src/layouts/*"
+      ],
+      "@data/*": [
+        "src/data/*"
+      ],
+      "@lib/*": [
+        "src/lib/*"
+      ],
+      "@pro/*": [
+        "src/pro/*"
+      ]
     }
   }
 }

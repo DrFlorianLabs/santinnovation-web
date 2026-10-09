@@ -1,0 +1,32 @@
+# Linux/VPS reference, NOT OVHcloud Web Pro shared hosting. Do not enable as-is.
+[Unit]
+Description=SantInnovation local static publication worker
+After=santinnovation-cms.service
+
+[Service]
+Type=simple
+User=santinnovation
+Group=santinnovation
+WorkingDirectory=/srv/santinnovation/app
+Environment=NODE_ENV=production
+Environment=CMS_DATA_DIR=/srv/santinnovation/cms-data
+Environment=PUBLICATION_ROOT=/srv/santinnovation/app
+EnvironmentFile=/etc/santinnovation/cms.env
+ExecStart=/usr/bin/node scripts/watch-publication.mjs
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=60
+UMask=0007
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+ReadWritePaths=/srv/santinnovation/cms-data /srv/santinnovation/app/.local /srv/santinnovation/app/.releases /srv/santinnovation/app/.astro /srv/santinnovation/app/node_modules/.vite
+
+[Install]
+WantedBy=multi-user.target

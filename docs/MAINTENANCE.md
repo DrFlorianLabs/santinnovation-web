@@ -1,6 +1,6 @@
 # Maintenance de Sant’Innovation
 
-Candidat local du 9 octobre 2026, à auditer avant exploitation. Aucune commande de ce guide n’autorise un push, une fusion, une souscription ou un déploiement. La cible proposée est un VPS OVHcloud ; aucune offre n’est contractée. Voir [ADR 0003](adr/0003-administration-payload-astro.md) et [déploiement / retour arrière](DEPLOIEMENT_RETOUR_ARRIERE.md).
+Corrections du 9 octobre 2026. L’utilisateur autorise désormais le push sur main et le prototype GitHub Pages ; la production OVH reste à valider. L’offre souscrite est Hébergement Web Pro (mutualisé), cible du site statique. L’exécution du CMS Node sur cet abonnement n’est pas établie. Voir [ADR 0003](adr/0003-administration-payload-astro.md) et [déploiement / retour arrière](DEPLOIEMENT_RETOUR_ARRIERE.md).
 
 ## Répartition des responsabilités
 
@@ -22,7 +22,7 @@ Un responsable technique identifié maintient Node, le CMS, le système, les sau
 
 Les environnements de test, de préproduction et de production doivent avoir des bases, médias, secrets, comptes et répertoires séparés. Ne jamais exécuter les fixtures ou les tests contre la base de production, ni réinitialiser une base existante. L’amorçage d’une base de production neuve, après migrations et accord de déploiement, suit la procédure dédiée ci-dessous. `seed:demo` est exclusivement destiné à une installation locale synthétique ; il ne prépare pas des contenus institutionnels validés.
 
-`npm --prefix cms run init` conserve les comptes existants et génère, s’il n’en existe aucun, un compte d’amorçage avec une identité fictive et des identifiants dans un fichier local privé. Ces identifiants ne doivent jamais être copiés dans la documentation, une capture, un journal ou Git. Sur un serveur neuf encore protégé, après migrations, convertir ce compte en compte nominatif avec une adresse réelle et un nouveau mot de passe avant toute ouverture des accès. Cette initialisation ne remplace pas la préparation des comptes réels et migrations d’un serveur.
+`npm --prefix cms run init` conserve les comptes existants et génère, s’il n’en existe aucun, un compte d’amorçage avec une identité fictive et des identifiants dans un fichier local privé. Ces identifiants ne doivent jamais être copiés dans la documentation, une capture, un journal ou Git. En production, le script exige au contraire les variables privées CMS_INIT_ADMIN_EMAIL et CMS_INIT_ADMIN_PASSWORD : il ne génère aucun fichier d’identifiants ni secret local. Cette initialisation ne remplace pas la préparation des comptes réels et migrations d’un serveur.
 
 ## Génération et surveillance
 
@@ -32,7 +32,7 @@ L’édition d’un brouillon n’a pas à modifier la version publique. La nouv
 
 Le CMS et le worker doivent partager le même `CMS_DATA_DIR` et le même secret. Les ports locaux ne doivent pas être exposés directement. En préproduction distante, protéger toutes les pages et médias par le reverse proxy et tester le refus depuis une session anonyme. En production, HTTPS est requis pour les cookies sécurisés ; ne pas mettre en cache `/admin`, `/api` ou `/apercu`. Configurer la revalidation des sorties publiques pour que le cache ne prolonge pas une dépublication. Les en-têtes Apache ne s’appliquent pas automatiquement à un autre proxy.
 
-Une panne ou interruption brutale peut laisser `.local/publication.lock`. Vérifier d’abord qu’aucune publication ne tourne, conserver les traces utiles, puis confier sa remise en état au responsable technique. Ne pas contourner le verrou en lançant plusieurs workers.
+Les opérations publication, rollback et purge partagent un mutex SQLite local et un verrou qui identifie propriétaire et groupes enfants. Une interruption brutale récupérable est traitée au cycle suivant, après vérification que les enfants sont arrêtés. Un verrou vivant ou invérifiable reste protégé : ne jamais le retirer sur la seule base de son âge. Le tableau de bord et la sonde signalent blocage, erreur ou contrôle trop ancien. Le verrou vide hérité de la première version nécessite une intervention technique documentée.
 
 Les dates sont stockées comme instants UTC, avec l’heure de Paris comme référence de l’administration et de l’affichage public. Vérifier la saisie, l’aperçu, la sortie et le passage heure d’été/hiver en recette. Un changement de fuseau serveur ne doit pas déplacer un événement.
 
@@ -42,7 +42,7 @@ Les **50 versions par fiche ne sont pas une sauvegarde** : elles résident dans 
 
 Avant toute mise à jour, sauvegarder de manière cohérente la base SQLite et ses médias, le secret nécessaire à l’installation, la configuration privée et le commit/verrou de dépendances correspondant. Arrêter CMS et worker le temps d’une copie cohérente, ou utiliser un mécanisme de sauvegarde SQLite validé par l’exploitant. Une copie isolée de `cms.sqlite` pendant une écriture n’est pas une procédure suffisante.
 
-Prévoir une copie chiffrée hors VPS, une rétention convenue, des accès restreints et des essais réguliers de restauration dans un environnement privé distinct. Conserver la preuve de ces essais sans contenu sensible. Les anciennes releases peuvent contenir un article depuis dépublié : leur remise en ligne demande un contrôle éditorial. Aucune purge automatique de releases ou de médias n’est livrée ; faire approuver la politique de rétention avant suppression.
+Prévoir une copie chiffrée hors machine, une rétention convenue, des accès restreints et des essais réguliers de restauration dans un environnement privé distinct. Conserver la preuve de ces essais sans contenu sensible. Les anciennes releases peuvent contenir un article depuis dépublié : leur remise en ligne demande un contrôle éditorial. Un outil releases:prune livre un plan à blanc par défaut ; toute application exige --apply --confirm-prune. La politique de conservation et toute purge de données réelles restent à approuver. Cet outil ne réalise pas un effacement complet des fiches et versions CMS ; ce périmètre reste distinct.
 
 Pour une erreur éditoriale, privilégier **Versions → Restaurer comme brouillon**, contrôle puis publication. Pour une panne de code, base ou serveur, utiliser la [procédure de retour arrière](DEPLOIEMENT_RETOUR_ARRIERE.md). Revenir au code ancien sans traiter la compatibilité de la base n’est pas un retour arrière complet.
 
@@ -55,11 +55,14 @@ Contrôles disponibles depuis la racine :
 ```bash
 npm ci
 npm --prefix cms ci
+npm --prefix cms run init
+npm --prefix cms run seed:demo
 npm run verify
 npm run test:browser
 npm --prefix cms run check
 npm --prefix cms run test
 npm --prefix cms run test -- --http
+npm --prefix cms run test -- --prod
 npm --prefix cms run build
 npm audit
 npm --prefix cms audit
@@ -82,3 +85,11 @@ Point de vigilance de Payload 3.90.2 : l’implémentation locale de `payload.re
 La messagerie du CMS est volontairement désactivée : aucun courriel de récupération n’est garanti. Un administrateur réinitialise les accès dans l’interface selon une procédure d’identification de la personne. Le second facteur n’est pas intégré dans cette livraison ; un éventuel contrôle supplémentaire au proxy ou à l’identité doit être conçu et testé avant d’être annoncé. Contrôler les comptes actifs et retirer les accès devenus inutiles selon validation explicite.
 
 Avant ouverture, valider aussi les contacts, droits de diffusion, mentions légales, responsabilités d’exploitation, sauvegardes, budget, domaine et hébergement. Les faits encore non confirmés restent dans [Vérification des contenus](VERIFICATION_CONTENUS.md). La livraison locale ne vaut ni accord de publication, ni contrat OVHcloud, ni audit de sécurité indépendant.
+
+## Outils livrés après l’audit
+
+Le [guide ops](../ops/README.md) décrit sauvegarde SQLite à chaud, chiffrement authentifié, manifeste SHA-256, copie de la release publique, restauration dans une cible neuve, rotation à blanc et sonde de fraîcheur. La [procédure de déploiement et retour arrière](DEPLOIEMENT_RETOUR_ARRIERE.md) précise les commandes et leur périmètre. Ne jamais copier une clé dans les commandes historisées, les journaux ou Git ; passer par l’environnement privé de l’exploitant.
+
+Le contrôle de publication s’effectue toutes les 60 secondes, avec timeout borné et arrêt de tout le groupe enfant. Le retour arrière vérifie la release choisie et la conserve jusqu’à changement de contenu publié ou reconstruction explicitement forcée. Un retrait de lieu qui casserait des fiches publiées est refusé dans le CMS avec les fiches à réaffecter. Une erreur sans rapport ou une panne peut toujours empêcher une génération ; aucune interface ne remplace la surveillance.
+
+La CI du prototype utilise une base fictive **neuve** : elle n’est pas le service de publication des contenus réels du CMS. Le push sur GitHub ne livre pas l’administration chez OVH.

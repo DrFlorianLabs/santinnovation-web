@@ -6,6 +6,8 @@
 - **Origine :** mission de finalisation et complément prioritaire « Back-office d’administration complet » fournis par l’utilisateur.
 - **Complète :** ADR 0001 pour l’administration éditoriale. Les frontières de la GED décrites dans les ADR 0001 et 0002 restent applicables.
 
+**Actualisation du 9 octobre après audit :** [ADR 0004](0004-prototype-github-et-ovh-pro.md) consigne l’autorisation de push/prototype GitHub et l’abonnement Web Pro confirmé. La proposition VPS ci-dessous n’est pas un hébergement retenu ou acheté. Le CMS reste validé localement ; sa compatibilité avec l’offre souscrite reste à résoudre.
+
 ## Besoin et décisions utilisateur
 
 La maintenance courante doit se faire dans une interface graphique : professionnels, établissements, horaires par lieu, actualités, activités, innovations, partenaires et informations générales. L’utilisateur doit pouvoir enregistrer un brouillon, prévisualiser, publier, dépublier, archiver et restaurer une version sans Markdown, Git ou intervention d’une IA.

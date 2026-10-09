@@ -3,20 +3,30 @@ import path from 'node:path'
 import { createHash } from 'node:crypto'
 import { getPayload, type Payload, type CollectionSlug } from 'payload'
 import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html'
-import config from '../src/payload.config'
 import { mediaDir } from '../src/lib/runtime'
+import { dependencyProblem, PublicationGraphError, type PublicationProblem } from '../src/lib/publication-graph'
 
 export const slugs = ['professionnels', 'lieux', 'actualites', 'activites', 'innovations', 'partenaires', 'pages', 'informations'] as const
 export function publishable(doc: any, now = Date.now()): boolean {
   return doc._status === 'published' && doc.visible === true && doc.archive !== true && (!doc.debutAffichage || Date.parse(doc.debutAffichage) <= now) && (!doc.finAffichage || Date.parse(doc.finAffichage) > now)
 }
 /** Deliberately local-only. No browser, token or endpoint can invoke this export. */
-export async function exportSnapshot(payload: Payload, destination: string, images: string) {
-  const now = Date.now()
+export async function exportSnapshot(payload: Payload, destination: string, images: string, snapshotAt = Date.now()) {
+  const now = snapshotAt
+  if (!Number.isFinite(now)) throw new Error('Instant de publication invalide.')
   const raw: Record<string, any[]> = {}
+  const published: Record<string, any[]> = {}
   for (const slug of slugs) {
     const result = await payload.find({ collection: slug as CollectionSlug, draft: false, depth: 0, pagination: false, overrideAccess: true, where: { and: [{ _status: { equals: 'published' } }, { visible: { equals: true } }, { archive: { not_equals: true } }] }, sort: 'ordre' })
+    published[slug] = result.docs
     raw[slug] = result.docs.filter(doc => publishable(doc, now))
+  }
+  // Defence in depth for restored databases and manual imports: validate the
+  // complete published graph, including future display periods, before copying.
+  const places = new Map(published.lieux.map(doc => [String(doc.id), doc]))
+  for (const pro of published.professionnels) {
+    const problem = dependencyProblem(pro, places, now)
+    if (problem) throw new PublicationGraphError(problem)
   }
   // Relationship resolution only uses the above published snapshot. Draft/hidden
   // linked documents never enter the bundle through Payload depth population.
@@ -43,8 +53,9 @@ export async function exportSnapshot(payload: Payload, destination: string, imag
       for (const key of ['photo', 'image', 'logo']) if (doc[key]) { const media = await image(doc[key]); doc[key] = media?.url; doc[`${key}Alt`] = media?.alt; doc[`${key}Credit`] = media?.credit }
       if (doc.photos) doc.photos = await Promise.all(doc.photos.map(async (p: any) => { const media = await image(p.image); return { ...p, image: media?.url, imageAlt: media?.alt, imageCredit: media?.credit } }))
       if (slug === 'professionnels') {
-        doc.lieux = (doc.lieux || []).map((id: any) => { const l = lookup('lieux', id); if (!l) throw new Error(`Lieu non publiable référencé par professionnel ${doc.slug}. Corriger ou masquer la fiche avant génération.`); return l.slug })
-        doc.horairesParLieu = (doc.horairesParLieu || []).flatMap((h: any) => { const l = lookup('lieux', h.lieu); if (!l) throw new Error(`Horaires liés à un lieu non publiable pour ${doc.slug}.`); return [{ lieu: l.slug, horaires: h.horaires }] })
+        const missing: PublicationProblem = { code: 'LOCATION_UNAVAILABLE', collection: 'professionnels', slug: doc.slug, message: 'Un lieu lié n’est pas publiable. Corriger ou masquer la fiche avant génération.' }
+        doc.lieux = (doc.lieux || []).map((id: any) => { const l = lookup('lieux', id); if (!l) throw new PublicationGraphError(missing); return l.slug })
+        doc.horairesParLieu = (doc.horairesParLieu || []).map((h: any) => { const l = lookup('lieux', h.lieu); if (!l) throw new PublicationGraphError(missing); return { lieu: l.slug, horaires: h.horaires } })
       }
       // Rich text supports standard formatting only; no relationship/upload blocks.
       doc.bodyHtml = doc.corps ? convertLexicalToHTML({ data: doc.corps, disableContainer: true, disableIndent: true, disableTextAlign: true }) : ''
@@ -61,8 +72,15 @@ export async function exportSnapshot(payload: Payload, destination: string, imag
 if (process.argv[1]?.endsWith('export.ts')) {
   const [destination, images] = process.argv.slice(2)
   if (!destination || !images) throw new Error('Usage: npm run export -- /chemin/contenus.json /chemin/public/media')
-  const payload = await getPayload({ config })
-  const bundle = await exportSnapshot(payload, path.resolve(destination), path.resolve(images))
-  console.log(JSON.stringify({ exported: Object.fromEntries(Object.entries(bundle).map(([key, docs]) => [key, docs.length])) }))
-  await payload.destroy()
+  let payload: Payload | undefined
+  try {
+    const { default: config } = await import('../src/payload.config')
+    payload = await getPayload({ config })
+    const bundle = await exportSnapshot(payload, path.resolve(destination), path.resolve(images))
+    console.log(JSON.stringify({ exported: Object.fromEntries(Object.entries(bundle).map(([key, docs]) => [key, docs.length])) }))
+  } catch (error) {
+    const problem = error instanceof PublicationGraphError ? error.problem : { code: 'EXPORT_FAILED', collection: '', slug: '', message: 'La lecture des contenus ou médias a échoué. Contacter le responsable technique.' }
+    console.error(`PUBLICATION_ERROR_JSON=${JSON.stringify(problem)}`)
+    process.exitCode = 1
+  } finally { await payload?.destroy() }
 }

@@ -1,11 +1,12 @@
+import { testCMSURL, testCredentials } from './helpers/runtime.mjs';
 // End-to-end API -> production-equivalent exporter -> Astro output. Synthetic DB only.
 import assert from 'node:assert/strict';
 import { readFile, writeFile, access } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
-const base='http://127.0.0.1:3001';
-const c=JSON.parse(await readFile('cms/.local/identifiants-locaux.json','utf8'));
+const base=testCMSURL;
+const c=await testCredentials();
 const response=await fetch(base+'/api/users/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(c)});
 assert.equal(response.status,200);const {token}=await response.json();
 async function api(path,method='GET',data) {

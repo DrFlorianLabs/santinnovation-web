@@ -1,0 +1,252 @@
+{
+  "date": "2026-10-09",
+  "environment": {
+    "os": "macOS",
+    "node": "24.21.0",
+    "data": "synthetic-only",
+    "remote_cms_tested": false
+  },
+  "cms": {
+    "at": "2026-10-09T10:20:08.081Z",
+    "mode": "production-build-start",
+    "passed": 33,
+    "results": [
+      {
+        "scenario": "A — horaires publiés présents dans le snapshot",
+        "result": "pass"
+      },
+      {
+        "scenario": "B — changement de lieu et horaires cohérents",
+        "result": "pass"
+      },
+      {
+        "scenario": "C — nouveau professionnel exporté",
+        "result": "pass"
+      },
+      {
+        "scenario": "D — image privée exportée seulement après publication",
+        "result": "pass"
+      },
+      {
+        "scenario": "E — version antérieure restaurée par API CMS",
+        "result": "pass"
+      },
+      {
+        "scenario": "F — API locale: anonymes refusés, versions et médias privés, élévation de rôle refusée",
+        "result": "pass"
+      },
+      {
+        "scenario": "Brouillon plus récent ne remplace pas la version publiée",
+        "result": "pass"
+      },
+      {
+        "scenario": "Dates, masquage et archivage exclus du snapshot public",
+        "result": "pass"
+      },
+      {
+        "scenario": "Adresse modifiée: vérification réinitialisée, publication immédiate refusée",
+        "result": "pass"
+      },
+      {
+        "scenario": "PATCH sans statut — validation légale/adresse/contacts/horaires maintenue; brouillons natifs conservés",
+        "result": "pass"
+      },
+      {
+        "scenario": "Identité des rubriques fixe — déplacements légal vers courant et inverse refusés",
+        "result": "pass"
+      },
+      {
+        "scenario": "Validation réglementaire: administrateur obligatoire et invalidation après modification",
+        "result": "pass"
+      },
+      {
+        "scenario": "Dépublication enlève le contenu du snapshot",
+        "result": "pass"
+      },
+      {
+        "scenario": "Médias immuables: remplacement ou métadonnées ne contournent pas la publication",
+        "result": "pass"
+      },
+      {
+        "scenario": "E étendu — restauration adresse et mentions en brouillon avec nouvelle validation requise",
+        "result": "pass"
+      },
+      {
+        "scenario": "Relation publiée bloque le masquage avant écriture en base",
+        "result": "pass"
+      },
+      {
+        "scenario": "M02 — retrait/masquage/archive/période refusés sur liens publiés malgré brouillons plus récents",
+        "result": "pass"
+      },
+      {
+        "scenario": "M02 — restaurations contrôlées; restauration en brouillon préserve le publié; déplacement autorise retrait",
+        "result": "pass"
+      },
+      {
+        "scenario": "M02 — périodes futures couvertes, égalité des bornes acceptée, dépendances expirées libérées",
+        "result": "pass"
+      },
+      {
+        "scenario": "M02 — course publication/retrait : au moins une mutation refusée, graphe final cohérent",
+        "result": "pass"
+      },
+      {
+        "scenario": "M02 — export défensif structuré, aucun fichier incohérent écrit; instant figé pour restauration",
+        "result": "pass"
+      },
+      {
+        "scenario": "M03 — éditeur modifie seulement son mot de passe; identité/rôle/champs internes et autre compte refusés",
+        "result": "pass"
+      },
+      {
+        "scenario": "M03 — récupération locale désactivée, aucun jeton généré",
+        "result": "pass"
+      },
+      {
+        "scenario": "SQLite — WAL et FULL vérifiés; timeout initial 5000 puis remise à 0 native libsql caractérisée",
+        "result": "pass"
+      },
+      {
+        "scenario": "M03 — init production exige environnement, migre en test, reste idempotent et ne crée ni identifiants ni secret sur disque",
+        "result": "pass"
+      },
+      {
+        "scenario": "Production — migration versionnée et next build réel avant next start",
+        "result": "pass"
+      },
+      {
+        "scenario": "M03 HTTP — récupération existant/absent identique, /api/access privé puis disponible authentifié",
+        "result": "pass"
+      },
+      {
+        "scenario": "F HTTP — admin redirigé, drafts/versions/médias refusés anonymes; login et aperçu autorisés; GraphQL absent",
+        "result": "pass"
+      },
+      {
+        "scenario": "SQLite HTTP — verrou concurrent réel : réponse 409 compréhensible, aucune donnée technique exposée",
+        "result": "pass"
+      },
+      {
+        "scenario": "M02 HTTP — retrait/masquage/archive/période lieu dépendant refusés",
+        "result": "pass"
+      },
+      {
+        "scenario": "M03 HTTP — mot de passe propre changé, ancien refusé, identité/rôle/champs internes/autre compte refusés",
+        "result": "pass"
+      },
+      {
+        "scenario": "HTTP PATCH sans statut — validations serveur et routes fixes, proposition éditoriale privée sans altérer le publié",
+        "result": "pass"
+      },
+      {
+        "scenario": "HTTP renforcé — CSRF cookie refusé, upload SVG refusé, restauration légale en brouillon réussie",
+        "result": "pass"
+      }
+    ]
+  },
+  "unit": {
+    "passed": 26,
+    "failed": 0,
+    "content": 9,
+    "publication_processes": 8,
+    "backup_restore": 9
+  },
+  "public_browser": {
+    "passed": 8,
+    "widths": [
+      320,
+      768,
+      1440
+    ],
+    "engine": "Chromium",
+    "routes": 21,
+    "full_accessibility_audit": false
+  },
+  "prototype_browser": {
+    "checks": 8,
+    "widths": [
+      320,
+      1440
+    ],
+    "failures": 0
+  },
+  "admin_ui": {
+    "syntheticOnly": true,
+    "results": [
+      "Connexion graphique réelle et tableau de bord",
+      "Modification horaire par formulaire, brouillon conservant le publié, aperçu authentifié",
+      "Publication par bouton natif Payload; valeur publiée vérifiée par relecture",
+      "Aperçu anonyme redirigé vers connexion, API brouillon refusée HTTP403"
+    ]
+  },
+  "publication_chain": {
+    "syntheticOnly": true,
+    "results": [
+      "A — nouveaux horaires relus dans la page Astro après publication CMS",
+      "B — nouveau lieu et itinéraire cohérents sur fiche publique",
+      "C — nouveau professionnel présent dans annuaire et fiche publique",
+      "D — brouillon absent puis actualité avec image présente après publication",
+      "E — version restaurée puis republiée, ancienne valeur relue dans Astro",
+      "F — APIs, versions et image CMS refusées anonymes ; brouillon absent du public",
+      "Dépublication — page et image devenue orpheline absentes de la release suivante"
+    ]
+  },
+  "worker": {
+    "syntheticOnly": true,
+    "passed": true,
+    "seconds": 65,
+    "noReleaseWhenUnchanged": true
+  },
+  "publication_dashboard": {
+    "authenticated_states_passed": 3,
+    "isolated_server_states_passed": 4,
+    "client_stale_clock_test_passed": true
+  },
+  "typing": {
+    "astro": {
+      "files": 75,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 0
+    },
+    "cms": "pass"
+  },
+  "dependency_audit": {
+    "root_advisories": 0,
+    "cms_advisories": 0
+  },
+  "limits": [
+    "No remote CMS, TLS, MFA, VPN or Linux services tested",
+    "No OVH deployment",
+    "No real content validation",
+    "No complete erasure of CMS records and versions",
+    "Chromium only; no physical device or screen reader audit"
+  ],
+  "editor_account_ui": {
+    "at": "2026-10-09T10:22:26.145Z",
+    "passed": true,
+    "data": "synthetic-only",
+    "mode": "chromium-production-3111",
+    "nativeFields": [
+      "confirm-password",
+      "createdAt",
+      "email",
+      "nom",
+      "password",
+      "role",
+      "updatedAt"
+    ],
+    "status": 200,
+    "newPasswordLogin": "pass",
+    "oldPasswordRefused": "pass",
+    "identityUnchanged": "pass",
+    "editorUnlockHidden": "pass"
+  },
+  "source_scan": {
+    "candidateFiles": 83,
+    "privateValuesChecked": 6,
+    "privateValueMatches": 0,
+    "privateFilesAdded": 0
+  }
+}

@@ -30,11 +30,14 @@ const safeImage = value => {
   if (!/^\/media\/[a-f0-9]{64}\.(png|jpg|jpeg|webp)$/.test(value)) throw new Error('Image publique invalide');
   return value;
 };
+function refusePublication(code, message, collection, slug) {
+  throw Object.assign(new Error(message), { code, details: { collection, slug } });
+}
 export function projectContent(bundle, now = new Date()) {
   const output = {};
   for (const slug of ['mentions-legales','confidentialite','accessibilite']) {
     if (!bundle.pages?.some(p => p.slug === slug && active(p,now) && p.validationLegale === true)) {
-      throw new Error(`Rubrique réglementaire publiée et validée requise : ${slug}`);
+      refusePublication('LEGAL_VALIDATION_REQUIRED', `Rubrique réglementaire publiée et validée requise : ${slug}`, 'pages', slug);
     }
   }
   for (const name of collections) {
@@ -64,11 +67,11 @@ export function projectContent(bundle, now = new Date()) {
   const locations = new Set(output.lieux.map(d => d.id));
   for (const d of output.professionnels) {
     if (d.lieux.some(id => !locations.has(id)) || d.horairesParLieu.some(x => !locations.has(x.lieu) || !d.lieux.includes(x.lieu))) {
-      throw new Error(`Lieu absent/non publié ou horaires incohérents pour ${d.id}`);
+      refusePublication('LOCATION_UNAVAILABLE', `Lieu absent/non publié ou horaires incohérents pour ${d.id}`, 'professionnels', d.id);
     }
   }
   const info = bundle.informations?.find(d => active(d, now));
-  if (!info) throw new Error('Informations générales publiées requises');
+  if (!info) refusePublication('GENERAL_INFORMATION_REQUIRED', 'Informations générales publiées requises', 'informations', 'general');
   output.site = {
     nom: info.nom, nomCourt: info.nomCourt || info.nom, baseline: info.baseline || '', description: info.description || '',
     url: process.env.SITE_URL || 'https://santinnovation.fr', ville: info.ville || '', secteurs: (info.secteurs ?? []).map(x => x.libelle),

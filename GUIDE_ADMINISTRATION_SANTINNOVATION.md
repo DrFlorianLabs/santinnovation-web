@@ -1,6 +1,6 @@
 # Administrer le site Sant’Innovation
 
-Guide pour le médecin responsable et la coordination — candidat local du 9 octobre 2026. **Aucune mise en production n’a été effectuée.** Les essais utilisent uniquement des contenus fictifs. Une publication dans cette installation prépare une version locale à contrôler ; elle ne publie rien sur Internet.
+Guide pour le médecin responsable et la coordination — candidat local du 9 octobre 2026. **Aucune mise en production OVH n’a été effectuée.** Le prototype GitHub Pages est une démonstration publique distincte utilisant des contenus fictifs. Une publication dans le CMS local prépare une version locale à contrôler ; elle ne met pas à jour ce prototype GitHub ni un site OVH.
 
 L’administration s’ouvre à [http://127.0.0.1:3001/admin](http://127.0.0.1:3001/admin), quand le responsable technique a démarré les services. Il vous remet un compte personnel par un canal sûr. Aucune connaissance de Git, de Markdown ou du code n’est nécessaire pour l’édition quotidienne.
 
@@ -41,7 +41,7 @@ Dans **Professionnels**, renseigner le nom, **Nom complet affiché**, **Professi
 
 Ajouter les coordonnées professionnelles, la **Photographie** et le lien **Prise de rendez-vous Doctolib**. Utiliser la fiche exacte en HTTPS, puis tester le bouton sur le site. Confirmer **Accepte de nouveaux patients** et **Soins à domicile** auprès du professionnel. Pour un changement de lieu, mettre à jour ensemble la sélection des lieux et les horaires correspondants. Enregistrer le brouillon, relire puis publier.
 
-Avant de masquer un établissement, réaffecter les professionnels concernés. Une référence à un lieu absent de la version publique peut bloquer la génération ; le site précédent est alors conservé.
+Avant de masquer un établissement, réaffecter les professionnels concernés. Le CMS refuse désormais un retrait ou des dates qui rendraient incohérentes leurs fiches publiées et indique les professionnels à corriger. Un enregistrement en brouillon reste possible ; il ne retire pas le lieu publié.
 
 ![Édition d’un professionnel fictif](docs/recette/edition-professionnel.png)
 
@@ -65,7 +65,7 @@ Les trois rubriques réglementaires doivent rester publiées et validées. Leur 
 
 Pour retirer une fiche, utiliser **Annuler la publication** et confirmer. Le retrait du site intervient après une génération réussie. Pour conserver un contenu rangé comme archive, cocher **Archiver (masquer et conserver)** puis **Publier les modifications** : cet état exclut la fiche de la sortie publique. Décocher **Visible sur le site** puis publier permet également de la masquer. Un simple enregistrement en brouillon de ces cases laisse la version publique précédente en place.
 
-Pour revenir à un ancien contenu : ouvrir **Versions**, comparer les versions, choisir celle souhaitée et **Restaurer comme brouillon**. Relire **Aperçu privé**, vérifier dates, lieux, images et liens, puis publier explicitement. Une adresse ou un texte réglementaire restauré peut nécessiter une nouvelle confirmation. Jusqu’à 50 versions sont conservées par fiche ; pour un contenu plus ancien ou une perte de base, solliciter le responsable technique et les sauvegardes.
+Pour revenir à un ancien contenu : ouvrir **Versions**, comparer les versions, choisir celle souhaitée, ouvrir le **chevron à côté du bouton Restaurer**, puis choisir **Restaurer comme brouillon**. Attention : le bouton principal peut restaurer et publier directement ; utiliser explicitement l’option brouillon. Relire **Aperçu privé**, vérifier dates, lieux, images et liens, puis publier explicitement. Une adresse ou un texte réglementaire restauré peut nécessiter une nouvelle confirmation. Jusqu’à 50 versions sont conservées par fiche ; pour un contenu plus ancien ou une perte de base, solliciter le responsable technique et les sauvegardes.
 
 Les images enregistrées sont **immuables**, y compris leur description et leur crédit. Pour remplacer une photo ou corriger sa description, créer une nouvelle image, la choisir dans un brouillon, puis publier la fiche. Une image non référencée par un contenu public reste privée dans le CMS. Ne pas tenter de remplacer un fichier sur le serveur.
 
@@ -73,8 +73,14 @@ Les images enregistrées sont **immuables**, y compris leur description et leur 
 
 Un **Éditeur** gère et publie les contenus courants. Un **Administrateur** gère aussi les comptes dans **Accès administrateurs**, les coordonnées générales et les validations réglementaires. Utiliser un compte nominatif ; ne pas partager le mot de passe. L’administrateur choisit le **Rôle**, **Éditeur** ou **Administrateur**, et communique l’accès de manière privée.
 
-La réinitialisation du mot de passe par courriel n’est pas configurée : contacter un administrateur. Il n’y a pas de second facteur intégré livré dans cette version. Fermer la session sur un poste partagé. En cas d’erreur, communiquer le nom de la fiche et le message affiché, sans mot de passe ni donnée de santé.
+Un éditeur peut changer son propre mot de passe depuis son compte. La récupération par courriel est désactivée : en cas de mot de passe perdu, contacter un administrateur. Il n’y a pas de second facteur intégré livré dans cette version. Fermer la session sur un poste partagé. En cas d’erreur, communiquer le nom de la fiche et le message affiché, sans mot de passe ni donnée de santé.
 
 Le site reste la source de référence des actualités. Après publication autorisée, son lien peut être relayé manuellement sur les réseaux sociaux ; aucune diffusion automatique multiréseaux n’est prévue.
 
 Le [guide de maintenance](docs/MAINTENANCE.md) est destiné au responsable technique. Les résultats réellement vérifiés et leurs limites figurent dans `LIVRAISON_SITE_MSP.md` ; ce guide décrit la procédure et ne constitue pas un procès-verbal de recette.
+
+## Reconnaître un problème de publication
+
+Le tableau de bord distingue « prêt », « aucun changement », « construction en cours », « publication bloquée », « erreur » et « version antérieure restaurée ». Après5 minutes sans contrôle récent, il avertit que le service est inactif ; l’onglet ouvert actualise ce signal. Pour une erreur éditoriale, la collection et l’identifiant de la fiche sont affichés. Corriger la fiche indiquée puis attendre un nouveau cycle. Un conflit d’écriture simultanée demande de recharger et réessayer : il ne signifie pas que la modification a été enregistrée.
+
+Les sauvegardes, la restauration complète et les purges restent du ressort du responsable technique. Le bouton Versions ne remplace pas ces sauvegardes.

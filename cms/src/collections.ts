@@ -1,6 +1,8 @@
 import { APIError, type CollectionConfig, type Field } from 'payload'
 import { admin, adminField, contentAccess, staff } from './lib/access'
 import { mediaDir } from './lib/runtime'
+import { guardPlace, guardProfessional } from './lib/publication-graph'
+import { disabledPasswordEndpoints, protectUserUpdates } from './lib/user-security'
 
 const text = (name: string, label: string, required = false): Field => ({ name, label, type: 'text', required })
 const date = (name: string, label: string): Field => ({ name, label, type: 'date', admin: { date: { pickerAppearance: 'dayAndTime', displayFormat: 'dd/MM/yyyy HH:mm' } } })
@@ -56,8 +58,10 @@ export const Users: CollectionConfig = {
   slug: 'users', labels: { singular: 'Compte autorisé', plural: 'Accès administrateurs' },
   admin: { useAsTitle: 'email', group: 'Administration' },
   auth: { tokenExpiration: 7200, maxLoginAttempts: 5, lockTime: 900000, cookies: { sameSite: 'Strict', secure: process.env.NODE_ENV === 'production' } },
-  access: { admin: ({ req }) => ['admin', 'editor'].includes(String(req.user?.role)), create: admin, update: admin, delete: admin, read: ({ req }) => req.user?.role === 'admin' ? true : req.user ? { id: { equals: req.user.id } } : false },
-  fields: [text('nom', 'Nom affiché', true), { name: 'role', label: 'Rôle', type: 'select', required: true, defaultValue: 'editor', saveToJWT: true, options: [{ label: 'Administrateur', value: 'admin' }, { label: 'Éditeur', value: 'editor' }], access: { create: adminField, update: adminField } }]
+  endpoints: disabledPasswordEndpoints,
+  hooks: { beforeOperation: [protectUserUpdates] },
+  access: { admin: ({ req }) => ['admin', 'editor'].includes(String(req.user?.role)), create: admin, unlock: admin, update: ({ req }) => req.user?.role === 'admin' ? true : req.user?.role === 'editor' ? { id: { equals: req.user.id } } : false, delete: admin, read: ({ req }) => req.user?.role === 'admin' ? true : req.user ? { id: { equals: req.user.id } } : false },
+  fields: [{ ...text('nom', 'Nom affiché', true), access: { update: adminField } } as Field, { name: 'email', type: 'email', access: { update: adminField } }, { name: 'role', label: 'Rôle', type: 'select', required: true, defaultValue: 'editor', saveToJWT: true, options: [{ label: 'Administrateur', value: 'admin' }, { label: 'Éditeur', value: 'editor' }], access: { create: adminField, update: adminField } }]
 }
 export const Media: CollectionConfig = {
   slug: 'medias', labels: { singular: 'Image', plural: 'Images privées' },
@@ -83,7 +87,7 @@ Lieux.hooks = { ...sharedHooks, beforeChange: [...(sharedHooks.beforeChange || [
   if (originalDoc?.id && ['adresse', 'codePostal', 'ville', 'latitude', 'longitude'].some(key => key in data && data[key] !== originalDoc[key])) data.coordonneesVerifiees = false
   if (data._status === 'published' && (!(data.coordonneesVerifiees ?? merged.coordonneesVerifiees) || merged.latitude == null || merged.longitude == null)) throw new APIError('Vérifier l’adresse et la position, enregistrer le brouillon, puis confirmer la vérification avant publication.', 400)
   return data
-}] }
+}, guardPlace] }
 export const Professionnels = collection('professionnels', 'Professionnel', 'Professionnels', 'titreAffiche', [
   text('prenom', 'Prénom', true), text('nom', 'Nom', true), text('titreAffiche', 'Nom complet affiché', true),
   { name: 'profession', label: 'Profession (filtre annuaire)', type: 'select', required: true, options: [
@@ -101,7 +105,7 @@ Professionnels.hooks = { ...sharedHooks, beforeChange: [...(sharedHooks.beforeCh
   const merged = { ...originalDoc, ...data }; const id = (x: any) => typeof x === 'object' ? x.id : x
   if (data._status === 'published' && (merged.horairesParLieu || []).some((h: any) => !(merged.lieux || []).some((l: any) => String(id(l)) === String(id(h.lieu))))) throw new APIError('Chaque horaire doit correspondre à un lieu d’exercice sélectionné.', 400)
   return data
-}] }
+}, guardProfessional] }
 export const Actualites = collection('actualites', 'Actualité', 'Actualités', 'titre', [
   text('titre', 'Titre', true), { ...date('date', 'Date de publication affichée'), required: true } as Field,
   { name: 'resume', label: 'Résumé', type: 'textarea', required: true },

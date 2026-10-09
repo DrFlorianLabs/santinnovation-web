@@ -1,6 +1,6 @@
 # ADR 0001 — Séparation front/back et hébergement OVH
 
-- **Statut :** accepté
+- **Statut :** remplacé partiellement par les ADR 0003 et 0004 pour l’administration et le déploiement ; conservé comme historique
 - **Date :** 2026-07-04
 - **Décideurs :** Florian Sibille (structure), équipe technique
 - **Références :** AUD-004, AUD-010, AUD-019, AUD-021 (`docs/AUDIT_TECHNIQUE_2026-07-03.md`)

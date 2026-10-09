@@ -36,8 +36,8 @@ test('carte sur action seulement et parcours sans JavaScript',async({browser,pag
   await nojs.goto('/equipe/');await expect(nojs.locator('main')).toBeVisible();expect(await nojs.locator('a[href*="/equipe/"]').count()).toBeGreaterThan(0);await context.close();
 });
 test('aperçus visuels synthétiques',async({page})=>{
-  await page.setViewportSize({width:1440,height:1000});await page.goto('/');await page.screenshot({path:'docs/recette/accueil-desktop.png',fullPage:true});
-  await page.setViewportSize({width:390,height:844});await page.goto('/equipe/');await page.screenshot({path:'docs/recette/annuaire-mobile.png',fullPage:true});
+  await page.setViewportSize({width:1440,height:1000});await page.goto('/');await page.screenshot({path:'test-results/captures/accueil-desktop.png',fullPage:true});
+  await page.setViewportSize({width:390,height:844});await page.goto('/equipe/');await page.screenshot({path:'test-results/captures/annuaire-mobile.png',fullPage:true});
 });
 
 test('filtres annuaire et menu mobile au clavier',async({page})=>{

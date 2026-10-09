@@ -1,16 +1,17 @@
+import { testCMSURL, testCredentials } from './helpers/runtime.mjs';
 import { chromium } from '@playwright/test';
 import { readFile, writeFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 const browser=await chromium.launch();
-const context=await browser.newContext({viewport:{width:1024,height:1000},reducedMotion:'reduce',extraHTTPHeaders:{Origin:'http://127.0.0.1:3001'}});
-const page=await context.newPage();const base='http://127.0.0.1:3001';
-const c=JSON.parse(await readFile('cms/.local/identifiants-locaux.json','utf8'));
+const context=await browser.newContext({viewport:{width:1024,height:1000},reducedMotion:'reduce',extraHTTPHeaders:{Origin:testCMSURL}});
+const page=await context.newPage();const base=testCMSURL;
+const c=await testCredentials();
 const results=[];
 try {
   await page.goto(base+'/admin/login');await page.locator('#field-email').fill(c.email);await page.locator('#field-password').fill(c.password);
   await page.getByRole('button',{name:'Se connecter',exact:true}).click();await page.waitForURL('**/admin');
   await page.getByRole('heading',{name:'Publication du site'}).waitFor();results.push('Connexion graphique réelle et tableau de bord');
-  await page.screenshot({path:'docs/recette/admin-tablette.png',fullPage:true});
+  await page.screenshot({path:'test-results/captures/admin-tablette.png',fullPage:true});
   const list=await (await context.request.get(base+'/api/professionnels?where[slug][equals]=camille-exemple')).json();const pro=list.docs[0];assert.ok(pro);
   await page.goto(base+'/admin/collections/professionnels/'+pro.id);
   const input=page.locator('#field-horairesParLieu__0__horaires');await input.waitFor();
@@ -20,14 +21,14 @@ try {
   await page.getByRole('button',{name:'Enregistrer le brouillon',exact:true}).click();assert.equal((await saved).status(),200);
   const published=await (await context.request.get(base+'/api/professionnels/'+pro.id+'?draft=false')).json();assert.notEqual(published.horairesParLieu[0].horaires,schedule);
   await page.goto(base+'/apercu/professionnels/'+pro.id);await page.getByText(schedule,{exact:false}).waitFor();results.push('Modification horaire par formulaire, brouillon conservant le publié, aperçu authentifié');
-  await page.screenshot({path:'docs/recette/apercu-prive.png',fullPage:true});
+  await page.screenshot({path:'test-results/captures/apercu-prive.png',fullPage:true});
   await page.goto(base+'/admin/collections/professionnels/'+pro.id);
   const publish=page.waitForResponse(r=>r.url().includes('/api/professionnels/'+pro.id)&&r.request().method()==='PATCH');
   await page.getByRole('button',{name:'Publier les modifications',exact:true}).click();assert.equal((await publish).status(),200);
   const updated=await (await context.request.get(base+'/api/professionnels/'+pro.id+'?draft=false')).json();assert.equal(updated.horairesParLieu[0].horaires,schedule);
   results.push('Publication par bouton natif Payload; valeur publiée vérifiée par relecture');
   await page.reload();await page.locator('#field-horairesParLieu__0__horaires').waitFor();assert.equal(await page.locator('#field-horairesParLieu__0__horaires').inputValue(),schedule);
-  await page.screenshot({path:'docs/recette/edition-professionnel.png',fullPage:true});
+  await page.screenshot({path:'test-results/captures/edition-professionnel.png',fullPage:true});
   const anon=await browser.newContext();const anonPage=await anon.newPage();await anonPage.goto(base+'/apercu/professionnels/'+pro.id);await anonPage.waitForURL('**/admin/login');assert.equal((await anon.request.get(base+'/api/professionnels/'+pro.id+'?draft=true')).status(),403);await anon.close();
   results.push('Aperçu anonyme redirigé vers connexion, API brouillon refusée HTTP403');
   await writeFile('.local/admin-ui-results.json',JSON.stringify({syntheticOnly:true,results},null,2));console.log(JSON.stringify({passed:results.length,results},null,2));
