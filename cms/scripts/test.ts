@@ -36,6 +36,9 @@ const update = (collection: any, id: any, data: any, draft = false) => payload.u
 const snapshot = () => exportSnapshot(payload, path.join(testDir, 'bundle.json'), path.join(testDir, 'public', 'media'))
 const richText = (text: string) => ({ root: { type: 'root', children: [{ type: 'paragraph', children: [{ type: 'text', text, format: 0, detail: 0, mode: 'normal', style: '', version: 1 }], direction: 'ltr', format: '', indent: 0, version: 1 }], direction: 'ltr', format: '', indent: 0, version: 1 } })
 try {
+  assert.ok((await payload.login({ collection: 'users', data: { email: admin.email, password: adminPassword } })).token)
+  assert.ok((await payload.login({ collection: 'users', data: { email: editor.email, password: editorPassword } })).token)
+  ok('Authentification initiale — les comptes synthétiques administrateur et éditeur se connectent')
   const lieu1 = await create('lieux', { slug: 'lieu-fictif-nord', nom: 'Établissement fictif Nord', adresse: '1 rue de démonstration', codePostal: '25000', ville: 'Ville fictive', latitude: 47.24, longitude: 6.02, coordonneesVerifiees: true, _status: 'published' })
   const lieu2 = await create('lieux', { slug: 'lieu-fictif-sud', nom: 'Établissement fictif Sud', adresse: '2 rue de démonstration', codePostal: '25000', ville: 'Ville fictive', latitude: 47.25, longitude: 6.03, coordonneesVerifiees: true, _status: 'published' })
   const pro = await create('professionnels', { slug: 'camille-exemple', prenom: 'Camille', nom: 'Exemple', titreAffiche: 'Dr Camille Exemple (fictif)', profession: 'medecin-generaliste', professionLabel: 'Médecin généraliste', lieux: [lieu1.id], horairesParLieu: [{ lieu: lieu1.id, horaires: 'Lundi 09 h–12 h' }], _status: 'published' })
