@@ -1,5 +1,5 @@
 import { buildConfig } from 'payload'
-import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { isolatedSQLiteAdapter } from './lib/sqlite-transactions'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { fr } from '@payloadcms/translations/languages/fr'
 import sharp from 'sharp'
@@ -23,7 +23,7 @@ export default buildConfig({
     name: 'email-disabled', defaultFromAddress: 'disabled@example.invalid', defaultFromName: 'CMS local',
     sendEmail: async () => { throw new Error('Envoi courriel désactivé. Demander à un administrateur de réinitialiser le mot de passe. Aucun jeton n’est journalisé.') }
   }),
-  db: sqliteAdapter({ migrationDir: path.join(cmsRoot, 'src/migrations'), client: { url: `file:${path.join(dataDir, 'cms.sqlite')}` }, wal: { synchronous: 'FULL' }, busyTimeout: 5000, transactionOptions: { behavior: 'immediate' }, push: process.env.NODE_ENV !== 'production' }),
+  db: isolatedSQLiteAdapter({ migrationDir: path.join(cmsRoot, 'src/migrations'), client: { url: `file:${path.join(dataDir, 'cms.sqlite')}` }, wal: { synchronous: 'FULL' }, busyTimeout: 5000, transactionOptions: { behavior: 'immediate' }, push: process.env.NODE_ENV !== 'production' }),
   sharp,
   upload: { limits: { fileSize: 5 * 1024 * 1024 } },
   graphQL: { disable: true },

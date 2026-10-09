@@ -15,6 +15,8 @@ Ce dépôt contient le site institutionnel Astro et le CMS éditorial privé Pay
 
 L’export exécuté localement est le seul composant autorisé à lire la base pour construire le site. Il filtre le publié, les dates, l’archivage et la visibilité, sans exposer d’endpoint. Le script de projection applique une liste explicite de champs et nettoie le HTML. Les relations invalides bloquent la génération. Les images privées ne sont copiées que si référencées dans la projection ; seules PNG/JPEG/WebP sont admises, 5 Mo max. Un nouveau fichier est requis pour changer une image, pour préserver les versions précédentes.
 
+Chaque transaction CMS possède sa connexion SQLite jusqu’à sa validation ou son annulation. Le succès attend le COMMIT réel ; un refus est propagé au lieu d’annoncer une écriture non persistée. Cette adaptation versionnée corrige le comportement observé des versions Payload/libsql verrouillées ; la recette de contention et d’annulation doit être rejouée à chaque mise à jour. Aucune modification des dépendances installées ni répétition automatique d’une mutation.
+
 Les anciens répertoires de build ne sont pas publics. La racine web du service CMS cible uniquement la release courante, avec revalidation du HTML et des images. Une copie déjà téléchargée par un visiteur ne peut pas être révoquée. Le prototype GitHub Pages utilise l’infrastructure et le cache de GitHub ; il n’expose que des données fictives et n’est pas la chaîne de publication du CMS.
 
 ## Défense du public

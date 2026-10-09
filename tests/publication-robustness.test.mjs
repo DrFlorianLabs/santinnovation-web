@@ -67,6 +67,47 @@ test('release complète, aucun build à vide, rollback épinglé, lien relatif t
   assert.equal(await exists(join(moved, '.local/export-buffer/media', orphan)), false);
 });
 
+test('rollback établit une référence CMS fraîche après échec du build et après modification non encore observée', { timeout: 30_000 }, async () => {
+  const f = await setup(); await success(f); const first = (await f.status()).releaseId;
+  await f.options({ generation: 2 }); await success(f);
+  const previousDigest = (await f.status()).observedDigest;
+  await f.options({ generation: 3, fail: 'build' }); assert.equal((await run(f)).code, 1);
+  assert.notEqual((await f.status()).observedDigest, previousDigest, 'Un export réussi reste observé même si son build échoue');
+  await success(f, 'rollback.mjs', [first]);
+  await f.options({ generation: 3 }); await success(f, 'release.mjs', ['--if-changed']);
+  assert.equal((await f.status()).releaseId, first, 'Le retour arrière doit survivre à la réparation du build sans changement éditorial');
+  const oldBaseline = (await parse(join(f.root, '.local/publication-pin.json'))).baselineDigest;
+  // No release/worker has seen generation 4: the rollback must export it now.
+  await f.options({ generation: 4 }); await success(f, 'rollback.mjs', [first]);
+  assert.notEqual((await parse(join(f.root, '.local/publication-pin.json'))).baselineDigest, oldBaseline);
+  await success(f, 'release.mjs', ['--if-changed']); assert.equal((await f.status()).releaseId, first);
+  await f.options({ generation: 5 }); await success(f, 'release.mjs', ['--if-changed']);
+  assert.equal((await f.status()).state, 'ready');
+  assert.match(await readFile(join(f.root, '.local/site-current/index.html'), 'utf8'), /Fictif 5/);
+  assert.equal(await exists(join(f.root, '.local/publication-pin.json')), false);
+});
+
+test('rollback sans export fiable reste manuel jusqu’à --force réussi, sans fuite de la cause brute', { timeout: 30_000 }, async () => {
+  const f = await setup(); await success(f); const first = (await f.status()).releaseId;
+  await f.options({ generation: 2 }); await success(f);
+  await f.options({ generation: 3, fail: 'export' }); await success(f, 'rollback.mjs', [first]);
+  const pinFile = join(f.root, '.local/publication-pin.json');
+  assert.equal((await parse(pinFile)).baselineDigest, null);
+  assert.equal((await f.status()).rollbackMode, 'until-forced');
+  assert.match(publicationView(await f.status()).label, /Reprise manuelle/);
+  assert.doesNotMatch(JSON.stringify(await f.status()), /SECRET_SHOULD_NOT_BE_DISPLAYED/);
+  // Export still fails: success proves this cycle respected the manual pin first.
+  await success(f, 'release.mjs', ['--if-changed']); assert.equal((await f.status()).releaseId, first);
+  await f.options({ generation: 4 }); await success(f, 'release.mjs', ['--if-changed']);
+  assert.equal((await f.status()).releaseId, first, 'Même un nouveau contenu ne doit pas annuler le pin manuel');
+  await f.options({ generation: 4, fail: 'build' }); assert.equal((await run(f, 'release.mjs', ['--force'])).code, 1);
+  assert.equal((await parse(pinFile)).mode, 'until-forced');
+  await success(f, 'release.mjs', ['--if-changed']); assert.equal((await f.status()).state, 'rolledBack');
+  await f.options({ generation: 4 }); await success(f, 'release.mjs', ['--force']);
+  assert.equal((await f.status()).state, 'ready'); assert.equal(await exists(pinFile), false);
+  assert.match(await readFile(join(f.root, '.local/site-current/index.html'), 'utf8'), /Fictif 4/);
+});
+
 test('verrou vivant même ancien respecté ; SIGKILL puis deux reprises concurrentes sans vol de verrou', { timeout: 30_000 }, async () => {
   const f = await setup();
   const holder = spawn(process.execPath, [fixture, 'hold-lock'], { env: f.env, stdio: 'ignore' });

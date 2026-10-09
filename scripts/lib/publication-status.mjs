@@ -9,7 +9,9 @@ export function publicationView(status, now = Date.now()) {
     building: 'Génération du site en cours…',
     locked: 'Publication bloquée : une opération est active ou son verrou doit être contrôlé.',
     error: 'La dernière génération a échoué. Le site précédent est conservé.',
-    rolledBack: 'Version antérieure restaurée. Maintenue jusqu’au prochain changement de contenu publié.',
+    rolledBack: status?.rollbackMode === 'until-forced'
+      ? 'Version antérieure restaurée. Reprise manuelle requise par le responsable technique.'
+      : 'Version antérieure restaurée. Maintenue jusqu’au prochain changement de contenu publié.',
   };
   const causeLabels = {
     LOCATION_REFERENCED: 'Un établissement reste référencé. Réaffecter les professionnels concernés avant son retrait.',

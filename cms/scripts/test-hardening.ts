@@ -103,11 +103,10 @@ export async function hardeningLocal(payload: Payload, admin: any, editor: any, 
   ok('M03 — récupération locale désactivée, aucun jeton généré')
   const db = payload.db as typeof payload.db & { client: { execute: (sql: string) => Promise<{ rows: any[] }> } }
   assert.equal((await db.client.execute('PRAGMA journal_mode')).rows[0].journal_mode, 'wal')
-  // libsql rotates its native connection after a transaction. Its next connection
-  // does not inherit busy_timeout; do not claim a 5s wait on every write.
-  assert.equal(Number((await db.client.execute('PRAGMA busy_timeout')).rows[0].timeout), 0)
+  // The read connection is no longer detached by interactive transactions.
+  assert.equal(Number((await db.client.execute('PRAGMA busy_timeout')).rows[0].timeout), 5000)
   assert.equal(Number((await db.client.execute('PRAGMA synchronous')).rows[0].synchronous), 2)
-  ok('SQLite — WAL et FULL vérifiés; timeout initial 5000 puis remise à 0 native libsql caractérisée')
+  ok('SQLite — WAL, FULL et timeout 5000 conservés sur la connexion de lecture')
   return nextPassword
 }
 

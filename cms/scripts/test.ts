@@ -18,6 +18,7 @@ const { getPayload, restoreVersionOperation, createLocalReq } = await import('pa
 const { default: config } = await import('../src/payload.config')
 const { exportSnapshot } = await import('./export')
 const { hardeningLocal, hardeningInit, runChild } = await import('./test-hardening')
+const { transactionRegression } = await import('./test-transactions')
 const payload = await getPayload({ config })
 const initialTimeout = await (payload.db as any).client.execute('PRAGMA busy_timeout')
 assert.equal(Number(initialTimeout.rows[0].timeout), 5000)
@@ -120,6 +121,7 @@ try {
   ok('E étendu — restauration adresse et mentions en brouillon avec nouvelle validation requise')
   await assert.rejects(() => update('lieux', lieu2.id, { visible: false, _status: 'published' }), /fiche publiée/)
   ok('Relation publiée bloque le masquage avant écriture en base')
+  await transactionRegression(payload, adminUser, ok)
   editorPassword = await hardeningLocal(payload, adminUser, editorUser, testDir, ok)
   await hardeningInit(cmsRoot, testDir, ok)
   await snapshot()
@@ -172,11 +174,11 @@ try {
       const editorHeaders = { Authorization: `JWT ${editorToken}`, 'Content-Type': 'application/json', Origin: base }
       const deniedUnlock = await fetch(`${base}/api/users/unlock`, { method: 'POST', headers: editorHeaders, body: JSON.stringify({ email: editor.email }) }); assert.equal(deniedUnlock.status, 403)
       const patch = (collection: string, id: string | number, data: any, headers = { ...authHeaders, 'Content-Type': 'application/json', Origin: base }, query = '') => fetch(`${base}/api/${collection}/${id}${query}`, { method: 'PATCH', headers, body: JSON.stringify(data) })
-      const heldTransaction = await (payload.db as any).client.transaction('write')
+      const heldTransaction = await payload.db.beginTransaction()
       try {
         const conflict = await patch('actualites', article.id, { titre: 'Conflit fictif non enregistré', _status: 'published' })
         assert.equal(conflict.status, 409); const message = await conflict.text(); assert.match(message, /réessayer/); assert.doesNotMatch(message, /SQLITE|stack|\/Users\/|cms\.sqlite/)
-      } finally { await heldTransaction.rollback() }
+      } finally { if (heldTransaction) await payload.db.rollbackTransaction(heldTransaction) }
       ok('SQLite HTTP — verrou concurrent réel : réponse 409 compréhensible, aucune donnée technique exposée')
       for (const data of [{ _status: 'draft' }, { visible: false, _status: 'published' }, { archive: true, _status: 'published' }, { finAffichage: '2099-01-01T00:00:00Z', _status: 'published' }]) assert.equal((await patch('lieux', lieu2.id, data)).status, 400)
       ok('M02 HTTP — retrait/masquage/archive/période lieu dépendant refusés')

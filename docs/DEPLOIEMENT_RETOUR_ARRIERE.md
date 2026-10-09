@@ -42,7 +42,7 @@ npm run rollback -- --list
 npm run rollback -- IDENTIFIANT_DE_RELEASE_VERIFIEE
 ```
 
-Le script vérifie le manifeste et les SHA-256, prend le verrou partagé et bascule atomiquement le lien relatif `site-current`. Le statut désigne la version réellement servie. Cette version reste sélectionnée tant que le contenu CMS publié ne change pas ; `npm run publish:local -- --force` reconstruit explicitement depuis le CMS. Les anciennes sorties sans manifeste ne sont pas proposées.
+Le script vérifie le manifeste et les SHA-256, prend le verrou partagé et bascule atomiquement le lien relatif `site-current`. Il recalcule la projection CMS au moment du retour arrière, y compris après un build échoué : cette projection sert de référence pour détecter un changement ultérieur. Si cet export est impossible, la version restaurée reste maintenue jusqu’à une reprise explicite ; le tableau de bord indique ce mode. `npm run publish:local -- --force` reconstruit explicitement depuis le CMS. Le statut désigne la version réellement servie ; les anciennes sorties sans manifeste ne sont pas proposées.
 
 Avant bascule, vérifier que l’ancienne version ne réintroduit pas des coordonnées ou contenus depuis retirés. Pour revenir après un rollback erroné, sélectionner la release notée avant l’opération ou reconstruire la projection courante.
 

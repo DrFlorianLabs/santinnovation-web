@@ -23,10 +23,12 @@
     "migrate:status": "payload migrate:status"
   },
   "dependencies": {
+    "@libsql/client": "0.14.0",
     "@payloadcms/db-sqlite": "3.90.2",
     "@payloadcms/next": "3.90.2",
     "@payloadcms/richtext-lexical": "3.90.2",
     "@payloadcms/translations": "3.90.2",
+    "drizzle-orm": "0.45.2",
     "graphql": "16.13.1",
     "next": "16.4.0",
     "payload": "3.90.2",
