@@ -1,16 +1,36 @@
-# Livraison Sant’Innovation — corrections après audit Claude
+# Livraison Sant’Innovation — accueil patients et corrections après audit
 
 **9 octobre 2026 — prototype GitHub Pages déployé et vérifié ; administration et exploitation testées sur macOS et Linux.**
 
 Le périmètre initial limité aux commits locaux a été remplacé par l’autorisation utilisateur de pousser sur `main` et de conserver GitHub Pages pour présenter le prototype. La mise en production OVH et la publication de contenus institutionnels réels restent distinctes.
 
-## Révision exacte
+## Révision actuelle — présentation du 9 octobre 2026
+
+| Référence | Valeur |
+| --- | --- |
+| Branche de préparation | `codex/accueil-patients-2026-10-09` |
+| **Commit exact du code actuellement déployé** | **`5b22739da8d6b8d95962ec82a744e1080a45fa8e`** |
+| GitHub / Pages | Push sur `main` et [CI 37923494674](https://github.com/DrFlorianLabs/santinnovation-web/actions/runs/37923494674) réussis ; déploiement terminé à 13 h 29 (Paris). |
+| Révision distante relue | `5b22739da8d6b8d95962ec82a744e1080a45fa8e`, via `prototype.json`, à 13 h 30 (Paris). |
+| Prototype public | [drflorianlabs.github.io/santinnovation-web](https://drflorianlabs.github.io/santinnovation-web/) |
+
+La navigation principale descend maintenant dans une page continue : **rendez-vous → actualités compactes → équipe → lieux → soins et parcours → projet de santé → recherche et innovation**. Les fiches détaillées et articles conservent leurs adresses. Le menu fonctionne sans JavaScript ; avec JavaScript, la rubrique active est signalée et le menu mobile se ferme après sélection. Les titres restent visibles sous l’en-tête fixe.
+
+La palette utilise un bleu cobalt, du violet et des touches corail sur des fonds clairs. Le logo et le favicon n’ont pas été modifiés. Le [prompt de remise au propre du logo](docs/PROMPT_REMISE_AU_PROPRE_LOGO.txt) est prêt à copier dans un autre chat, avec l’original joint. La [liste des informations pour le pré-site](docs/INFORMATIONS_POUR_PRE_SITE.md) distingue les données historiques à confirmer des informations encore absentes. Aucun contenu institutionnel réel n’a été ajouté au prototype.
+
+**Validation de cette révision :** construction synthétique réussie ; typage Astro sur 76 fichiers sans erreur, avertissement ni suggestion ; **11 tests navigateur**, couvrant 21 routes aux largeurs 320, 768 et 1440 px, plus les parcours d’ancres à 390 et 1440 px et sans JavaScript. Les vérifications CMS, publication, sauvegarde, restauration, compte éditeur et dépendances ont aussi réussi dans la CI Linux. Les contrôles Axe automatisés ne remplacent pas un audit RGAA.
+
+Après déploiement, **8 contrôles Chromium distants** ont réussi sur quatre parcours à 320 et 1440 px, sans ressource en échec ni violation Axe détectée. Les **12 clics d’ancres** à 390 et 1440 px ont conservé le même document, respecté l’ordre des sept rubriques et laissé les titres visibles ; les retours depuis un article sont fonctionnels. Les sept chemins privés contrôlés répondent toujours 404. Captures locale et distante relues visuellement. Les résultats sont ajoutés sous `homepage` dans le [fichier de preuves](docs/recette/corrections-resultats-2026-10-09.json), sans remplacer les preuves historiques du socle ci-dessous.
+
+Pour revenir à la présentation précédente, préparer un revert du commit `5b22739da8d6b8d95962ec82a744e1080a45fa8e`, refaire les contrôles, puis déployer le prototype synthétique et relire son manifeste. Ce retour arrière ne touche pas la base CMS. Aucun rollback n’a été effectué.
+
+## Socle de sécurité et publication — révision précédente
 
 | Référence | Valeur |
 | --- | --- |
 | Branche de préparation | `codex/corrections-audit-2026-10-09` |
 | Base auditée par Claude | `a50140b6a525b1a0d2d134a07ea36fc13355c032` |
-| **Commit exact du code corrigé et testé** | **`8fb575d88592c25943c56f75eeec0526234d0c87`** |
+| **Commit exact du socle corrigé et testé** | **`8fb575d88592c25943c56f75eeec0526234d0c87`** |
 | GitHub / Pages | Push sur `main` et [CI 37920073993](https://github.com/DrFlorianLabs/santinnovation-web/actions/runs/37920073993) réussis ; déploiement terminé le 9 octobre à 12 h 57 (Paris). |
 | Prototype public | [drflorianlabs.github.io/santinnovation-web](https://drflorianlabs.github.io/santinnovation-web/) |
 | Révision distante relue | `8fb575d88592c25943c56f75eeec0526234d0c87`, via `prototype.json`, à 12 h 58 (Paris). |

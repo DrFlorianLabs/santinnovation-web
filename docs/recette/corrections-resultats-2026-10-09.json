@@ -364,5 +364,152 @@
       "accessibility": "axe WCAG 2 A/AA, 2.1 A/AA and 2.2 AA tags",
       "screenshotVisuallyReviewed": true
     }
+  },
+  "homepage": {
+    "code_revision": "5b22739da8d6b8d95962ec82a744e1080a45fa8e",
+    "branch": "codex/accueil-patients-2026-10-09",
+    "syntheticOnly": true,
+    "logoUnchanged": true,
+    "local": {
+      "astro_typecheck_files": 76,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 0,
+      "public_browser_passed": 11,
+      "routes": 21,
+      "widths": [
+        320,
+        768,
+        1440
+      ],
+      "anchor_widths": [
+        390,
+        1440
+      ],
+      "no_javascript_anchors": "pass",
+      "screenshotsVisuallyReviewed": true
+    },
+    "github_actions": {
+      "runId": 37923494674,
+      "url": "https://github.com/DrFlorianLabs/santinnovation-web/actions/runs/37923494674",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "verify",
+          "status": "completed",
+          "conclusion": "success",
+          "completedAt": "2026-10-09T11:29:06Z"
+        },
+        {
+          "name": "prototype",
+          "status": "completed",
+          "conclusion": "success",
+          "completedAt": "2026-10-09T11:29:53Z"
+        }
+      ]
+    },
+    "github_pages": {
+      "checkedAt": "2026-10-09T11:30:32.436Z",
+      "url": "https://drflorianlabs.github.io/santinnovation-web/",
+      "revision": "5b22739da8d6b8d95962ec82a744e1080a45fa8e",
+      "viewports": [
+        {
+          "width": 390,
+          "sections": [
+            "rendez-vous",
+            "actualites",
+            "equipe",
+            "lieux",
+            "soins-et-parcours",
+            "projet-de-sante",
+            "recherche-innovation"
+          ],
+          "anchors": [
+            "equipe",
+            "lieux",
+            "soins-et-parcours",
+            "projet-de-sante",
+            "recherche-innovation",
+            "actualites"
+          ],
+          "sameDocument": true,
+          "returnFromArticle": true
+        },
+        {
+          "width": 1440,
+          "sections": [
+            "rendez-vous",
+            "actualites",
+            "equipe",
+            "lieux",
+            "soins-et-parcours",
+            "projet-de-sante",
+            "recherche-innovation"
+          ],
+          "anchors": [
+            "equipe",
+            "lieux",
+            "soins-et-parcours",
+            "projet-de-sante",
+            "recherche-innovation",
+            "actualites"
+          ],
+          "sameDocument": true,
+          "returnFromArticle": true
+        }
+      ],
+      "manifest": {
+        "prototype": true,
+        "synthetic": true,
+        "revision": "5b22739da8d6b8d95962ec82a744e1080a45fa8e"
+      },
+      "privatePaths": [
+        {
+          "path": "pro/",
+          "status": 404
+        },
+        {
+          "path": "admin/",
+          "status": 404
+        },
+        {
+          "path": "api/users",
+          "status": 404
+        },
+        {
+          "path": "cms/",
+          "status": 404
+        },
+        {
+          "path": ".local/",
+          "status": 404
+        },
+        {
+          "path": "secret",
+          "status": 404
+        },
+        {
+          "path": "cms.sqlite",
+          "status": 404
+        }
+      ],
+      "passed": true
+    },
+    "prototype_browser": {
+      "checks": 8,
+      "widths": [
+        320,
+        1440
+      ],
+      "failures": 0,
+      "engine": "Chromium",
+      "screenshotVisuallyReviewed": true
+    },
+    "limits": [
+      "Synthetic content only",
+      "No physical device, Safari, Firefox or complete RGAA audit",
+      "OVH Web Pro CMS hosting unresolved; no OVH deployment"
+    ]
   }
 }
