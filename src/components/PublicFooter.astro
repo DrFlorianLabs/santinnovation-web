@@ -67,7 +67,7 @@ const year = new Date().getFullYear();
                 <Icon name="map-pin" size={16} />
               </span>
               <span>
-                <a href={withBase(`/lieux/${l.id}`)} class="hover:underline">{l.data.nom}</a>
+                <a href={withBase("/#lieux")} class="hover:underline">{l.data.nom}</a>
                 <br />
                 <span class="text-white/75">
                   {l.data.adresse}, {l.data.codePostal} {l.data.ville}
@@ -79,7 +79,7 @@ const year = new Date().getFullYear();
       </ul>
     </div>
 
-    <div>
+    <div id="contact" tabindex="-1" class="scroll-mt-24">
       <h2 class="font-display text-sm font-semibold uppercase tracking-wide text-white/90">
         Contact
       </h2>

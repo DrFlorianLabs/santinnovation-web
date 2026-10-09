@@ -1,0 +1,23 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { withBase } from '@lib/paths';
+import { formatDate, formatDateTime } from '@lib/format';
+interface Props { actualites: CollectionEntry<'actualites'>[]; }
+const { actualites } = Astro.props;
+---
+<section id="actualites" tabindex="-1" data-home-section aria-labelledby="actualites-title" class="home-news border-y border-blue-100 bg-white py-6 md:py-7">
+  <div class="container-site">
+    <div class="flex flex-wrap items-center justify-between gap-3"><h2 id="actualites-title" class="text-xl font-semibold">Actualités et prévention</h2><a href={withBase('/actualites')} class="text-sm font-medium text-teal-600 underline underline-offset-4">Toutes les actualités</a></div>
+    <ul class="home-news-list mt-4 grid gap-4 md:grid-cols-3">
+      {actualites.slice(0, 3).map(actu => <li class="home-news-item min-w-0 border-l-2 border-blue-100 pl-4">
+        <article>
+          <p class="text-xs text-ink-700"><time datetime={actu.data.date.toISOString()}>{formatDate(actu.data.date)}</time> · {actu.data.categorie}</p>
+          <h3 class="mt-1 text-base font-semibold leading-snug"><a href={withBase(`/actualites/${actu.id}`)} class="hover:underline">{actu.data.titre}</a></h3>
+          <p class="mt-2 line-clamp-2 text-sm text-ink-700">{actu.data.resume}</p>
+          {actu.data.debutEvenement && <p class="mt-2 text-xs font-medium text-blue-900">Événement : {formatDateTime(actu.data.debutEvenement)}</p>}
+        </article>
+      </li>)}
+    </ul>
+    {actualites.length === 0 && <p class="mt-3 text-sm text-ink-700">Les prochaines informations de la MSP seront disponibles ici.</p>}
+  </div>
+</section>

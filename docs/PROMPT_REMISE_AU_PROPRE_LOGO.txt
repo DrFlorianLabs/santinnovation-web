@@ -1,0 +1,31 @@
+À copier dans un autre chat en joignant le logo actuel dans sa meilleure qualité disponible. Dans ce dépôt, la référence visuelle retrouvée est PHOTO-2026-04-03-10-04-32.jpg. Joindre aussi le fichier original vectoriel ou la maquette de la carte de visite si vous les avez : leur existence n’est pas établie ici.
+
+PROMPT
+
+Tu es graphiste spécialisé en identité visuelle et préparation de fichiers pour l’impression. Je joins le logo actuel de la MSP Sant’Innovation, maison de santé pluriprofessionnelle à Besançon. Des cartes de visite sont déjà imprimées avec cette identité : je souhaite conserver ce logo, le redessiner proprement et simplifier les détails qui deviennent fragiles sur de petits supports. Je ne demande pas une nouvelle identité.
+
+La pièce jointe fait autorité. Examine-la avant de dessiner. Si elle est absente ou illisible, demande-la et n’invente pas le logo. Préserve l’original et travaille sur des copies.
+
+À conserver reconnaissable : la silhouette de maison, le toit, la fenêtre à quatre carreaux, le mur gauche et le sol, la ligne de porte/mur droit, les deux arcs et les points du signal, ainsi que l’association bleu marine, turquoise et vert. Conserve l’équilibre général et le caractère sobre, accueillant et professionnel. N’ajoute pas de croix médicale, stéthoscope, cerveau, effet 3D, ombre, slogan ou symbole nouveau.
+
+L’image actuellement fournie dans le projet porte « MAISON DE SANTÉ » et « SANT INNOVATION ». Reprends exactement le texte de la pièce jointe et sa hiérarchie. La graphie usuelle « Sant’Innovation » ne t’autorise pas à ajouter silencieusement une apostrophe à la signature déjà imprimée. Si une différence de texte apparaît entre les fichiers, signale-la avant de finaliser la version concernée. Ne prétends pas avoir identifié la police originale si tu ne peux pas le vérifier.
+
+Travail attendu
+
+1. Propose une remise au propre très fidèle : courbes nettes, alignements et espacements réguliers, épaisseurs cohérentes, détails lisibles. Explique brièvement les changements réels. Fournis un comparatif avec l’original ; limite-toi à une proposition principale et une adaptation pour les très petits marquages.
+
+2. Prépare les déclinaisons utiles : logo complet, symbole seul, composition horizontale si nécessaire ; couleurs proches de la référence, couleurs en aplats sans dégradé, monochrome noir et version blanche pour fond sombre. La version simplifiée doit rester manifestement le même logo. Elle peut épaissir les traits et espacer les détails ; toute suppression d’un élément distinctif doit être présentée comme une adaptation à valider.
+
+3. Vérifie le rendu sur fond clair et sombre et à petite taille : carte de visite, marquage d’une clé USB, poitrine de t-shirt, broderie ou gravure. Montre des épreuves à taille réelle avec dimensions indiquées. Si le nom devient illisible, propose le symbole seul plutôt qu’un texte minuscule. Les tailles minimales et épaisseurs conseillées restent à confirmer avec le prestataire selon sa technique ; une simulation ne vaut pas un bon à tirer.
+
+Livrables réels
+
+- Un SVG maître réellement vectoriel, avec tracés propres et éléments éditables, sans image matricielle incorporée ni dépendance externe.
+- Les variantes SVG et un PDF vectoriel ouvrable par un imprimeur. Fournis une version avec textes convertis en tracés pour la diffusion, et conserve une source éditable avec le nom de la police et ses conditions d’utilisation connues.
+- Des PNG transparents de bonne définition, avec dimensions en pixels précisées. Les aperçus et maquettes sont séparés des fichiers de production.
+- Un court guide : couleurs RVB/hexadécimales, versions conseillées par support, zone de protection et limites constatées. Les valeurs pour impression sont à établir avec le profil demandé par l’imprimeur : ne présente pas une conversion CMJN ou une équivalence Pantone approximative comme certifiée.
+- Un dossier ou ZIP organisé, accompagné de liens de téléchargement vers les fichiers effectivement créés.
+
+Les fichiers SVG doivent contenir de vrais tracés : renommer un PNG, l’insérer dans un SVG ou livrer uniquement une image générée ne répond pas au besoin. Vérifie les exports en les rouvrant, le fond transparent, l’orthographe et la netteté des contours. N’annonce pas de fichier AI, EPS ou de fichier machine de broderie sans l’avoir réellement produit avec un outil compatible. Si tes outils ne permettent pas un livrable, indique précisément cette limite et ce qui doit être confié à un graphiste ou au fabricant.
+
+Présente les fichiers pour validation. N’envoie aucune commande à un imprimeur et ne publie rien à ma place.

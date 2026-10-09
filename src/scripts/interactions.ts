@@ -111,8 +111,38 @@ function setupHeaderElevation(): void {
   window.addEventListener("scroll", update, { passive: true });
 }
 
+/** Native fragment links keep history, keyboard navigation and no-JS support.
+ * Only the current-section indicator needs JavaScript; it never rewrites URLs.
+ */
+function setupSectionNavigation(): void {
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-section-link]'))
+    .filter(link => link.origin === location.origin && link.pathname === location.pathname);
+  if (!links.length) return;
+  const sections = Array.from(document.querySelectorAll<HTMLElement>('main > section[id]'));
+  const header = document.querySelector<HTMLElement>('[data-elevate-on-scroll]');
+  let frame = 0;
+  const update = () => {
+    frame = 0;
+    const threshold = (header?.getBoundingClientRect().height || 64) + 48;
+    let current = '';
+    for (const section of sections) {
+      if (section.getBoundingClientRect().top <= threshold) current = section.id;
+    }
+    for (const link of links) {
+      if (link.hash === `#${current}`) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    }
+  };
+  const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule);
+  window.addEventListener('hashchange', schedule);
+  update();
+}
+
 document.documentElement.classList.remove("no-js");
 setupTilt();
 setupReveal();
 setupParallax();
 setupHeaderElevation();
+setupSectionNavigation();

@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 /*
-  Design system Sant'Innovation — v2 « Depth »
-  Source : 03_Design_system_SantInnovation.pdf + refonte 3D.
+  Design system Sant'Innovation — palette lumineuse.
+  Le logo et son dégradé restent inchangés. L'interface emploie un cobalt
+  franc, un violet en accent et des surfaces claires légèrement corail.
 
   Principes de la refonte :
   - Profondeur physique : élévations multi-couches teintées (pas de gris plat).
@@ -12,44 +13,53 @@
   - Tout est désactivé proprement via prefers-reduced-motion.
 */
 @theme {
-  /* --- Couleurs : Bleu (socle / confiance) --- */
-  --color-blue-950: #081c2d;
-  --color-blue-900: #12324a;
-  --color-blue-700: #1e4d68;
-  --color-blue-500: #2f6f91;
-  --color-blue-100: #e7f0f5;
+  /* --- Bleu franc : titres, actions et surfaces claires --- */
+  --color-blue-950: #142450;
+  --color-blue-900: #1d3c83;
+  --color-blue-700: #284bad;
+  --color-blue-500: #3b64e8;
+  --color-blue-100: #edf2ff;
 
-  /* --- Cyan Innovation (carte de visite) : CTA, liens, interactif --- */
-  --color-teal-600: #08768b;
-  --color-teal-500: #3bb7d2;
-  --color-teal-100: #e3f4f9;
+  /* Noms historiques conservés pour les composants ; cobalt pour les liens.
+     Le niveau 500, clair, sert uniquement sur fond sombre ou en décor. */
+  --color-teal-600: #3156d3;
+  --color-teal-500: #adc7ff;
+  --color-teal-100: #eaf1ff;
 
-  /* --- Vert Sant'Innovation (carte de visite) : accent, dégradé de marque --- */
-  --color-green-600: #53a83b;
-  --color-green-500: #62bb46;
-  --color-green-100: #edf7e6;
+  /* --- Accent violet ; les anciens utilitaires green restent disponibles --- */
+  --color-violet-700: #6441b5;
+  --color-violet-600: #7045bf;
+  --color-violet-500: #9d7fea;
+  --color-violet-100: #f2edff;
+  --color-green-600: #7045bf;
+  --color-green-500: #9d7fea;
+  --color-green-100: #f2edff;
 
-  /* --- Dégradé de marque : cyan → vert (logo, wordmark, CTA) --- */
+  /* --- Dégradé de marque inchangé, réservé au logo / wordmark --- */
   --brand-gradient: linear-gradient(100deg, #1ba3c2 0%, #62bb46 100%);
+  --action-gradient: linear-gradient(110deg, #3156d3 0%, #7045bf 100%);
 
-  /* --- Sauge Coordination --- */
-  --color-sage-700: #1e4d3a;
-  --color-sage-500: #7fa99b;
-  --color-sage-100: #eaf2ef;
+  /* --- Corail chaleureux : portraits, repères et accents ponctuels --- */
+  --color-coral-700: #9f3d35;
+  --color-coral-500: #cf6657;
+  --color-coral-100: #fff0e9;
+  --color-sage-700: #9f3d35;
+  --color-sage-500: #cf6657;
+  --color-sage-100: #fff0e9;
 
-  /* --- Neutres (chauds) --- */
-  --color-ink-950: #263238;
-  --color-ink-700: #4d5b61;
-  --color-ink-500: #59686f;
-  --color-ink-200: #eef1f3;
-  --color-ivory: #f7f4ef;
+  /* --- Neutres : blanc et bleu très légèrement teinté --- */
+  --color-ink-950: #23304b;
+  --color-ink-700: #4b5872;
+  --color-ink-500: #5d6780;
+  --color-ink-200: #e8edf7;
+  --color-ivory: #f8faff;
   --color-white: #ffffff;
 
   /* --- Couleurs fonctionnelles --- */
   --color-success: #2e7d5b;
-  --color-warning: #d89a2b;
-  --color-danger: #c44536;
-  --color-info: #2f80ed;
+  --color-warning: #956316;
+  --color-danger: #b33a38;
+  --color-info: #3156d3;
 
   /* --- Typographies --- */
   --font-display: "Sora Variable", ui-sans-serif, system-ui, sans-serif;
@@ -63,23 +73,23 @@
 
   /* --- Élévations : ombres multi-couches teintées bleu --- */
   --shadow-e1:
-    0 1px 2px rgba(8, 28, 45, 0.06),
-    0 2px 6px rgba(8, 28, 45, 0.05);
+    0 1px 2px rgba(29, 60, 131, 0.04),
+    0 2px 6px rgba(29, 60, 131, 0.04);
   --shadow-e2:
-    0 1px 2px rgba(8, 28, 45, 0.05),
-    0 4px 10px rgba(8, 28, 45, 0.06),
-    0 12px 28px -8px rgba(18, 50, 74, 0.14);
+    0 1px 2px rgba(29, 60, 131, 0.03),
+    0 4px 10px rgba(29, 60, 131, 0.04),
+    0 12px 28px -8px rgba(49, 86, 211, 0.12);
   --shadow-e3:
-    0 2px 4px rgba(8, 28, 45, 0.05),
-    0 8px 18px rgba(8, 28, 45, 0.07),
-    0 24px 48px -12px rgba(18, 50, 74, 0.22);
+    0 2px 4px rgba(29, 60, 131, 0.03),
+    0 8px 18px rgba(29, 60, 131, 0.05),
+    0 24px 48px -12px rgba(49, 86, 211, 0.18);
   --shadow-e4:
-    0 4px 8px rgba(8, 28, 45, 0.06),
-    0 16px 32px rgba(8, 28, 45, 0.10),
-    0 40px 80px -16px rgba(18, 50, 74, 0.30);
+    0 4px 8px rgba(29, 60, 131, 0.04),
+    0 16px 32px rgba(29, 60, 131, 0.06),
+    0 40px 80px -16px rgba(49, 86, 211, 0.22);
   --shadow-teal-glow:
-    0 4px 14px -2px rgba(27, 163, 194, 0.45),
-    0 12px 32px -8px rgba(98, 187, 70, 0.3);
+    0 4px 14px -2px rgba(49, 86, 211, 0.24),
+    0 12px 32px -8px rgba(112, 69, 191, 0.18);
 }
 
 @layer base {
@@ -174,7 +184,7 @@
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.75)),
       var(--color-white);
-    border: 1px solid rgba(18, 50, 74, 0.08);
+    border: 1px solid rgba(49, 86, 211, 0.1);
     border-top-color: rgba(255, 255, 255, 0.9);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.9),
@@ -192,12 +202,12 @@
   .glass {
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.72),
-      rgba(255, 255, 255, 0.5)
+      rgba(255, 255, 255, 0.94),
+      rgba(255, 255, 255, 0.88)
     );
-    -webkit-backdrop-filter: blur(16px) saturate(1.4);
-    backdrop-filter: blur(16px) saturate(1.4);
-    border: 1px solid rgba(255, 255, 255, 0.65);
+    -webkit-backdrop-filter: blur(16px) saturate(1.1);
+    backdrop-filter: blur(16px) saturate(1.1);
+    border: 1px solid rgba(49, 86, 211, 0.1);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.85),
       var(--shadow-e2);
@@ -206,8 +216,8 @@
   .glass-dark {
     background: linear-gradient(
       180deg,
-      rgba(18, 50, 74, 0.55),
-      rgba(8, 28, 45, 0.65)
+      rgba(29, 60, 131, 0.82),
+      rgba(20, 36, 80, 0.88)
     );
     -webkit-backdrop-filter: blur(16px) saturate(1.2);
     backdrop-filter: blur(16px) saturate(1.2);
@@ -278,19 +288,19 @@
     transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
   }
   .btn-3d-primary {
-    background: linear-gradient(100deg, #08768b 0%, #176a60 55%, #3a6c2e 100%);
+    background: var(--action-gradient);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.45),
-      inset 0 -2px 0 rgba(8, 28, 45, 0.18),
+      inset 0 -2px 0 rgba(29, 60, 131, 0.16),
       var(--shadow-teal-glow);
   }
   .btn-3d-primary:hover {
     transform: translateY(-2px);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.45),
-      inset 0 -2px 0 rgba(8, 28, 45, 0.18),
-      0 8px 20px -2px rgba(27, 163, 194, 0.5),
-      0 18px 44px -8px rgba(98, 187, 70, 0.42);
+      inset 0 -2px 0 rgba(29, 60, 131, 0.16),
+      0 8px 20px -2px rgba(49, 86, 211, 0.28),
+      0 18px 44px -8px rgba(112, 69, 191, 0.2);
   }
 
   /* Texte au dégradé de marque (wordmark « Innovation ») */
@@ -304,19 +314,19 @@
     transform: translateY(1px) scale(0.99);
   }
   .btn-3d-secondary {
-    background: linear-gradient(180deg, #ffffff, #f3f6f8);
+    background: linear-gradient(180deg, #ffffff, #f4f7ff);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 1),
-      inset 0 -1px 0 rgba(18, 50, 74, 0.08),
+      inset 0 -1px 0 rgba(49, 86, 211, 0.06),
       var(--shadow-e1);
-    border: 1px solid rgba(18, 50, 74, 0.12);
+    border: 1px solid rgba(49, 86, 211, 0.2);
   }
   .btn-3d-secondary:hover {
     transform: translateY(-2px);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 1),
       var(--shadow-e2);
-    border-color: rgba(47, 183, 177, 0.55);
+    border-color: rgba(49, 86, 211, 0.5);
   }
 
   /* ============================================================
@@ -340,7 +350,7 @@
     min-height: 480px;
     border-radius: 50%;
     filter: blur(90px);
-    opacity: 0.5;
+    opacity: 0.45;
     will-change: transform;
   }
   .aurora::before {
@@ -348,8 +358,8 @@
     right: -12%;
     background: radial-gradient(
       circle,
-      rgba(69, 199, 193, 0.5),
-      rgba(47, 111, 145, 0.22) 55%,
+      rgba(77, 126, 244, 0.26),
+      rgba(157, 127, 234, 0.16) 55%,
       transparent 72%
     );
     animation: aurora-drift-a 26s ease-in-out infinite alternate;
@@ -359,8 +369,8 @@
     left: -14%;
     background: radial-gradient(
       circle,
-      rgba(127, 169, 155, 0.42),
-      rgba(231, 240, 245, 0.3) 55%,
+      rgba(244, 164, 143, 0.26),
+      rgba(255, 240, 233, 0.2) 55%,
       transparent 75%
     );
     animation: aurora-drift-b 32s ease-in-out infinite alternate;
@@ -383,8 +393,8 @@
     height: 46%;
     pointer-events: none;
     background-image:
-      linear-gradient(rgba(18, 50, 74, 0.09) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(18, 50, 74, 0.09) 1px, transparent 1px);
+      linear-gradient(rgba(49, 86, 211, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(49, 86, 211, 0.07) 1px, transparent 1px);
     background-size: 44px 44px;
     transform: perspective(600px) rotateX(58deg) scale(1.6);
     transform-origin: bottom center;
@@ -396,7 +406,7 @@
   .dot-field {
     background-image: radial-gradient(
       circle at 1px 1px,
-      rgba(18, 50, 74, 0.1) 1px,
+      rgba(49, 86, 211, 0.08) 1px,
       transparent 0
     );
     background-size: 28px 28px;
@@ -492,6 +502,24 @@
     transform-origin: center;
     transform-box: fill-box;
   }
+  /* Repères de la page d'accueil. La grille et les espacements restent dans
+     les composants ; aucune alternance ne dépend d'une animation. */
+  .home-hero {
+    background: linear-gradient(125deg, #ffffff 12%, #edf2ff 72%, #f2edff 100%);
+  }
+  .home-news {
+    background: #ffffff;
+    border-block: 1px solid var(--color-blue-100);
+  }
+  .home-kicker {
+    color: var(--color-teal-600);
+  }
+  .home-project {
+    background: linear-gradient(120deg, #fff8f4, #ffffff 70%);
+  }
+  .home-innovation {
+    background: linear-gradient(120deg, #f2edff, #f8faff 75%);
+  }
   @keyframes node-pulse {
     0%,
     100% {
@@ -507,7 +535,7 @@
 
 /* Content remains usable when a script fails or is disabled. */
 [hidden] { display: none !important; }
-.filter-input { width: 100%; min-height: 2.75rem; margin-top: .4rem; padding: .6rem .75rem; border: 1px solid #7b878c; border-radius: .6rem; background: #fff; color: var(--color-ink-950); }
+.filter-input { width: 100%; min-height: 2.75rem; margin-top: .4rem; padding: .6rem .75rem; border: 1px solid #7985a2; border-radius: .6rem; background: #fff; color: var(--color-ink-950); }
 .editorial-content { overflow-wrap: anywhere; }
 .editorial-content p { margin-block: 1em; line-height: 1.75; }
 .editorial-content h2 { margin-block: 1.8em .7em; font-size: 1.5rem; font-weight: 600; }
@@ -521,6 +549,12 @@
 .editorial-content blockquote { padding-left: 1rem; border-left: 3px solid var(--color-teal-600); }
 .editorial-content table { display: block; overflow-x: auto; width: 100%; }
 .editorial-content td, .editorial-content th { padding: .65rem; border: 1px solid var(--color-blue-100); }
-html { scroll-padding-top: 6rem; }
+/* One offset only: do not add html scroll-padding to the target's margin. */
+main[id], main [id] { scroll-margin-top: 6rem; }
+main section[id]:focus-visible {
+  outline: 2px solid var(--color-teal-600);
+  outline-offset: -3px;
+  border-radius: .5rem;
+}
 body { overflow-wrap: break-word; }
 @media (max-width: 639px) { .skip-link:focus { position: fixed; } }
