@@ -1,15 +1,67 @@
-# Livraison Sant’Innovation — identité visuelle, contenus à relire et corrections après audit
+# Livraison Sant’Innovation — prototype approuvé, équipe et carte
 
-**10 octobre 2026 — identité du kit déployée et vérifiée ; contenus réels préparés en brouillons privés.**
+**10 octobre 2026 — publication des textes et informations professionnelles explicitement validée par l’utilisateur.** La présentation GitHub Pages reste distincte de la future mise en service sur OVH Web Pro.
 
-Le périmètre initial limité aux commits locaux a été remplacé par l’autorisation utilisateur de pousser sur `main` et de conserver GitHub Pages pour présenter le prototype. La mise en production OVH et la publication de contenus institutionnels réels restent distinctes.
+## Révision actuelle
 
-## Révision actuelle — kit graphique du 10 octobre 2026
+| Référence | Valeur |
+| --- | --- |
+| Branche de préparation conservée | `codex/prototype-valide-equipe-carte-2026-10-10` |
+| **Commit exact du code livré** | **`c3de708488642d47272d81e92b389f27b90b4bb0`** |
+| Push | `main` poussé et accepté par GitHub le 10 octobre 2026. |
+| Vérifications / déploiement | [CI 38053039336](https://github.com/DrFlorianLabs/santinnovation-web/actions/runs/38053039336) réussie ; déploiement terminé à 14 h 50 (Paris), révision distante confirmée à 14 h 51. |
+| Site public | [Sant’Innovation](https://drflorianlabs.github.io/santinnovation-web/) |
+
+## Modifications
+
+- Neuf professionnels confirmés, trois adresses harmonisées, Magali Saada-Baron retirée du public et conservée archivée dans le CMS privé. Arrivée de Mathilde Guillaume–Sage au 14 rue Henri et Maurice Baigue indiquée **à compter du 1er janvier 2027**. Fonctions de Florence Delay précisées.
+- Un bouton général Doctolib pour la MSP et quatre liens individuels vérifiés : Patrick Vuattoux, Serge Mazzucotelli, Florian Sibille et Anaelle Bizet. Aucun lien supposé pour les cinq autres. Itinéraire Google Maps sur chaque fiche et chaque entrée de l’annuaire, calculé depuis l’adresse du lieu.
+- Fond **Plan IGN**, API WMTS publique sans clé, trois repères géocodés par IGN/BAN ; chargement après clic, texte d’information, attribution, adresses et itinéraires disponibles sans carte. Erreur de tuiles signalée sans masquer les informations pratiques.
+- Textes projet de santé, TEAM-IC et partenariat Digital Medical Hub approuvés et intégrés. Soins et parcours reste vide ; aucune actualité inventée. Documents internes sources et protocoles non diffusés.
+- Palette du kit conservée. Les grands décors derrière le texte cèdent la place à un motif fin inspiré du logo, dans la marge, qui apparaît au fil du scroll. Texte immobile, scroll natif, réduction des mouvements et fonctionnement sans JavaScript préservés.
+- Publication GitHub fondée sur neuf JSON publics contrôlés : champs autorisés, HTML nettoyé, relations et fichiers vérifiés. Aucun CMS ou export brut dans GitHub Pages. Le mode synthétique reste séparé et utilisé par les tests. Les garde-fous de publication de production restent intacts.
+
+## Contrôles locaux
+
+- Construction approuvée : **28 pages, 9 professionnels, 3 lieux, 69 fichiers** ; bandeau, `noindex`, liens, digest du contenu et absence de marqueurs privés contrôlés. Recherche supplémentaire des identifiants et du secret locaux dans cette sortie : aucun retrouvé.
+- **38 tests unitaires synthétiques réussis** : dix cas du nouveau contrat approuvé et vingt-huit contrôles de contenu, publication, sauvegarde, restauration et reprise.
+- **14 tests Chromium synthétiques réussis** : 21 routes à 320/768/1440 px, ancres à 390/1440 px, filtres, navigation clavier, sans JavaScript, préférence de mouvement, carte avec tuiles fictives et indisponibilité de la carte. L’absence de remplacement d’un lien individuel manquant est également vérifiée dans la suite finale réussie par la CI.
+- Typage Astro : **79 fichiers, zéro erreur, avertissement ou suggestion**.
+- Relecture du rendu approuvé : **15 combinaisons page/largeur**, pas de violation Axe détectée, neuf itinéraires, quatre liens individuels, trois repères IGN et tuiles réellement reçues. Captures relues ; cette relecture est distincte des fixtures synthétiques utilisées pour les tests.
+- Liens Doctolib contrôlés sur leurs sources et adresses par géocodage officiel : [détail des sources et limites](docs/VERIFICATION_CONTENUS.md).
+
+Un premier lancement navigateur avait utilisé par erreur la projection du prototype fictif, dont les coordonnées sont volontairement neutralisées, et un ancien sélecteur de décor. Il n’est pas compté comme succès ; le bon jeu synthétique et les sélecteurs actuels ont donné les 14 succès ci-dessus. Les erreurs et les résultats corrigés sont conservés localement.
+
+## Vérification après déploiement
+
+Les deux jobs GitHub Actions sont réussis : typage CMS/Astro, scénarios CMS HTTP et production, 38 tests unitaires, modes synthétique et approuvé, interfaces du compte et du statut de publication, 14 tests navigateur et audits de dépendances.
+
+Sur l’URL publique, `prototype.json` confirme exactement `c3de708488642d47272d81e92b389f27b90b4bb0`, `approved:true` et `synthetic:false`. **12 combinaisons page/largeur** (320/1440 px) réussissent les contrôles de rendu et Axe ; **12 ancres** à 390/1440 px conservent le document. Les neuf itinéraires et quatre boutons individuels sont présents. La carte affiche les trois repères et ses tuiles IGN sont reçues en HTTP 200. Sept chemins contrôlés répondent 404, dont administration, API, `/pro`, ancienne fiche et ancienne actualité fictive. Aucune erreur JavaScript ou ressource en échec observée ; captures ordinateur, mobile et carte relues.
+
+Preuves structurées ajoutées sous `approved_prototype_2026_10_10` dans [les résultats](docs/recette/corrections-resultats-2026-10-09.json), sans remplacer l’historique.
+
+## Contenus et administration privés
+
+Une sauvegarde privée du CMS de préparation a été réalisée avant mise à jour ; intégrité SQLite contrôlée. L’export relu contient 9 professionnels, 3 lieux, 6 rubriques, 2 innovations et 1 partenaire publiés. L’ancienne fiche et l’adresse historique sont archivées. Les trois rubriques réglementaires et les informations générales non confirmées restent en brouillon dans le CMS : aucune validation de production n’a été fabriquée. L’administration n’est pas déployée.
+
+Le prototype GitHub est un instantané approuvé. **Le bouton Publier du CMS local ne met pas automatiquement GitHub à jour.** Les retouches du prototype suivent la procédure d’approbation et de construction documentée. Le circuit CMS local conserve son interface sans code ; le choix d’une administration distante compatible avec l’abonnement OVH Web Pro reste à résoudre.
+
+## Limites et retour arrière
+
+Les contacts généraux, horaires, informations d’accès et mentions réglementaires définitives restent à compléter. Absence de lien Doctolib vérifié ne signifie pas absence de fiche. Les coordonnées géographiques ne garantissent pas l’entrée accessible. Pas d’audit RGAA complet, d’essai sur appareils physiques/Safari/Firefox ni de déploiement OVH revendiqué. Aucun résultat de recherche ou recrutement TEAM-IC ouvert n’est annoncé.
+
+Retour arrière : préparer un revert de `c3de708488642d47272d81e92b389f27b90b4bb0`, refaire les contrôles puis pousser après autorisation. Le mode synthétique précédent sera rétabli ; la base CMS demeure intacte. La révision de référence antérieure est `33f6ed2732c0896844dfa86b610f57668411ccaa` (code déployé `e230595ea2fc6ae9a35fea934c497f226fb8e62d`). Aucun rollback réalisé.
+
+Guides : [publication éditoriale](GUIDE_ADMINISTRATION_SANTINNOVATION.md), [maintenance](docs/MAINTENANCE.md), [déploiement et retour arrière](docs/DEPLOIEMENT_RETOUR_ARRIERE.md). Le présent compte rendu est enregistré après le commit fonctionnel pour citer son identifiant exact ; son seul changement ne redéploie pas le site.
+
+---
+
+## Historique — kit graphique du 10 octobre, avant validation des contenus
 
 | Référence | Valeur |
 | --- | --- |
 | Branche de préparation | `codex/identite-projet-patients-2026-10-10` |
-| **Commit exact du code actuellement déployé** | **`e230595ea2fc6ae9a35fea934c497f226fb8e62d`** |
+| **Commit exact de cette version historique** | **`e230595ea2fc6ae9a35fea934c497f226fb8e62d`** |
 | GitHub / Pages | Push autorisé sur `main` ; [CI 38050692688](https://github.com/DrFlorianLabs/santinnovation-web/actions/runs/38050692688) réussie ; déploiement terminé le 10 octobre à 14 h 09 (Paris). |
 | Vérification distante | Même révision relue via `prototype.json` après déploiement ; 8 contrôles navigateur et 12 clics d’ancres réussis. |
 | Prototype public | [drflorianlabs.github.io/santinnovation-web](https://drflorianlabs.github.io/santinnovation-web/) |

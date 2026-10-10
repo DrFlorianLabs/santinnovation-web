@@ -768,5 +768,158 @@
       "pages": 0,
       "informations": 0
     }
+  },
+  "approved_prototype_2026_10_10": {
+    "revision": "c3de708488642d47272d81e92b389f27b90b4bb0",
+    "branch": "codex/prototype-valide-equipe-carte-2026-10-10",
+    "ci": {
+      "url": "https://github.com/DrFlorianLabs/santinnovation-web/actions/runs/38053039336",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "verify",
+          "conclusion": "success",
+          "completedAt": "2026-10-10T12:50:07Z"
+        },
+        {
+          "name": "prototype",
+          "conclusion": "success",
+          "completedAt": "2026-10-10T12:50:40Z"
+        }
+      ]
+    },
+    "local": {
+      "unitTestsPassed": 38,
+      "browserSyntheticTestsPassed": 14,
+      "astroFiles": 79,
+      "astroErrors": 0,
+      "astroWarnings": 0,
+      "astroHints": 0,
+      "approvedOutputPages": 28,
+      "approvedOutputFiles": 69,
+      "professionals": 9,
+      "locations": 3,
+      "bookingIndividualLinks": 4,
+      "approvedRenderingChecks": 15,
+      "knownPrivateCredentialsAbsent": true
+    },
+    "remote": {
+      "at": "2026-10-10T12:51:04.329Z",
+      "revision": "c3de708488642d47272d81e92b389f27b90b4bb0",
+      "pages": [
+        {
+          "width": 320,
+          "route": "",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "equipe/",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "lieux/",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "equipe/mathilde-guillaume-sage/",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "innovations/team-ic/",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "innovations/digital-medical-hub/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "equipe/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "lieux/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "equipe/mathilde-guillaume-sage/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "innovations/team-ic/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "innovations/digital-medical-hub/",
+          "axe": 0
+        }
+      ],
+      "privatePaths": [
+        {
+          "route": "admin/",
+          "status": 404
+        },
+        {
+          "route": "api/users/",
+          "status": 404
+        },
+        {
+          "route": "pro/",
+          "status": 404
+        },
+        {
+          "route": "pro/login/",
+          "status": 404
+        },
+        {
+          "route": ".local/",
+          "status": 404
+        },
+        {
+          "route": "equipe/magali-saada-baron/",
+          "status": 404
+        },
+        {
+          "route": "actualites/prevention-fictive/",
+          "status": 404
+        }
+      ],
+      "anchors": 12,
+      "tiles": 18,
+      "contentDigest": "f219bd4a242d8f3d2809d23de6c08ace58c558ee6f1f2e567c98529c428355da"
+    },
+    "privateCMS": {
+      "backupIntegrity": "ok",
+      "publishedCounts": {
+        "professionnels": 9,
+        "lieux": 3,
+        "pages": 6,
+        "innovations": 2,
+        "partenaires": 1
+      },
+      "legalAndGeneralInformationRemainDraft": true,
+      "formerMemberArchived": true
+    },
+    "limits": [
+      "No full RGAA audit or physical device testing",
+      "Remote CMS on OVH Web Pro unresolved",
+      "No OVH deployment",
+      "Unconfirmed individual booking URLs omitted",
+      "CMS publish does not update GitHub prototype automatically"
+    ]
   }
 }
