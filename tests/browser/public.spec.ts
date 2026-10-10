@@ -10,6 +10,10 @@ async function routes(dir=resolve(process.env.PUBLIC_TEST_OUTPUT || '.local/site
   }
   return found;
 }
+const tile = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScLbtAAAAABJRU5ErkJggg==', 'base64');
+test.beforeEach(async ({ page }) => {
+  await page.route('https://data.geopf.fr/wmts?**', r => r.fulfill({ status: 200, contentType: 'image/png', body: tile }));
+});
 for(const width of [320,768,1440]) test(`navigation, overflow et accessibilité — ${width}px`,async({page})=>{
   await page.setViewportSize({width,height:1000});
   const errors:string[]=[];
@@ -29,9 +33,10 @@ test('aucune démo pro ni brouillon accessible, tous liens internes résolus',as
   for(const route of await routes()) {await page.goto(route);for(const href of await page.locator('a[href^="/"]').evaluateAll(as=>as.map(a=>(a as HTMLAnchorElement).pathname))) links.add(href);}
   for(const link of links) expect((await request.get(link)).status(),link).toBe(200);
 });
-test('carte sur action seulement et parcours sans JavaScript',async({browser,page})=>{
+test('carte différée jusqu’à sa rubrique et parcours sans JavaScript',async({browser,page})=>{
   const thirdParties:string[]=[];page.on('request',r=>{if(r.url().includes('data.geopf.fr')) thirdParties.push(r.url());});
-  await page.goto('/lieux/');await expect(page.getByRole('heading',{level:1})).toBeVisible();expect(thirdParties).toEqual([]);
+  await page.goto('/');await expect(page.getByRole('heading',{level:1})).toBeVisible();expect(thirdParties).toEqual([]);
+  await page.locator('#lieux').scrollIntoViewIfNeeded();await expect.poll(()=>thirdParties.length).toBeGreaterThan(0);
   const context=await browser.newContext({javaScriptEnabled:false,viewport:{width:390,height:844}});const nojs=await context.newPage();
   await nojs.goto('/equipe/');await expect(nojs.locator('main')).toBeVisible();expect(await nojs.locator('a[href*="/equipe/"]').count()).toBeGreaterThan(0);await context.close();
 });
@@ -48,10 +53,12 @@ test('filtres annuaire et menu mobile au clavier',async({page})=>{
   await page.getByLabel('Lieu de consultation',{exact:true}).selectOption('etablissement-fictif-sud');await expect(page.locator('[data-empty]')).toBeVisible();
   const menu=page.getByLabel('Menu de navigation');await menu.focus();await page.keyboard.press('Enter');await expect(page.locator('[data-mobile-menu]')).toHaveAttribute('open','');await page.keyboard.press('Escape');await expect(page.locator('[data-mobile-menu]')).not.toHaveAttribute('open','');await expect(menu).toBeFocused();
 });
-test('carte déclenchée au clic avec tuiles synthétiques, image et heure événement',async({page})=>{
+test('carte automatique avec tuiles synthétiques, image et heure événement',async({page})=>{
   const tile=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScLbtAAAAABJRU5ErkJggg==','base64');let tiles=0;
   await page.route('https://data.geopf.fr/wmts?**',r=>{tiles++;return r.fulfill({status:200,contentType:'image/png',body:tile});});
-  await page.goto('/lieux/');expect(tiles).toBe(0);await page.getByRole('button',{name:'Afficher la carte interactive'}).click();await expect(page.locator('.leaflet-container')).toBeVisible();await expect.poll(()=>tiles).toBeGreaterThan(0);
+  await page.goto('/lieux/');await expect(page.locator('.leaflet-container')).toBeVisible();await expect.poll(()=>tiles).toBeGreaterThan(0);
+  await expect(page.locator('[data-map-canvas]')).toHaveAttribute('aria-busy','false');
+  expect(await page.evaluate(()=>document.activeElement?.closest('[data-map-canvas]'))).toBeNull();
   await page.goto('/actualites/prevention-fictive/');await expect(page.locator('main img')).toHaveAttribute('alt','Carré rouge synthétique pour la recette');await expect(page.locator('main')).toContainText('10:00');
 });
 
@@ -103,6 +110,9 @@ test('identité du kit, décors et préférence de mouvement réduite', async ({
   await expect(page.locator('header img[src$="/brand/symbole.svg"]')).toBeVisible();
   expect(await page.locator('header img').first().evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
   await expect(page.locator('main > .scroll-motif')).toHaveAttribute('aria-hidden', 'true');
+  const cta = page.locator('.btn-3d-primary').first();
+  expect(await cta.evaluate(el => getComputedStyle(el).backgroundImage)).toContain('linear-gradient');
+  expect(await cta.evaluate(el => getComputedStyle(el).color)).toBe('rgb(2, 50, 80)');
   expect(await page.locator('#accueil-title').evaluate(el => getComputedStyle(el).color)).toBe('rgb(2, 50, 80)');
   await expect(page.locator('#soins-et-parcours')).toHaveText('Soins et parcours');
   // Text remains stationary; ornament stays strictly outside the reading area.
@@ -134,7 +144,37 @@ test('liens individuels et itinéraires dérivés du lieu', async ({page}) => {
 test('carte indisponible : message et itinéraires conservés', async ({page}) => {
   await page.route('https://data.geopf.fr/wmts?**', r => r.abort());
   await page.goto('/lieux/');
-  await page.getByRole('button',{name:'Afficher la carte interactive'}).click();
+  await expect(page.locator('.leaflet-container')).toBeVisible();
   await expect(page.locator('[data-map-status]')).toContainText('indisponible');
   expect(await page.locator('a[href*="maps/dir/"]').count()).toBeGreaterThan(0);
+  await page.route('https://data.geopf.fr/wmts?**', r => r.fulfill({status:200,contentType:'image/png',body:tile}));
+  await page.locator('[data-map-retry]').click();
+  await expect(page.locator('[data-map-canvas]')).toHaveAttribute('aria-busy','false');
+  await expect(page.locator('[data-map-status]')).not.toContainText('indisponible');
+});
+
+for (const route of ['/', '/equipe/']) test(`compétences et coordination sans perdre la profession — ${route}`, async ({page}) => {
+  await page.goto(route);
+  await page.getByLabel('Nom ou compétence').fill('education therapeutique');
+  await expect(page.locator('[data-pro]:visible')).toHaveCount(1);
+  await expect(page.locator('[data-pro]:visible')).toContainText('Alex');
+  await page.getByLabel('Profession', {exact:true}).selectOption('infirmier');
+  await expect(page.locator('[data-pro]:visible')).toHaveCount(1);
+  await page.getByLabel('Profession', {exact:true}).selectOption('coordination');
+  await expect(page.locator('[data-pro]:visible')).toHaveCount(1);
+  await page.getByLabel('Nom ou compétence').fill('prevention');
+  await expect(page.locator('[data-pro]:visible')).toHaveCount(0);
+  await page.getByLabel('Profession', {exact:true}).selectOption('');
+  await expect(page.locator('[data-pro]:visible')).toHaveCount(1);
+  await expect(page.locator('[data-pro]:visible')).toContainText('Camille');
+});
+test('retour d’une innovation dans la page continue', async ({page}) => {
+  await page.emulateMedia({reducedMotion:'reduce'});
+  await page.goto('/innovations/innovation-fictive/');
+  await page.getByRole('link', {name:'Retour à la rubrique Recherche et innovation'}).click();
+  await expect(page).toHaveURL(/\/#recherche-innovation$/);
+  await expect(page.locator('main > section[id]')).toHaveCount(7);
+  await page.goto('/recherche-innovation/');
+  await page.getByRole('link', {name:'Retrouver la rubrique dans la page principale'}).click();
+  await expect(page).toHaveURL(/\/#recherche-innovation$/);
 });

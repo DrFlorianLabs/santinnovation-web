@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import { withBase } from '@lib/paths';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import PageHero from '@components/PageHero.astro';
+import InnovationLogo from '@components/InnovationLogo.astro';
 import EditorialContent from '@components/EditorialContent.astro';
 export async function getStaticPaths() { return (await getCollection('innovations')).map(entry=>({params:{slug:entry.id},props:{entry}})); }
 const { entry } = Astro.props;
@@ -10,9 +11,10 @@ const { entry } = Astro.props;
 <BaseLayout title={entry.data.titre} description={entry.data.resume}>
   <PageHero title={entry.data.titre} description={entry.data.resume} />
   <section class="py-12 md:py-16"><div class="container-site max-w-prose">
+    <InnovationLogo id={entry.id} large />
     {entry.data.image && <figure class="mb-8"><img src={withBase(entry.data.image)} alt={entry.data.imageAlt ?? ""} width="960" height="540" class="w-full rounded-2xl" />{entry.data.imageCredit && <figcaption class="mt-2 text-sm text-ink-500">Crédit : {entry.data.imageCredit}</figcaption>}</figure>}
     <EditorialContent entry={entry} />
     {entry.data.url && <p class="mt-6"><a href={entry.data.url} target="_blank" rel="noopener noreferrer" class="font-medium text-teal-600 underline">Consulter le site associé — nouvelle fenêtre</a></p>}
-    <a href={withBase('/recherche-innovation')} class="mt-8 inline-block font-medium underline underline-offset-4">Recherche et innovation</a>
+    <a href={withBase('/#recherche-innovation')} class="mt-8 inline-block font-medium underline underline-offset-4">Retour à la rubrique Recherche et innovation</a>
   </div></section>
 </BaseLayout>

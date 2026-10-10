@@ -14,9 +14,17 @@
       "henri-baigue"
     ],
     "horairesParLieu": [],
-    "domaines": [],
+    "domaines": [
+      "Médecine de famille",
+      "Pédiatrie",
+      "Soins palliatifs",
+      "Visites à domicile",
+      "Médecine du sommeil",
+      "Polygraphie nocturne"
+    ],
     "activites": [],
-    "doctolibUrl": "https://www.doctolib.fr/medecin-generaliste/besancon/patrick-vuattoux"
+    "doctolibUrl": "https://www.doctolib.fr/medecin-generaliste/besancon/patrick-vuattoux",
+    "soinsADomicile": true
   },
   {
     "id": "serge-mazzucotelli",
@@ -33,9 +41,15 @@
       "fluttes-agasses"
     ],
     "horairesParLieu": [],
-    "domaines": [],
+    "domaines": [
+      "Médecine de famille",
+      "Pédiatrie",
+      "Soins palliatifs",
+      "Visites à domicile"
+    ],
     "activites": [],
-    "doctolibUrl": "https://www.doctolib.fr/medecin-generaliste/besancon/serge-mazzucotelli"
+    "doctolibUrl": "https://www.doctolib.fr/medecin-generaliste/besancon/serge-mazzucotelli",
+    "soinsADomicile": true
   },
   {
     "id": "florian-sibille",
@@ -52,9 +66,15 @@
       "henri-baigue"
     ],
     "horairesParLieu": [],
-    "domaines": [],
+    "domaines": [
+      "Médecine de famille",
+      "Pédiatrie",
+      "Soins palliatifs",
+      "Visites à domicile"
+    ],
     "activites": [],
-    "doctolibUrl": "https://www.doctolib.fr/medecin-generaliste/besancon/florian-sibille"
+    "doctolibUrl": "https://www.doctolib.fr/medecin-generaliste/besancon/florian-sibille",
+    "soinsADomicile": true
   },
   {
     "id": "mathilde-guillaume-sage",
@@ -71,7 +91,10 @@
       "henri-baigue"
     ],
     "horairesParLieu": [],
-    "domaines": [],
+    "domaines": [
+      "Nutrition",
+      "Prise en charge de l’obésité"
+    ],
     "activites": []
   },
   {
@@ -98,17 +121,22 @@
     "nom": "Delay",
     "titreAffiche": "Florence Delay",
     "profession": "infirmier",
-    "professionLabel": "Infirmière",
+    "professionLabel": "Infirmière et coordinatrice",
     "ordre": 5,
-    "bodyHtml": "<p>Coordinatrice de la MSP, infirmière d’équipe et de recherche.</p>",
+    "bodyHtml": "",
     "visible": true,
     "archive": false,
     "lieux": [
       "henri-baigue"
     ],
     "horairesParLieu": [],
-    "domaines": [],
-    "activites": []
+    "domaines": [
+      "Infirmière de recherche",
+      "Infirmière d’équipe"
+    ],
+    "activites": [
+      "Coordination"
+    ]
   },
   {
     "id": "anaelle-bizet",
@@ -125,7 +153,9 @@
       "vieilley"
     ],
     "horairesParLieu": [],
-    "domaines": [],
+    "domaines": [
+      "Kinésithérapie de la main"
+    ],
     "activites": [],
     "doctolibUrl": "https://www.doctolib.fr/masseur-kinesitherapeute/besancon/annaelle-bizet"
   },

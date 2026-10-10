@@ -9,7 +9,8 @@ import { cleanHTML } from './project-content.mjs';
 export const approvedFiles = ['professionnels', 'lieux', 'actualites', 'pages', 'activites', 'innovations', 'site', 'doctolib', 'partenaires'];
 export const legalPages = ['mentions-legales', 'confidentialite', 'accessibilite'];
 export const pageSlugs = ['accueil', 'projet-de-sante', 'soins-et-parcours', 'recherche-innovation', 'rejoindre', 'informations-pratiques', 'contact', 'equipe', 'lieux', 'prendre-rendez-vous', ...legalPages];
-export const approvedPublicAssets = ['.htaccess', '_headers', 'robots.txt', 'favicon.svg', 'brand/symbole.svg', 'brand/symbole-blanc.svg'];
+export const approvedPublicAssets = ['.htaccess', '_headers', 'robots.txt', 'favicon.svg', 'brand/symbole.svg', 'brand/symbole-blanc.svg', 'brand/team-ic.jpg', 'brand/digital-medical-hub.png', 'brand/ars-bfc.jpg', 'brand/cpts-capacites.jpg', 'brand/femasco-bfc.png'];
+const partnerLogo = z.enum(['/brand/digital-medical-hub.png', '/brand/ars-bfc.jpg', '/brand/cpts-capacites.jpg', '/brand/femasco-bfc.png']);
 const privatePath = /(?:^|\/)(?:pro|admin|api|cms|apercu|\.local|\.releases)(?:\/|$)/i;
 const privateText = /DRAFT_NEVER_PUBLIC|BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY|PAYLOAD_SECRET|identifiants-locaux\.json|(?:\/Users\/|\/home\/)[^\s<]+|\[À (?:COMPLÉTER|CONFIRMER)/i;
 const text = z.string().max(50_000).refine(value => !privateText.test(value), 'Marqueur privé ou trame historique interdit');
@@ -88,7 +89,7 @@ const schemas = {
     telephone: text, adresse: text, horaires: text, liens: links,
   }),
   doctolib: z.strictObject({ etablissement: z.union([z.literal(''), doctolib]) }),
-  partenaires: z.array(z.strictObject({ nom: label, description: text.optional(), url: https.optional() })).max(1000),
+  partenaires: z.array(z.strictObject({ nom: label, description: text.optional(), url: https.optional(), logo: partnerLogo.optional(), logoAlt: label.optional() })).max(1000),
 };
 
 export function validateApprovedContent(input) {

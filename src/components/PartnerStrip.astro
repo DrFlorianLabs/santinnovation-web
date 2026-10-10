@@ -20,25 +20,25 @@ const isDark = variant === "dark";
     >
       {title}
     </p>
-    <ul class="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+    <ul class="grid grid-cols-2 items-stretch gap-4 md:grid-cols-4">
       {
         partenaires.map((p) => {
           const Tag = p.url ? "a" : "span";
           return (
-          <li>
+          <li class="min-w-0">
             <Tag
               href={p.url}
               target="_blank"
               rel="noopener noreferrer"
               title={p.description}
               class:list={[
-                "inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 font-display text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 sm:text-base",
+                "flex h-full flex-col items-center justify-start gap-4 rounded-xl px-4 py-5 text-center font-display text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 sm:text-base",
                 isDark
                   ? "bg-white/5 text-white/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] ring-1 ring-white/10 hover:text-white hover:ring-teal-500/50"
                   : "bg-white text-blue-900/80 shadow-[inset_0_1px_0_rgba(255,255,255,1),0_4px_12px_-4px_rgba(18,50,74,0.18)] ring-1 ring-blue-100 hover:text-teal-600 hover:shadow-[var(--shadow-e2)] hover:ring-teal-600/40",
               ]}
             >
-              {p.logo && <img src={withBase(p.logo)} alt={p.logoAlt ?? ""} width="96" height="48" loading="lazy" class="mr-2 max-h-12 w-24 object-contain" />}
+              {p.logo && <img src={withBase(p.logo)} alt={p.logoAlt ?? ""} width="160" height="88" loading="lazy" class="h-20 w-full rounded bg-white p-2 object-contain" />}
               {p.nom}
             </Tag>
             {p.logo && p.logoCredit && <p class:list={["mt-2 max-w-xs text-center text-xs", isDark ? "text-white/80" : "text-ink-500"]}>Crédit : {p.logoCredit}</p>}

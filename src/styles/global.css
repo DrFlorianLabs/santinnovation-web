@@ -14,7 +14,7 @@
   - Tout est désactivé proprement via prefers-reduced-motion.
 */
 @theme {
-  /* --- Marine exact du kit pour les titres et les boutons --- */
+  /* --- Marine exact du kit pour les titres et les libellés des boutons --- */
   --color-blue-950: #01263d;
   --color-blue-900: #023250;
   --color-blue-700: #14516c;
@@ -284,7 +284,9 @@
     transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
   }
   .btn-3d-primary {
-    background: var(--color-blue-900);
+    /* All sRGB stops retain >=5.09:1 contrast with the navy label. */
+    background-color: var(--color-teal-500);
+    background-image: linear-gradient(110deg in srgb, var(--color-teal-500) 0%, var(--color-green-500) 100%);
     box-shadow:
       inset 0 1px 0 rgba(37, 177, 180, 0.7),
       inset 0 -2px 0 rgba(128, 193, 103, 0.3),
@@ -528,15 +530,15 @@
   .home-project-item {
     border-top: 1px solid color-mix(in srgb, var(--color-blue-900) 16%, transparent);
   }
-  /* A single transparent gutter, outside every .container-site reading area.
-     At narrow widths only the hairline remains; no symbol sits behind text. */
+  /* Transparent geometry confined to the unused right margin. It grows only
+     when the viewport offers room outside the reading column, never over it. */
   .scroll-motif {
     position: fixed;
     z-index: 4;
     top: 7rem;
     bottom: 5rem;
-    right: max(.5rem, calc((100vw - var(--container-site)) / 2 - 3rem));
-    width: 2rem;
+    right: max(.5rem, calc((100vw - var(--container-site)) / 2 - 10rem));
+    width: clamp(1rem, calc((100vw - var(--container-site)) / 2 + 1rem), 9rem);
     overflow: clip;
     pointer-events: none;
     user-select: none;
@@ -548,9 +550,9 @@
     inset: 0;
     color: var(--color-teal-500);
   }
-  .scroll-motif-base { opacity: .045; }
+  .scroll-motif-base { opacity: .16; }
   .scroll-motif-progress {
-    opacity: .14;
+    opacity: .24;
     clip-path: inset(0 0 calc((1 - var(--motif-progress, 0)) * 100%) 0);
   }
   .scroll-motif-spine {
@@ -559,15 +561,19 @@
     width: 100%;
     height: 100%;
     stroke: currentColor;
-    stroke-width: .6;
+    stroke-width: .9;
+    stroke-linejoin: round;
   }
+  .scroll-motif :is(path, circle) { vector-effect: non-scaling-stroke; }
+  .scroll-motif-junction { fill: var(--color-green-500); stroke: none; }
   .scroll-motif-mark {
     position: absolute;
-    left: 0;
-    width: 100%;
+    left: 50%;
+    width: 75%;
+    max-width: 6rem;
     height: auto;
-    transform: translateY(-50%);
-    stroke-width: 1.4;
+    transform: translate(-50%, -50%);
+    stroke-width: 1.05;
     stroke-linecap: round;
     stroke-linejoin: round;
   }
@@ -575,13 +581,11 @@
   .scroll-motif-circuit { stroke: var(--color-teal-500); }
   .scroll-motif-signal { stroke: var(--color-green-500); }
   .scroll-motif-dot { fill: var(--color-green-500); }
-  @media (max-width: 1279px) {
-    .scroll-motif { width: 1.125rem; right: .4375rem; }
-  }
   @media (max-width: 767px) {
-    .scroll-motif { width: .375rem; right: .1875rem; }
+    .scroll-motif { width: .5rem; right: .25rem; }
     .scroll-motif-mark { display: none; }
-    .scroll-motif-progress { opacity: .11; }
+    .scroll-motif-base { opacity: .12; }
+    .scroll-motif-progress { opacity: .18; }
   }
   @media (prefers-reduced-motion: reduce) {
     .scroll-motif-progress { display: none; }
@@ -614,6 +618,10 @@
     }
   }
 }
+
+/* Deliberately unlayered: legacy button markup includes Tailwind text-white.
+   Keep the same accessible navy label on every bright primary button. */
+.btn-3d-primary { color: var(--color-blue-900); }
 
 /* Content remains usable when a script fails or is disabled. */
 [hidden] { display: none !important; }

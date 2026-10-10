@@ -21,7 +21,7 @@ Les anciens répertoires de build ne sont pas publics. La racine web du service 
 
 ## Défense du public
 
-CSP et en-têtes Apache dans `public/.htaccess`, miroir `public/_headers` et serveur de recette locale. Un éventuel proxy devra appliquer la même politique. GitHub Pages n’applique pas ces fichiers de configuration serveur : leurs en-têtes ne sont pas garantis sur le prototype. Scripts externes au HTML ; styles inline limités aux besoins du design/Leaflet. JSON-LD échappé. Fonts locales. Tuiles IGN uniquement après clic ; pas de collecte de géolocalisation par ce site.
+CSP et en-têtes Apache dans `public/.htaccess`, miroir `public/_headers` et serveur de recette locale. Un éventuel proxy devra appliquer la même politique. GitHub Pages n’applique pas ces fichiers de configuration serveur : leurs en-têtes ne sont pas garantis sur le prototype. Scripts externes au HTML ; styles inline limités aux besoins du design/Leaflet. JSON-LD échappé. Fonts locales. Tuiles IGN chargées à l’approche de la carte (demande utilisateur du 10 octobre) ; pas de collecte de géolocalisation par ce site.
 
 Démo historique GED conservée dans `src/pro/demo`, jamais routée dans le build. Aucun login simulé n’est utilisé pour protéger les contenus.
 

@@ -15,7 +15,7 @@ const direction = d.itineraireUrl ?? `https://www.google.com/maps/dir/?api=1&des
 ---
 <BaseLayout title={d.nom} description={`${d.nom} : adresse, accès et professionnels à ${d.ville}.`}>
   <PageHero eyebrow="Lieu de consultation" title={d.nom} description={`${d.adresse}, ${d.codePostal} ${d.ville}`}>
-    <div class="mt-6 flex flex-wrap gap-4"><a href={direction} target="_blank" rel="noopener noreferrer" class="btn-3d btn-3d-primary rounded-xl px-5 py-3 font-medium text-white">Itinéraire sur Google Maps</a><a href={withBase('/lieux')} class="btn-3d btn-3d-secondary rounded-xl px-5 py-3 font-medium">Tous les lieux</a></div>
+    <div class="mt-6 flex flex-wrap gap-4"><a href={direction} target="_blank" rel="noopener noreferrer" class="btn-3d btn-3d-primary rounded-xl px-5 py-3 font-medium text-white">Itinéraire</a><a href={withBase('/lieux')} class="btn-3d btn-3d-secondary rounded-xl px-5 py-3 font-medium">Tous les lieux</a></div>
   </PageHero>
   <section class="py-12 md:py-16"><div class="container-site">
     <div class="grid gap-8 md:grid-cols-2">

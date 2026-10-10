@@ -16,9 +16,25 @@ Aucun lien individuel correspondant confirmé pour Mathilde Guillaume–Sage, Ma
 
 Géocodage : [API IGN](https://data.geopf.fr/geocodage/search?q=14%20rue%20Henri%20et%20Maurice%20Baigue%20Besancon&limit=1), index adresses BAN, trois réponses uniques de type numéro, scores 0,977 à 0,979. Une position de numéro ne certifie pas l’entrée accessible. Les itinéraires Google Maps sont dérivés de l’adresse commune à chaque lieu, sans collecte de la position du visiteur.
 
-Fond de carte : [Plan IGN](https://cartes.gouv.fr/rechercher-une-donnee/dataset/IGNF_PLAN-IGN), Licence Ouverte, [service WMTS officiel](https://cartes.gouv.fr/aide/fr/guides-utilisateur/utiliser-les-services-de-la-geoplateforme/diffusion/wmts/), couche `GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2`, matrice `PM_0_19`. Appel sans clé vérifié ; chargement après clic et attribution maintenue. Remplace CARTO, dont les conditions actualisées le 29 septembre demandent une clé.
+Fond de carte : [Plan IGN](https://cartes.gouv.fr/rechercher-une-donnee/dataset/IGNF_PLAN-IGN), Licence Ouverte, [service WMTS officiel](https://cartes.gouv.fr/aide/fr/guides-utilisateur/utiliser-les-services-de-la-geoplateforme/diffusion/wmts/), couche `GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2`, matrice `PM_0_19`. Appel sans clé vérifié ; chargement automatique à l’approche de la carte, demandé lors de la relecture utilisateur, et attribution maintenue. Remplace CARTO, dont les conditions actualisées le 29 septembre demandent une clé.
 
 Les textes projet de santé, TEAM-IC et DMH antérieurement soumis à relecture ont été explicitement validés pour publication par l’utilisateur. Les documents internes sources ne sont pas transférés. TEAM-IC est présenté comme projet de recherche sans résultat ni recrutement ouvert annoncé. Soins et parcours reste vide.
+
+## Compétences et partenaires — complément validé du 10 octobre
+
+Les compétences proviennent des indications directes de l’utilisateur : médecine de famille, pédiatrie, soins palliatifs et visites à domicile pour Patrick Vuattoux, Serge Mazzucotelli et Florian Sibille ; sommeil et polygraphie nocturne pour Patrick ; nutrition et prise en charge de l’obésité pour Mathilde Guillaume–Sage ; kinésithérapie de la main pour Anaelle Bizet ; infirmière de recherche et d’équipe pour Florence Delay. Il s’agit de domaines déclarés, pas de nouvelles qualifications ordinales vérifiées. La date d’arrivée future de Mathilde est conservée. Florence garde sa profession infirmière et sa fonction de coordination.
+
+L’utilisateur confirme l’ajout de l’ARS Bourgogne-Franche-Comté, de la CPTS CaPaciTéS Besançon & Métropole et de FeMaSCo-BFC aux partenaires. Leur nom et leur identité ont été vérifiés sur leur site officiel. Cette mention ne prétend pas qualifier un financement ou un contrat. Les cinq logos ci-dessous sont copiés à l’identique, hébergés localement ; aucun document de recherche interne n’est publié.
+
+| Identité | Source du fichier original | Empreinte SHA-256 |
+| --- | --- | --- |
+| TEAM-IC | Logo d’en-tête du protocole TEAM-IC fourni, extrait seul du document interne | `f10d50752e65d1dc4bfe11d286ec45a5919b15c4ce294e1140925fc8fa9b7783` |
+| Digital Medical Hub | [Site officiel](https://www.digitalmedicalhub.com/wp-content/uploads/2025/01/digital-mediacal-hub.png) | `aefd66fe791e416ce9900d895545f88dfa35e3c3477db6df713f0680f0cf5c48` |
+| Agence régionale de santé Bourgogne-Franche-Comté | [Site officiel](https://www.bourgogne-franche-comte.ars.sante.fr/system/files/2020-06/ARS-BFC_194x113.jpg) | `8f2499dfeacf419761f39b0ed4a7bd0efbeda13865ad08cf02364919f5bd5830` |
+| CPTS CaPaciTéS Besançon & Métropole | [Site officiel](https://www.cpts-capacites-bm.fr/page/2481852-cpts-capacites-besancon-metropole) | `ab21bc7706fb180935e17ff8779ac77f83a08d1d4243fd6feba265cd93137d28` |
+| FeMaSCo-BFC | [Site officiel](https://www.femasco-bfc.fr/content/themes/koredge/assets/static/images/Femasco_logo.png) | `3ce39774a3b4fdbd1f1665438fa98ea2b701a95dcaea5c7023bd39452ba044bf` |
+
+Réutilisation demandée par l’utilisateur. Aucune licence ouverte n’est attribuée aux logos. Les mentions légales du [Digital Medical Hub](https://www.digitalmedicalhub.com/mentions-legales/) demandent une autorisation écrite ; celles de [FeMaSCo-BFC](https://www.femasco-bfc.fr/mentions-legales/) comportent une restriction de reproduction. Aucune preuve écrite correspondante n’a été consultée et aucun partenaire n’a été contacté. À conserver dans le dossier des droits d’images pour la mise en service définitive.
 
 ---
 

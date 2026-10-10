@@ -3,14 +3,17 @@
  * never the reading column. Its open roof, circuit and signal echo the logo;
  * this is decorative linework, not a replacement or alteration of the logo.
  */
-const positions = [9, 37, 65, 91];
+const positions = [15, 46, 78];
 ---
 
 <div class="scroll-motif" data-scroll-motif aria-hidden="true">
   {['base', 'progress'].map(layer => (
     <div class={`scroll-motif-layer scroll-motif-${layer}`}>
-      <svg class="scroll-motif-spine" viewBox="0 0 32 640" preserveAspectRatio="none" fill="none" focusable="false">
-        <path d="M16 0V640"></path>
+      <svg class="scroll-motif-spine" viewBox="0 0 96 640" preserveAspectRatio="none" fill="none" focusable="false">
+        <path d="M48 0V62M48 130V176L22 202V238L48 264M48 326V370L74 396V438L48 464M48 534V575L30 593V640"></path>
+        <path d="M22 220H6M74 414H90"></path>
+        <circle class="scroll-motif-junction" cx="6" cy="220" r="2"></circle>
+        <circle class="scroll-motif-junction" cx="90" cy="414" r="2"></circle>
       </svg>
       {positions.map(position => (
         <svg class="scroll-motif-mark" style={`top:${position}%`} viewBox="0 0 48 48" fill="none" focusable="false">

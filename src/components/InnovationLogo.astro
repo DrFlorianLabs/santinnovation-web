@@ -1,0 +1,20 @@
+---
+import { withBase } from '@lib/paths';
+interface Props { id: string; large?: boolean; }
+const { id, large = false } = Astro.props;
+// Original identities, explicitly selected for these projects. No remote image
+// request or inference from an arbitrary editorial URL.
+const logos: Record<string, { src: string; alt: string; width: number; height: number }> = {
+  'team-ic': { src: '/brand/team-ic.jpg', alt: 'TEAM-IC — Un parcours coordonné, au cœur de votre santé', width: 955, height: 1083 },
+  'digital-medical-hub': { src: '/brand/digital-medical-hub.png', alt: 'Digital Medical Hub', width: 456, height: 328 },
+};
+const logo = logos[id];
+---
+{logo && <div class:list={['innovation-identity mb-6', large && 'innovation-identity--large']}>
+  <img src={withBase(logo.src)} alt={logo.alt} width={logo.width} height={logo.height} loading={large ? 'eager' : 'lazy'} decoding="async" />
+</div>}
+<style>
+  .innovation-identity { display:flex; align-items:center; width:9rem; height:9rem; background:white; border-radius:.75rem; padding:.5rem; }
+  .innovation-identity img { width:100%; height:100%; object-fit:contain; }
+  .innovation-identity--large { width:13rem; height:13rem; }
+</style>

@@ -13,7 +13,7 @@ worker local chaque minute → export publié → projection/assainissement
 Visiteur → serveur statique → HTML / styles / scripts / médias publiés
 ```
 
-Aucun appel du navigateur public au CMS, aucun jeton CMS dans le HTML et aucun build déclenchable depuis une route publique. Carte IGN uniquement après action du visiteur. Doctolib et itinéraires sont des liens externes.
+Aucun appel du navigateur public au CMS, aucun jeton CMS dans le HTML et aucun build déclenchable depuis une route publique. Carte IGN chargée automatiquement à l’approche de sa zone visible, conformément à la demande utilisateur du 10 octobre. Doctolib et itinéraires sont des liens externes.
 
 ## Administration
 
@@ -43,4 +43,4 @@ Publication nominale : prochain cycle de 60 s + build. Une erreur conserve l’a
 
 Le snapshot GitHub ne consulte aucune base CMS et n’accepte aucun champ privé. Son validateur distinct n’affaiblit pas `projectContent`, qui exige toujours une validation réglementaire et les informations générales publiées pour la chaîne de production. Seuls les textes approuvés et les neuf fichiers JSON listés sont acceptés ; aucun média non approuvé, document source ou binaire privé n’est transféré. Les adresses sont centralisées dans trois lieux, les itinéraires dérivés de ces adresses et les liens individuels Doctolib affichés seulement lorsqu’ils existent.
 
-Carte : Leaflet local, Plan IGN via WMTS `data.geopf.fr`, uniquement après clic, sans clé ni géolocalisation. Les coordonnées proviennent du géocodage IGN/BAN et les affectations des professionnels de la validation utilisateur.
+Carte : Leaflet local, Plan IGN via WMTS `data.geopf.fr`, automatiquement à l’approche de la carte, sans clé ni géolocalisation. Les coordonnées proviennent du géocodage IGN/BAN et les affectations des professionnels de la validation utilisateur.

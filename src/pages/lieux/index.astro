@@ -4,7 +4,6 @@ import EditorialContent from "@components/EditorialContent.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import PageHero from "@components/PageHero.astro";
 import SiteMap from "@components/SiteMap.astro";
-import SiteCard from "@components/SiteCard.astro";
 import Icon from "@components/Icon.astro";
 
 const lieux = (await getCollection("lieux")).sort(
@@ -26,17 +25,7 @@ const page = (await getCollection("pages")).find(p => p.id === "lieux");
   <section class="py-12 md:py-16">
     <div class="container-site">
       {page && <div class="mb-8 max-w-prose"><EditorialContent entry={page} /></div>}
-      <SiteMap lieux={lieux} id="carte" />
-
-      <div class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
-        {
-          lieux.map((lieu, i) => (
-            <div class="reveal h-full" style={`--reveal-delay: ${i * 80}ms`}>
-              <SiteCard lieu={lieu} />
-            </div>
-          ))
-        }
-      </div>
+      <SiteMap lieux={lieux} id="carte" heading="h2" />
 
       <div class="surface mt-10 flex items-start gap-3 p-5">
         <span class="mt-0.5 shrink-0 text-teal-600"><Icon name="check" size={18} /></span>

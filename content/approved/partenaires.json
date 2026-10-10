@@ -2,6 +2,29 @@
   {
     "nom": "Digital Medical Hub",
     "description": "Sant’Innovation est partenaire du Digital Medical Hub, un réseau qui accompagne la recherche et l’innovation en santé, notamment l’évaluation des outils numériques.",
-    "url": "https://www.digitalmedicalhub.com/"
+    "url": "https://www.digitalmedicalhub.com/",
+    "logo": "/brand/digital-medical-hub.png",
+    "logoAlt": "Digital Medical Hub"
+  },
+  {
+    "nom": "ARS Bourgogne-Franche-Comté",
+    "description": "Agence régionale de santé Bourgogne-Franche-Comté",
+    "url": "https://www.bourgogne-franche-comte.ars.sante.fr/",
+    "logo": "/brand/ars-bfc.jpg",
+    "logoAlt": "Agence régionale de santé Bourgogne-Franche-Comté"
+  },
+  {
+    "nom": "CPTS CaPaciTéS Besançon & Métropole",
+    "description": "Communauté professionnelle territoriale de santé de Besançon et sa métropole",
+    "url": "https://www.cpts-capacites-bm.fr/",
+    "logo": "/brand/cpts-capacites.jpg",
+    "logoAlt": "CaPaciTéS Besançon & Métropole"
+  },
+  {
+    "nom": "FeMaSCo-BFC",
+    "description": "Fédération des Maisons de Santé et de l’Exercice Coordonné de Bourgogne-Franche-Comté",
+    "url": "https://www.femasco-bfc.fr/",
+    "logo": "/brand/femasco-bfc.png",
+    "logoAlt": "FeMaSCo Bourgogne-Franche-Comté"
   }
 ]

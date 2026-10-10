@@ -84,3 +84,17 @@ Le [guide de maintenance](docs/MAINTENANCE.md) est destiné au responsable techn
 Le tableau de bord distingue « prêt », « aucun changement », « construction en cours », « publication bloquée », « erreur » et « version antérieure restaurée ». Après5 minutes sans contrôle récent, il avertit que le service est inactif ; l’onglet ouvert actualise ce signal. Pour une erreur éditoriale, la collection et l’identifiant de la fiche sont affichés. Corriger la fiche indiquée puis attendre un nouveau cycle. Un conflit d’écriture simultanée demande de recharger et réessayer : il ne signifie pas que la modification a été enregistrée.
 
 Les sauvegardes, la restauration complète et les purges restent du ressort du responsable technique. Le bouton Versions ne remplace pas ces sauvegardes.
+
+## Avenant du 10 octobre 2026 — annuaire, carte et publication
+
+Sur l’accueil et dans l’annuaire, **Nom ou compétence** recherche dans le nom, la profession affichée, toutes les compétences et toutes les activités de la fiche. Les majuscules et les accents ne changent pas le résultat : `education` retrouve `Éducation`. Plusieurs mots peuvent être combinés ; chacun doit figurer dans la fiche. Les filtres **Profession** et **Lieu de consultation** s’ajoutent à cette recherche. Sans JavaScript, toutes les fiches restent accessibles, sans filtrage.
+
+Dans **Professionnels**, la liste appelée techniquement `domaines` porte le libellé **Compétences** dans le CMS. Ajouter une ligne et renseigner son **Libellé** pour chaque compétence validée par le professionnel. Les activités se saisissent de la même façon dans **Activités**. Ne pas créer une compétence pour obtenir artificiellement un résultat de recherche.
+
+Pour une infirmière exerçant aussi la coordination, conserver **Infirmier** dans **Profession (filtre annuaire)**, renseigner la **Profession affichée** souhaitée, puis ajouter une ligne **Coordination** dans **Activités**. Après publication et génération du site, la même fiche apparaît avec le filtre public **Infirmière** comme avec **Coordinatrice**. Aucun doublon de fiche ni changement du formulaire n’est nécessaire. Relire l’aperçu puis vérifier les deux filtres sur le site local.
+
+La carte des établissements démarre automatiquement lorsque le visiteur approche de la rubrique. Le chargement du fond de carte transmet son adresse IP à l’IGN ; cette information est affichée sous la carte. Aucune géolocalisation du visiteur n’est demandée. Les adresses et les liens **Itinéraire** restent utilisables sans la carte ; en cas d’échec, **Réessayer le chargement de la carte** permet une nouvelle tentative.
+
+Conserver les **dates futures validées**, qu’il s’agisse des événements ou de leur période d’affichage. Ne pas avancer une date pour forcer l’apparition d’une fiche : vérifier son état publié, sa visibilité et ses dates d’affichage. Une date d’événement future et une date de début d’affichage future n’ont pas le même effet, comme décrit plus haut.
+
+Le prototype GitHub Pages utilise maintenant un instantané distinct de **contenus approuvés** ; la mention de contenus fictifs en introduction décrit le candidat du 9 octobre. **Publier dans le CMS local ne met pas instantanément à jour GitHub Pages**, ni un site OVH : cela alimente la génération locale à contrôler. La mise à jour du prototype distant suit une publication technique séparée et autorisée. Les indications de recette antérieures restent historiques ; cet avenant décrit la procédure actuelle, sans attester un nouveau déploiement.
