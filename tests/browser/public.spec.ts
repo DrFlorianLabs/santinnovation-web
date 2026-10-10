@@ -95,3 +95,25 @@ test('ancres de l’accueil utilisables sans JavaScript', async ({ browser }) =>
   expect(await page.locator('#equipe').evaluate(el => el.getBoundingClientRect().top)).toBeGreaterThanOrEqual(64);
   await context.close();
 });
+
+test('identité du kit, décors et préférence de mouvement réduite', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/');
+  await expect(page.locator('header img[src$="/brand/symbole.svg"]')).toBeVisible();
+  expect(await page.locator('header img').first().evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
+  await expect(page.locator('#rendez-vous .decor-backdrop')).toHaveAttribute('aria-hidden', 'true');
+  const orbit = page.locator('#rendez-vous .decor-orbit--outer');
+  await expect.poll(() => orbit.evaluate(el => getComputedStyle(el).animationPlayState)).toBe('running');
+  expect(await page.locator('#accueil-title').evaluate(el => getComputedStyle(el).color)).toBe('rgb(2, 50, 80)');
+  await expect(page.locator('#soins-et-parcours')).toHaveText('Soins et parcours');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect.poll(() => orbit.evaluate(el => getComputedStyle(el).animationName)).toBe('none');
+  await expect(page.locator('#rendez-vous')).toHaveAttribute('data-scene-visible', 'false');
+  expect(await page.locator('#rendez-vous .home-scene-content').evaluate(el => getComputedStyle(el).transform)).toBe('none');
+  await page.getByRole('navigation', { name: 'Navigation principale', exact: true }).getByRole('link', { name: 'Projet de santé', exact: true }).click();
+  await expect(page).toHaveURL(/\/#projet-de-sante$/);
+  expect(await page.locator('#projet-de-sante').evaluate(el => el.getBoundingClientRect().top)).toBeGreaterThanOrEqual(64);
+  await page.goto('/soins-et-parcours/');
+  await expect(page.locator('main')).toHaveText('Soins et parcours');
+});

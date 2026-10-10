@@ -8,17 +8,18 @@ interface Props {
   pro: CollectionEntry<"professionnels">;
   lieuxLabels?: Record<string, string>;
   heading?: "h2" | "h3";
+  variant?: "card" | "plain";
 }
-const { pro, lieuxLabels = {}, heading: Heading = "h3" } = Astro.props;
+const { pro, lieuxLabels = {}, heading: Heading = "h3", variant = "card" } = Astro.props;
 const d = pro.data;
 const aConfirmer = d.profession === "a-confirmer";
 const initiales = `${d.prenom[0] ?? ""}${d.nom[0] ?? ""}`.toUpperCase();
 const lieuxDuPro = d.lieux.map(id => lieuxLabels[id]).filter(Boolean);
 ---
 
-<div class="tilt-scene h-full">
-  <article class="tilt surface relative flex h-full flex-col p-5">
-    <span class="tilt-glare" aria-hidden="true"></span>
+<div class:list={["h-full", variant === "card" && "tilt-scene"]}>
+  <article class:list={["relative flex h-full flex-col", variant === "plain" ? "home-professional py-6" : "tilt surface p-5"]}>
+    {variant === "card" && <span class="tilt-glare" aria-hidden="true"></span>}
 
     <div class="tilt-pop-sm flex items-center gap-4">
       {

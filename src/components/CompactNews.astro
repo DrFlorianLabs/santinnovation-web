@@ -5,8 +5,8 @@ import { formatDate, formatDateTime } from '@lib/format';
 interface Props { actualites: CollectionEntry<'actualites'>[]; }
 const { actualites } = Astro.props;
 ---
-<section id="actualites" tabindex="-1" data-home-section aria-labelledby="actualites-title" class="home-news border-y border-blue-100 bg-white py-6 md:py-7">
-  <div class="container-site">
+<section id="actualites" tabindex="-1" data-home-section aria-labelledby="actualites-title" class="home-scene home-news py-7 md:py-8">
+  <div class="home-scene-content container-site">
     <div class="flex flex-wrap items-center justify-between gap-3"><h2 id="actualites-title" class="text-xl font-semibold">Actualités et prévention</h2><a href={withBase('/actualites')} class="text-sm font-medium text-teal-600 underline underline-offset-4">Toutes les actualités</a></div>
     <ul class="home-news-list mt-4 grid gap-4 md:grid-cols-3">
       {actualites.slice(0, 3).map(actu => <li class="home-news-item min-w-0 border-l-2 border-blue-100 pl-4">

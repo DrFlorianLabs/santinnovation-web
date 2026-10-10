@@ -1,0 +1,33 @@
+---
+/** Purely decorative, local SVG. No content, focus target or network request. */
+interface Props {
+  variant?: 'hero' | 'section';
+}
+const { variant = 'section' } = Astro.props;
+---
+
+<div class:list={['decor-backdrop', `decor-backdrop--${variant}`]} aria-hidden="true">
+  <div class="decor-wash decor-wash--cyan"></div>
+  <div class="decor-wash decor-wash--green"></div>
+  <div class="decor-dots"></div>
+  <svg class="decor-geometry" viewBox="0 0 640 600" fill="none" focusable="false">
+    <g class="decor-orbit decor-orbit--outer">
+      <circle cx="435" cy="245" r="158"></circle>
+      <circle cx="435" cy="245" r="188" stroke-dasharray="2 14"></circle>
+      <circle class="decor-point" cx="435" cy="87" r="5"></circle>
+    </g>
+    <g class="decor-orbit decor-orbit--inner">
+      <rect x="337" y="147" width="196" height="196" rx="32" transform="rotate(24 435 245)"></rect>
+      <path d="M337 147 533 343M533 147 337 343"></path>
+    </g>
+    <g class="decor-network">
+      <path d="M91 418 190 359 285 433 368 372 487 432"></path>
+      <path class="decor-trace" d="M91 418 190 359 285 433 368 372 487 432"></path>
+      <circle cx="91" cy="418" r="11"></circle>
+      <circle cx="190" cy="359" r="14"></circle>
+      <circle cx="285" cy="433" r="10"></circle>
+      <circle cx="368" cy="372" r="13"></circle>
+      <circle cx="487" cy="432" r="9"></circle>
+    </g>
+  </svg>
+</div>

@@ -23,6 +23,7 @@ function setupTilt(): void {
     let frame = 0;
 
     el.addEventListener("pointermove", (e) => {
+      if (reducedMotion.matches || !hoverCapable.matches) return;
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
         const rect = el.getBoundingClientRect();
@@ -81,6 +82,10 @@ function setupParallax(): void {
 
   const update = () => {
     frame = 0;
+    if (reducedMotion.matches || !hoverCapable.matches) {
+      layers.forEach((el) => el.style.removeProperty("--par-y"));
+      return;
+    }
     const mid = window.innerHeight / 2;
     layers.forEach((el) => {
       const speed = Number(el.dataset.parallax) || 0.05;
@@ -98,6 +103,52 @@ function setupParallax(): void {
     },
     { passive: true },
   );
+  reducedMotion.addEventListener("change", update);
+  hoverCapable.addEventListener("change", update);
+  update();
+}
+
+/** Continuous native scrolling, with a small entrance movement on the content
+ * wrapper only. Section positions, anchor targets and document height never
+ * change. Text remains fully opaque and every action works without this code.
+ */
+function setupHomeScenes(): void {
+  const scenes = Array.from(document.querySelectorAll<HTMLElement>("[data-home-section]"));
+  if (!scenes.length) return;
+  let frame = 0;
+
+  const update = () => {
+    frame = 0;
+    const enabled = !reducedMotion.matches && hoverCapable.matches;
+    const viewport = window.innerHeight;
+    for (const scene of scenes) {
+      const rect = scene.getBoundingClientRect();
+      const visible = rect.bottom > 0 && rect.top < viewport;
+      scene.dataset.sceneVisible = String(enabled && visible && !document.hidden);
+      if (!enabled || !visible) {
+        scene.style.removeProperty("--scene-enter-y");
+        scene.style.removeProperty("--scene-decor-y");
+        continue;
+      }
+      const entrance = Math.max(0, Math.min(1, (rect.top - viewport * .16) / (viewport * .84)));
+      const decor = Math.max(-14, Math.min(14, (viewport / 2 - rect.top - rect.height / 2) * .025));
+      scene.style.setProperty("--scene-enter-y", `${(entrance * 18).toFixed(2)}px`);
+      scene.style.setProperty("--scene-decor-y", `${decor.toFixed(2)}px`);
+    }
+    document.documentElement.classList.toggle("home-motion-ready", enabled);
+  };
+  const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+  window.addEventListener("scroll", schedule, { passive: true });
+  window.addEventListener("resize", schedule);
+  window.addEventListener("hashchange", schedule);
+  document.addEventListener("visibilitychange", schedule);
+  reducedMotion.addEventListener("change", update);
+  hoverCapable.addEventListener("change", update);
+  // The directory filters and optional map can change section heights.
+  if ("ResizeObserver" in window) {
+    const resize = new ResizeObserver(schedule);
+    scenes.forEach((scene) => resize.observe(scene));
+  }
   update();
 }
 
@@ -118,7 +169,7 @@ function setupSectionNavigation(): void {
   const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-section-link]'))
     .filter(link => link.origin === location.origin && link.pathname === location.pathname);
   if (!links.length) return;
-  const sections = Array.from(document.querySelectorAll<HTMLElement>('main > section[id]'));
+  const sections = Array.from(document.querySelectorAll<HTMLElement>('main > section[id], main [data-home-section][id]'));
   const header = document.querySelector<HTMLElement>('[data-elevate-on-scroll]');
   let frame = 0;
   const update = () => {
@@ -144,5 +195,6 @@ document.documentElement.classList.remove("no-js");
 setupTilt();
 setupReveal();
 setupParallax();
+setupHomeScenes();
 setupHeaderElevation();
 setupSectionNavigation();

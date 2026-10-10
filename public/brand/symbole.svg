@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="519.501 195 464.499 384.5" width="100mm" height="82.777358mm" id="svg61">
+  <title id="title2">MAISON DE SANTÉ - SANT INNOVATION</title>
+  <desc id="desc4">Redessin fidèle du JPEG joint. Proposition v1 du 10/10/2026, à valider. Composition symbole; traitement reference. Aucun changement de graphie. Police originale non identifiée; substitution Montserrat Medium 9.000, SIL OFL 1.1. Textes et traits en tracés dans la diffusion.</desc>
+  <defs id="defs43">
+    <linearGradient id="degrade_nom" gradientUnits="userSpaceOnUse" x1="575" y1="780" x2="1332" y2="780">
+      <stop offset="0" stop-color="#1EAFBF" id="stop6" />
+      <stop offset="0.54" stop-color="#57B893" id="stop8" />
+      <stop offset="1" stop-color="#80C167" id="stop10" />
+    </linearGradient>
+    <linearGradient id="degrade_signal" gradientUnits="userSpaceOnUse" x1="535" y1="445" x2="662" y2="220">
+      <stop offset="0" stop-color="#023250" id="stop13" />
+      <stop offset="0.55" stop-color="#13989D" id="stop15" />
+      <stop offset="1" stop-color="#2BB3A3" id="stop17" />
+    </linearGradient>
+    <linearGradient id="degrade_petit_signal" gradientUnits="userSpaceOnUse" x1="577" y1="345" x2="644" y2="264">
+      <stop offset="0" stop-color="#25675D" id="stop20" />
+      <stop offset="1" stop-color="#80C167" id="stop22" />
+    </linearGradient>
+    <linearGradient id="degrade_porte" gradientUnits="userSpaceOnUse" x1="799" y1="430" x2="914" y2="430">
+      <stop offset="0" stop-color="#0D7C98" id="stop25" />
+      <stop offset="0.35" stop-color="#22A49D" id="stop27" />
+      <stop offset="0.78" stop-color="#6BBE70" id="stop29" />
+      <stop offset="1" stop-color="#7BC265" id="stop31" />
+    </linearGradient>
+    <linearGradient id="degrade_mur_droit" gradientUnits="userSpaceOnUse" x1="939" y1="405" x2="939" y2="570">
+      <stop offset="0" stop-color="#3F7D68" id="stop34" />
+      <stop offset="0.65" stop-color="#65BC6C" id="stop36" />
+      <stop offset="0.88" stop-color="#76C466" id="stop38" />
+      <stop offset="1" stop-color="#7BC265" id="stop40" />
+    </linearGradient>
+  </defs>
+  <g id="symbole" data-version="principale">
+    <path style="color:#000000;fill:#023250;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none" d="m 774,209.25 c -5.37777,0 -10.3418,2.35221 -14.20117,5.56836 L 560.60937,380.30859 a 10,10 0 0 0 -1.30078,14.08203 10,10 0 0 0 14.08203,1.30079 l 199.19922,-165.5 a 10.001,10.001 0 0 0 0.0117,-0.01 C 773.94218,229.06446 774.17778,229.25 774,229.25 c -0.17778,0 0.0578,-0.18554 1.39844,0.93164 a 10.001,10.001 0 0 0 0.0879,0.0723 l 192.19922,156.5 a 10,10 0 0 0 14.06836,-1.43946 10,10 0 0 0 -1.43946,-14.06836 L 788.20117,214.81836 C 784.3418,211.60221 779.37777,209.25 774,209.25 Z" id="toit" />
+    <path style="color:#000000;fill:#023250;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none" d="m 606,395.5 a 9.5,9.5 0 0 0 -9.5,9.5 v 152 c 0,5.91666 1.62737,12.06096 6.0332,16.4668 4.40584,4.40583 10.55014,6.0332 16.4668,6.0332 h 140 a 9.5,9.5 0 0 0 9.5,-9.5 9.5,9.5 0 0 0 -9.5,-9.5 H 619 c -2.75,0 -3.10571,-0.5393 -3.0332,-0.4668 C 616.0393,560.10571 615.5,559.75 615.5,557 V 405 a 9.5,9.5 0 0 0 -9.5,-9.5 z" id="mur_gauche_et_sol" />
+    <g id="fenetre_quatre_carreaux" fill="#023250">
+      <path id="carreau_1_1" d="m 667.2,382.5 h 19.6 c 1.2188,0 2.2,0.9812 2.2,2.2 v 19.6 c 0,1.2188 -0.9812,2.2 -2.2,2.2 h -19.6 c -1.2188,0 -2.2,-0.9812 -2.2,-2.2 v -19.6 c 0,-1.2188 0.9812,-2.2 2.2,-2.2 z" />
+      <path id="carreau_1_2" d="m 701.2,382.5 h 19.6 c 1.2188,0 2.2,0.9812 2.2,2.2 v 19.6 c 0,1.2188 -0.9812,2.2 -2.2,2.2 h -19.6 c -1.2188,0 -2.2,-0.9812 -2.2,-2.2 v -19.6 c 0,-1.2188 0.9812,-2.2 2.2,-2.2 z" />
+      <path id="carreau_2_1" d="m 667.2,416.5 h 19.6 c 1.2188,0 2.2,0.9812 2.2,2.2 v 19.6 c 0,1.2188 -0.9812,2.2 -2.2,2.2 h -19.6 c -1.2188,0 -2.2,-0.9812 -2.2,-2.2 v -19.6 c 0,-1.2188 0.9812,-2.2 2.2,-2.2 z" />
+      <path id="carreau_2_2" d="m 701.2,416.5 h 19.6 c 1.2188,0 2.2,0.9812 2.2,2.2 v 19.6 c 0,1.2188 -0.9812,2.2 -2.2,2.2 h -19.6 c -1.2188,0 -2.2,-0.9812 -2.2,-2.2 v -19.6 c 0,-1.2188 0.9812,-2.2 2.2,-2.2 z" />
+    </g>
+    <path style="color:#000000;fill:url(#degrade_porte);stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none" d="m 811,413.5 c -5.58333,0 -11.47763,1.54404 -15.7168,5.7832 C 791.04404,423.52237 789.5,429.41667 789.5,435 v 135 a 9.5,9.5 0 0 0 9.5,9.5 9.5,9.5 0 0 0 9.5,-9.5 V 435 c 0,-2.41666 0.45597,-2.52237 0.2168,-2.2832 C 808.47763,432.95597 808.58334,432.5 811,432.5 h 66 c 2.41666,0 2.52237,0.45597 2.2832,0.2168 -0.23917,-0.23917 0.2168,-0.13346 0.2168,2.2832 v 135 a 9.50095,9.50095 0 0 0 9.5,9.5 h 25 a 9.5,9.5 0 0 0 9.5,-9.5 9.5,9.5 0 0 0 -9.5,-9.5 H 898.5 V 435 c 0,-5.58333 -1.54404,-11.47763 -5.7832,-15.7168 C 888.47763,415.04404 882.58333,413.5 877,413.5 Z" id="porte_degradee" />
+    <path style="color:#000000;fill:url(#degrade_mur_droit);stroke-linejoin:round;-inkscape-stroke:none" d="m 929.5,405 v 153 c 0,2.41666 -0.45597,2.52237 -0.2168,2.2832 0.23917,-0.23917 0.13346,0.2168 -2.2832,0.2168 h -13 v 19 h 13 c 5.58333,0 11.47763,-1.54404 15.7168,-5.7832 C 946.95596,569.47763 948.5,563.58333 948.5,558 V 405 Z" id="mur_droit_degrade" />
+    <path id="arrondi_mur_droit" style="fill:url(#degrade_mur_droit)" d="m 948.5,405 a 9.5,9.5 0 0 1 -9.5,9.5 9.5,9.5 0 0 1 -9.5,-9.5 9.5,9.5 0 0 1 9.5,-9.5 9.5,9.5 0 0 1 9.5,9.5 z" />
+    <path style="color:#000000;fill:url(#degrade_signal);stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none" d="m 680.58789,202.26758 c -47.63948,4.14256 -93.63589,32.91142 -125.3418,73.82226 a 4.750475,4.750475 0 0 0 -0.0176,0.0215 c -36.95589,48.24796 -49.35916,114.39531 -17.4004,173.1582 a 4.75,4.75 0 0 0 6.44141,1.90234 4.75,4.75 0 0 0 1.90234,-6.4414 c -30.03994,-55.23474 -18.44499,-117.08455 16.59571,-162.83594 0.001,-0.002 0.002,-0.004 0.004,-0.006 30.2935,-39.07729 74.28853,-66.29954 118.64063,-70.15625 a 4.75,4.75 0 0 0 4.32031,-5.14453 4.75,4.75 0 0 0 -5.14453,-4.32031 z" id="grand_arc" />
+    <path style="color:#000000;fill:url(#degrade_petit_signal);stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none" d="m 642.79297,260.98242 c -36.08014,14.43206 -59.73581,46.39051 -68.94531,83.22852 a 3.25,3.25 0 0 0 2.36328,3.9414 3.25,3.25 0 0 0 3.9414,-2.36328 c 8.79048,-35.16192 31.1349,-65.20356 65.05469,-78.77148 a 3.25,3.25 0 0 0 1.81055,-4.22461 3.25,3.25 0 0 0 -4.22461,-1.81055 z" id="petit_arc" />
+    <path id="point_signal_haut" style="fill:#2bb3a3" d="m 693,207 a 12,12 0 0 1 -12,12 12,12 0 0 1 -12,-12 12,12 0 0 1 12,-12 12,12 0 0 1 12,12 z" />
+    <path id="point_signal_bas" style="fill:#023250" d="m 553,447 a 11,11 0 0 1 -11,11 11,11 0 0 1 -11,-11 11,11 0 0 1 11,-11 11,11 0 0 1 11,11 z" />
+    <path id="point_petit_signal" style="fill:#80c167" d="m 654,264 a 10,10 0 0 1 -10,10 10,10 0 0 1 -10,-10 10,10 0 0 1 10,-10 10,10 0 0 1 10,10 z" />
+  </g>
+</svg>

@@ -7,6 +7,7 @@ import DoctolibButton from '@components/DoctolibButton.astro';
 import ProfessionalCard from '@components/ProfessionalCard.astro';
 import PartnerStrip from '@components/PartnerStrip.astro';
 import Logo from '@components/Logo.astro';
+import DecorativeBackdrop from '@components/DecorativeBackdrop.astro';
 import EmergencyNotice from '@components/EmergencyNotice.astro';
 import SiteMap from '@components/SiteMap.astro';
 import CompactNews from '@components/CompactNews.astro';
@@ -22,10 +23,8 @@ const pages = (await getCollection('pages')).filter(isPublishedArticle);
 const accueil = pages.find(p => p.id === 'accueil');
 const equipe = pages.find(p => p.id === 'equipe');
 const pratique = pages.find(p => p.id === 'lieux');
-const soins = pages.find(p => p.id === 'soins-et-parcours');
 const projet = pages.find(p => p.id === 'projet-de-sante');
 const innovation = pages.find(p => p.id === 'recherche-innovation');
-const activites = (await getCollection('activites')).filter(isPublishedArticle).sort((a, b) => a.data.ordre - b.data.ordre);
 const innovations = (await getCollection('innovations')).filter(isPublishedArticle).sort((a, b) => a.data.ordre - b.data.ordre);
 const actualites = (await getCollection('actualites')).filter(isPublishedArticle)
   .sort((a, b) => Number(b.data.epingle) - Number(a.data.epingle) || b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
@@ -33,8 +32,9 @@ const itinerary = (lieu: (typeof lieux)[number]) => lieu.data.itineraireUrl ?? `
 ---
 
 <BaseLayout title="Accueil" description={accueil?.data.resume || site.description}>
-  <section id="rendez-vous" tabindex="-1" data-home-section aria-labelledby="accueil-title" class="home-hero relative overflow-hidden">
-    <div class="container-site grid items-center gap-10 py-12 md:py-16 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,.75fr)]">
+  <section id="rendez-vous" tabindex="-1" data-home-section aria-labelledby="accueil-title" class="home-scene home-hero relative">
+    <DecorativeBackdrop variant="hero" />
+    <div class="home-scene-content container-site grid items-center gap-12 py-16 md:py-24 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,.75fr)]">
       <div class="min-w-0">
         <p class="home-kicker text-sm font-semibold uppercase tracking-wider text-teal-600">Maison de santé pluriprofessionnelle · {site.ville}</p>
         <h1 id="accueil-title" class="mt-4 max-w-3xl hyphens-auto text-4xl font-semibold sm:text-5xl">{accueil?.data.titre || 'Votre équipe de santé, au plus près de vous.'}</h1>
@@ -47,7 +47,7 @@ const itinerary = (lieu: (typeof lieux)[number]) => lieu.data.itineraireUrl ?? `
         <a href="#lieux" class="mt-3 inline-flex items-center gap-2 text-sm font-medium text-teal-600 underline underline-offset-4 lg:hidden"><Icon name="map-pin" size={16} />Adresses, horaires et accès</a>
         {accueil && <div class="home-editorial mt-5 max-w-prose text-sm"><EditorialContent entry={accueil} /></div>}
       </div>
-      <aside aria-label="Les lieux de consultation" class="surface hidden min-w-0 p-6 md:p-7 lg:block">
+      <aside aria-label="Les lieux de consultation" class="home-visit hidden min-w-0 lg:block">
         <div class="flex items-center gap-4"><Logo size={56} /><div class="min-w-0"><p class="font-display text-xl font-semibold text-blue-900">{site.nomCourt}</p><p class="mt-1 text-sm text-ink-700">{site.baseline}</p></div></div>
         <p class="mt-6 text-sm font-semibold text-blue-900">Préparer votre venue</p>
         <ul class="mt-2 divide-y divide-blue-100">
@@ -61,31 +61,31 @@ const itinerary = (lieu: (typeof lieux)[number]) => lieu.data.itineraireUrl ?? `
 
   <CompactNews actualites={actualites} />
 
-  <section id="equipe" tabindex="-1" data-home-section aria-labelledby="equipe-title" class="home-section py-12 md:py-16">
-    <div class="container-site" data-directory>
+  <section id="equipe" tabindex="-1" data-home-section aria-labelledby="equipe-title" class="home-scene home-section py-12 md:py-16">
+    <div class="home-scene-content container-site" data-directory>
       <div class="home-section-heading max-w-prose"><p class="home-kicker text-sm font-semibold uppercase tracking-wider text-teal-600">Votre professionnel</p><h2 id="equipe-title" class="mt-3 text-3xl font-semibold sm:text-4xl">L’équipe</h2><p class="mt-4 text-ink-700">{equipe?.data.resume || 'Retrouvez tous les professionnels, leurs lieux de consultation et leurs modalités de rendez-vous.'}</p></div>
       {equipe && <div class="home-editorial mt-4 max-w-prose"><EditorialContent entry={equipe} /></div>}
-      <form class="surface mt-7 grid gap-4 p-5 md:grid-cols-3" data-filters hidden role="search" aria-label="Filtrer les professionnels">
+      <form class="home-filters mt-7 grid gap-4 py-5 md:grid-cols-3" data-filters hidden role="search" aria-label="Filtrer les professionnels">
         <div><label for="pro-name" class="block text-sm font-semibold">Nom ou compétence</label><input id="pro-name" type="search" autocomplete="off" class="filter-input" placeholder="Rechercher un professionnel" /></div>
         <div><label for="pro-profession" class="block text-sm font-semibold">Profession</label><select id="pro-profession" class="filter-input"><option value="">Toutes les professions</option>{professions.map(([id, label]) => <option value={id}>{label}</option>)}</select></div>
         <div><label for="pro-lieu" class="block text-sm font-semibold">Lieu de consultation</label><select id="pro-lieu" class="filter-input"><option value="">Tous les lieux</option>{lieux.map(lieu => <option value={lieu.id}>{lieu.data.nom}</option>)}</select></div>
       </form>
       <p class="mb-5 mt-5 text-sm text-ink-700" role="status" aria-live="polite" data-results>{pros.length} professionnel{pros.length > 1 ? 's' : ''}</p>
       <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {pros.map(pro => <li data-pro data-name={`${pro.data.titreAffiche} ${pro.data.domaines.join(' ')}`} data-profession={pro.data.profession} data-lieux={JSON.stringify(pro.data.lieux)}><ProfessionalCard pro={pro} lieuxLabels={lieuxLabels} heading="h3" /></li>)}
+        {pros.map(pro => <li data-pro data-name={`${pro.data.titreAffiche} ${pro.data.domaines.join(' ')}`} data-profession={pro.data.profession} data-lieux={JSON.stringify(pro.data.lieux)}><ProfessionalCard pro={pro} lieuxLabels={lieuxLabels} heading="h3" variant="plain" /></li>)}
       </ul>
-      <p data-empty hidden class="surface p-6">Aucun professionnel ne correspond à ces critères. Essayez une autre recherche.</p>
+      <p data-empty hidden class="py-6">Aucun professionnel ne correspond à ces critères. Essayez une autre recherche.</p>
       {pros.length === 0 && <p>Les fiches de l’équipe seront affichées après validation.</p>}
       <noscript><p class="mt-5 text-sm text-ink-700">Tous les professionnels sont affichés. Les filtres nécessitent JavaScript ; les fiches et les rendez-vous restent accessibles.</p></noscript>
     </div>
   </section>
 
-  <section id="lieux" tabindex="-1" data-home-section aria-labelledby="lieux-title" class="home-section home-locations bg-white py-12 md:py-16">
-    <div class="container-site">
+  <section id="lieux" tabindex="-1" data-home-section aria-labelledby="lieux-title" class="home-scene home-section home-locations py-12 md:py-16">
+    <div class="home-scene-content container-site">
       <div class="home-section-heading max-w-prose"><p class="home-kicker text-sm font-semibold uppercase tracking-wider text-teal-600">Préparer votre consultation</p><h2 id="lieux-title" class="mt-3 text-3xl font-semibold sm:text-4xl">Nos lieux de consultation</h2><p class="mt-4 text-ink-700">{pratique?.data.resume || 'Vérifiez le lieu indiqué dans votre rendez-vous : un professionnel peut consulter dans plusieurs établissements.'}</p></div>
       {pratique && <div class="home-editorial mt-4 max-w-prose"><EditorialContent entry={pratique} /></div>}
       <ul class="mt-7 grid gap-5 lg:grid-cols-2">
-        {lieux.map(lieu => <li id={`lieu-${lieu.id}`} tabindex="-1" class="surface p-6">
+        {lieux.map(lieu => <li id={`lieu-${lieu.id}`} tabindex="-1" class="home-location py-7">
           <article aria-labelledby={`lieu-title-${lieu.id}`}>
             <h3 id={`lieu-title-${lieu.id}`} class="text-xl font-semibold">{lieu.data.nom}</h3>
             <p class="mt-3 text-sm text-ink-700">{lieu.data.adresse}<br />{lieu.data.codePostal} {lieu.data.ville}</p>
@@ -102,38 +102,40 @@ const itinerary = (lieu: (typeof lieux)[number]) => lieu.data.itineraireUrl ?? `
         </li>)}
       </ul>
       {lieux.length === 0 && <p class="mt-5 text-ink-700">Les informations des établissements seront disponibles après validation.</p>}
-      {lieux.length > 0 && <details class="mt-6 rounded-2xl border border-blue-100 bg-ivory p-5"><summary class="cursor-pointer font-semibold text-blue-900">Carte et itinéraires détaillés</summary><div class="mt-5"><SiteMap lieux={lieux} id="carte-accueil" /></div></details>}
+      {lieux.length > 0 && <details class="home-map mt-6 border-t border-blue-100 py-5"><summary class="cursor-pointer font-semibold text-blue-900">Carte et itinéraires détaillés</summary><div class="mt-5"><SiteMap lieux={lieux} id="carte-accueil" /></div></details>}
     </div>
   </section>
 
-  <section id="soins-et-parcours" tabindex="-1" data-home-section aria-labelledby="soins-title" class="home-section py-12 md:py-16">
-    <div class="container-site">
-      <div class="home-section-heading max-w-prose"><p class="home-kicker text-sm font-semibold uppercase tracking-wider text-teal-600">Vos soins au quotidien</p><h2 id="soins-title" class="mt-3 text-3xl font-semibold sm:text-4xl">Soins et parcours</h2>{soins?.data.resume && <p class="mt-4 text-ink-700">{soins.data.resume}</p>}</div>
-      <div class="home-editorial mt-4 max-w-prose"><EditorialContent entry={soins}><p>Retrouvez les domaines d’exercice et les modalités de consultation dans <a href="#equipe">les fiches des professionnels</a>. Les activités et parcours sont présentés après validation par l’équipe.</p></EditorialContent></div>
-      {activites.length > 0 && <ul class="mt-7 grid gap-5 md:grid-cols-2">{activites.map(activite => <li class="surface p-6"><h3 class="text-xl font-semibold"><a href={withBase(`/activites/${activite.id}`)} class="hover:underline">{activite.data.titre}</a></h3><p class="mt-3 text-ink-700">{activite.data.resume}</p><a href={withBase(`/activites/${activite.id}`)} class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-teal-600 underline underline-offset-4">Découvrir cette activité <Icon name="arrow-right" size={16} /></a></li>)}</ul>}
+  <section id="soins-et-parcours" tabindex="-1" data-home-section aria-labelledby="soins-title" class="home-scene home-section home-care py-12 md:py-16">
+    <div class="home-scene-content container-site">
+      <h2 id="soins-title" class="text-3xl font-semibold sm:text-4xl">Soins et parcours</h2>
     </div>
   </section>
 
-  <section id="projet-de-sante" tabindex="-1" data-home-section aria-labelledby="projet-title" class="home-section home-project bg-white py-12 md:py-16">
-    <div class="container-site">
-      <div class="home-section-heading max-w-prose"><p class="home-kicker text-sm font-semibold uppercase tracking-wider text-teal-600">Notre organisation collective</p><h2 id="projet-title" class="mt-3 text-3xl font-semibold sm:text-4xl">Le projet de santé</h2>{projet?.data.resume && <p class="mt-4 text-ink-700">{projet.data.resume}</p>}</div>
-      <div class:list={['mt-6 grid items-start gap-8', projet?.data.image && 'lg:grid-cols-2']}>
-        <div class="home-editorial max-w-prose"><EditorialContent entry={projet}><p>La présentation détaillée du projet de santé sera publiée ici après validation par l’équipe.</p></EditorialContent></div>
-        {projet?.data.image && <figure><img src={withBase(projet.data.image)} alt={projet.data.imageAlt || ''} width="960" height="540" loading="lazy" class="aspect-video w-full rounded-2xl object-cover" />{projet.data.imageCredit && <figcaption class="mt-2 text-sm text-ink-700">Crédit : {projet.data.imageCredit}</figcaption>}</figure>}
+  <section id="projet-de-sante" tabindex="-1" data-home-section aria-labelledby="projet-title" class="home-scene home-section home-project py-16 md:py-24">
+    <DecorativeBackdrop />
+    <div class="home-scene-content container-site home-editorial-layout">
+      <div class="home-section-heading"><p class="home-kicker text-sm font-semibold uppercase tracking-wider text-teal-600">Notre organisation collective</p><h2 id="projet-title" class="mt-3 text-3xl font-semibold sm:text-4xl">Le projet de santé</h2>{projet?.data.resume && <p class="mt-5 text-lg text-ink-700">{projet.data.resume}</p>}</div>
+      <div class="home-editorial max-w-prose">
+        <EditorialContent entry={projet}><p>La présentation du projet de santé sera publiée ici après validation par l’équipe.</p></EditorialContent>
+        {projet?.data.image && <figure class="mt-8"><img src={withBase(projet.data.image)} alt={projet.data.imageAlt || ''} width="960" height="540" loading="lazy" class="aspect-video w-full object-cover" />{projet.data.imageCredit && <figcaption class="mt-2 text-sm text-ink-700">Crédit : {projet.data.imageCredit}</figcaption>}</figure>}
       </div>
     </div>
   </section>
 
-  <section id="recherche-innovation" tabindex="-1" data-home-section aria-labelledby="innovation-title" class="home-section home-innovation py-12 md:py-16">
-    <div class="container-site">
-      <div class="home-section-heading max-w-prose"><p class="home-kicker text-sm font-semibold uppercase tracking-wider text-teal-600">Innovation utile</p><h2 id="innovation-title" class="mt-3 text-3xl font-semibold sm:text-4xl">Recherche et innovation</h2>{innovation?.data.resume && <p class="mt-4 text-ink-700">{innovation.data.resume}</p>}</div>
-      <div class="home-editorial mt-4 max-w-prose"><EditorialContent entry={innovation}><p>Les projets de recherche et d’innovation sont présentés après validation par l’équipe, avec leur contexte et leur état d’avancement.</p></EditorialContent></div>
-      {innovations.length > 0 && <ul class="mt-7 grid gap-5 md:grid-cols-2">{innovations.map(item => <li class="surface p-6"><h3 class="text-xl font-semibold"><a href={withBase(`/innovations/${item.id}`)} class="hover:underline">{item.data.titre}</a></h3><p class="mt-3 text-ink-700">{item.data.resume}</p><a href={withBase(`/innovations/${item.id}`)} class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-teal-600 underline underline-offset-4">Découvrir le projet <Icon name="arrow-right" size={16} /></a></li>)}</ul>}
+  <section id="recherche-innovation" tabindex="-1" data-home-section aria-labelledby="innovation-title" class="home-scene home-section home-innovation py-16 md:py-24">
+    <DecorativeBackdrop />
+    <div class="home-scene-content container-site home-editorial-layout">
+      <div class="home-section-heading"><p class="home-kicker text-sm font-semibold uppercase tracking-wider text-teal-600">Innovation utile</p><h2 id="innovation-title" class="mt-3 text-3xl font-semibold sm:text-4xl">Recherche et innovation</h2>{innovation?.data.resume && <p class="mt-5 text-lg text-ink-700">{innovation.data.resume}</p>}</div>
+      <div class="home-editorial">
+        <div class="max-w-prose"><EditorialContent entry={innovation}><p>Les projets de recherche et d’innovation sont présentés après validation par l’équipe, avec leur contexte et leur état d’avancement.</p></EditorialContent></div>
+        {innovations.length > 0 && <ul class="home-project-list mt-8">{innovations.map(item => <li class="home-project-item py-7"><h3 class="text-xl font-semibold"><a href={withBase(`/innovations/${item.id}`)} class="hover:underline">{item.data.titre}</a></h3><p class="mt-3 text-ink-700">{item.data.resume}</p><a href={withBase(`/innovations/${item.id}`)} class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-teal-600 underline underline-offset-4">Découvrir le projet <Icon name="arrow-right" size={16} /></a></li>)}</ul>}
+      </div>
     </div>
   </section>
 
   <PartnerStrip title="Nos partenaires" />
-  <div class="container-site pb-8"><EmergencyNotice /></div>
+  <div class="home-scene-content container-site pb-8"><EmergencyNotice /></div>
 </BaseLayout>
 
 <script>

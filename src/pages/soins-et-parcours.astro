@@ -1,16 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
-import EditorialPage from '@components/EditorialPage.astro';
-import { withBase } from '@lib/paths';
-const activites = (await getCollection('activites')).sort((a,b)=>a.data.ordre-b.data.ordre);
+import BaseLayout from '@layouts/BaseLayout.astro';
 ---
-<EditorialPage slug="soins-et-parcours" title="Soins et parcours" eyebrow="Vos soins au quotidien" description="Retrouvez les professionnels, leurs domaines d'exercice et les modalités de consultation.">
-  <h2>Trouver le bon professionnel</h2>
-  <p>Consultez <a href={withBase('/equipe')}>l'annuaire de l'équipe</a> pour rechercher un professionnel par métier, nom ou lieu. Sa fiche indique ses domaines d'exercice et les modalités de rendez-vous disponibles.</p>
-  <h2>Préparer une consultation</h2>
-  <p>Vérifiez le lieu de consultation indiqué dans votre rendez-vous : un professionnel peut exercer dans plusieurs établissements. Les <a href={withBase('/lieux')}>fiches des lieux</a> réunissent les adresses, les accès et les itinéraires.</p>
-  <p>La disponibilité et les conditions d'accès à un soin se vérifient auprès du professionnel. Les parcours spécifiques seront détaillés ici une fois validés par l'équipe.</p>
-  <div slot="after">
-    {activites.length > 0 && <><h2 class="mt-12 text-2xl font-semibold">Activités et services</h2><ul class="mt-6 grid gap-5 md:grid-cols-2">{activites.map(a=><li class="surface p-6"><h3 class="text-xl font-semibold"><a href={withBase(`/activites/${a.id}`)} class="hover:underline">{a.data.titre}</a></h3><p class="mt-3 text-ink-700">{a.data.resume}</p><a href={withBase(`/activites/${a.id}`)} class="mt-4 inline-block font-medium text-teal-600 underline underline-offset-4">Découvrir cette activité</a></li>)}</ul></>}
-  </div>
-</EditorialPage>
+<BaseLayout title="Soins et parcours" description="Soins et parcours — Sant’Innovation">
+  <section class="container-site py-16 md:py-24" aria-labelledby="soins-title">
+    <h1 id="soins-title" class="text-4xl font-semibold">Soins et parcours</h1>
+  </section>
+</BaseLayout>

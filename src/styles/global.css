@@ -1,9 +1,10 @@
 @import "tailwindcss";
 
 /*
-  Design system Sant'Innovation — palette lumineuse.
-  Le logo et son dégradé restent inchangés. L'interface emploie un cobalt
-  franc, un violet en accent et des surfaces claires légèrement corail.
+  Design system Sant'Innovation — kit de communication du 10 octobre 2026.
+  Aplats de référence : marine #023250, turquoise #25B1B4, vert #80C167.
+  Les teintes foncées des liens et les fonds pâles sont des dérivés d'interface,
+  pas de nouvelles couleurs du logo. Les SVG du kit restent la référence.
 
   Principes de la refonte :
   - Profondeur physique : élévations multi-couches teintées (pas de gris plat).
@@ -13,53 +14,45 @@
   - Tout est désactivé proprement via prefers-reduced-motion.
 */
 @theme {
-  /* --- Bleu franc : titres, actions et surfaces claires --- */
-  --color-blue-950: #142450;
-  --color-blue-900: #1d3c83;
-  --color-blue-700: #284bad;
-  --color-blue-500: #3b64e8;
-  --color-blue-100: #edf2ff;
+  /* --- Marine exact du kit pour les titres et les boutons --- */
+  --color-blue-950: #01263d;
+  --color-blue-900: #023250;
+  --color-blue-700: #14516c;
+  --color-blue-500: #33718c;
+  --color-blue-100: #e9f2f5;
 
-  /* Noms historiques conservés pour les composants ; cobalt pour les liens.
-     Le niveau 500, clair, sert uniquement sur fond sombre ou en décor. */
-  --color-teal-600: #3156d3;
-  --color-teal-500: #adc7ff;
-  --color-teal-100: #eaf1ff;
+  /* Turquoise exact en accent ; dérivé sombre accessible pour le petit texte. */
+  --color-teal-600: #076c70;
+  --color-teal-500: #25b1b4;
+  --color-teal-100: #e8f7f6;
 
-  /* --- Accent violet ; les anciens utilitaires green restent disponibles --- */
-  --color-violet-700: #6441b5;
-  --color-violet-600: #7045bf;
-  --color-violet-500: #9d7fea;
-  --color-violet-100: #f2edff;
-  --color-green-600: #7045bf;
-  --color-green-500: #9d7fea;
-  --color-green-100: #f2edff;
+  /* Vert exact en accent ; dérivé sombre pour pictogrammes et libellés. */
+  --color-green-600: #397628;
+  --color-green-500: #80c167;
+  --color-green-100: #f0f7ec;
 
-  /* --- Dégradé de marque inchangé, réservé au logo / wordmark --- */
-  --brand-gradient: linear-gradient(100deg, #1ba3c2 0%, #62bb46 100%);
-  --action-gradient: linear-gradient(110deg, #3156d3 0%, #7045bf 100%);
+  /* Accent de compatibilité ; les logos publics utilisent les SVG du kit,
+     qui conservent leurs dégradés vectoriels complets. */
+  --brand-gradient: linear-gradient(100deg, #1eafbf 0%, #80c167 100%);
 
-  /* --- Corail chaleureux : portraits, repères et accents ponctuels --- */
-  --color-coral-700: #9f3d35;
-  --color-coral-500: #cf6657;
-  --color-coral-100: #fff0e9;
-  --color-sage-700: #9f3d35;
-  --color-sage-500: #cf6657;
-  --color-sage-100: #fff0e9;
+  /* --- Déclinaisons du vert pour portraits et repères --- */
+  --color-sage-700: #345b29;
+  --color-sage-500: #5b8749;
+  --color-sage-100: #f0f7ec;
 
-  /* --- Neutres : blanc et bleu très légèrement teinté --- */
-  --color-ink-950: #23304b;
-  --color-ink-700: #4b5872;
-  --color-ink-500: #5d6780;
-  --color-ink-200: #e8edf7;
-  --color-ivory: #f8faff;
+  /* --- Neutres : blanc et teintes très légères --- */
+  --color-ink-950: #263238;
+  --color-ink-700: #4d5b61;
+  --color-ink-500: #59686f;
+  --color-ink-200: #e9eff0;
+  --color-ivory: #fcfdfb;
   --color-white: #ffffff;
 
   /* --- Couleurs fonctionnelles --- */
   --color-success: #2e7d5b;
   --color-warning: #956316;
   --color-danger: #b33a38;
-  --color-info: #3156d3;
+  --color-info: #076c70;
 
   /* --- Typographies --- */
   --font-display: "Sora Variable", ui-sans-serif, system-ui, sans-serif;
@@ -73,23 +66,23 @@
 
   /* --- Élévations : ombres multi-couches teintées bleu --- */
   --shadow-e1:
-    0 1px 2px rgba(29, 60, 131, 0.04),
-    0 2px 6px rgba(29, 60, 131, 0.04);
+    0 1px 2px rgba(2, 50, 80, 0.04),
+    0 2px 6px rgba(2, 50, 80, 0.04);
   --shadow-e2:
-    0 1px 2px rgba(29, 60, 131, 0.03),
-    0 4px 10px rgba(29, 60, 131, 0.04),
-    0 12px 28px -8px rgba(49, 86, 211, 0.12);
+    0 1px 2px rgba(2, 50, 80, 0.03),
+    0 4px 10px rgba(2, 50, 80, 0.04),
+    0 12px 28px -8px rgba(37, 177, 180, 0.12);
   --shadow-e3:
-    0 2px 4px rgba(29, 60, 131, 0.03),
-    0 8px 18px rgba(29, 60, 131, 0.05),
-    0 24px 48px -12px rgba(49, 86, 211, 0.18);
+    0 2px 4px rgba(2, 50, 80, 0.03),
+    0 8px 18px rgba(2, 50, 80, 0.05),
+    0 24px 48px -12px rgba(37, 177, 180, 0.18);
   --shadow-e4:
-    0 4px 8px rgba(29, 60, 131, 0.04),
-    0 16px 32px rgba(29, 60, 131, 0.06),
-    0 40px 80px -16px rgba(49, 86, 211, 0.22);
+    0 4px 8px rgba(2, 50, 80, 0.04),
+    0 16px 32px rgba(2, 50, 80, 0.06),
+    0 40px 80px -16px rgba(37, 177, 180, 0.22);
   --shadow-teal-glow:
-    0 4px 14px -2px rgba(49, 86, 211, 0.24),
-    0 12px 32px -8px rgba(112, 69, 191, 0.18);
+    0 4px 14px -2px rgba(37, 177, 180, 0.24),
+    0 12px 32px -8px rgba(128, 193, 103, 0.18);
 }
 
 @layer base {
@@ -127,6 +120,9 @@
     outline: 2px solid var(--color-teal-600);
     outline-offset: 3px;
     border-radius: 2px;
+  }
+  :where(footer, .glass-dark, .bg-blue-950, .bg-blue-900) :focus-visible {
+    outline-color: var(--color-teal-500);
   }
 
   ::selection {
@@ -184,7 +180,7 @@
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.75)),
       var(--color-white);
-    border: 1px solid rgba(49, 86, 211, 0.1);
+    border: 1px solid rgba(37, 177, 180, 0.1);
     border-top-color: rgba(255, 255, 255, 0.9);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.9),
@@ -207,7 +203,7 @@
     );
     -webkit-backdrop-filter: blur(16px) saturate(1.1);
     backdrop-filter: blur(16px) saturate(1.1);
-    border: 1px solid rgba(49, 86, 211, 0.1);
+    border: 1px solid rgba(37, 177, 180, 0.1);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.85),
       var(--shadow-e2);
@@ -216,8 +212,8 @@
   .glass-dark {
     background: linear-gradient(
       180deg,
-      rgba(29, 60, 131, 0.82),
-      rgba(20, 36, 80, 0.88)
+      rgba(2, 50, 80, 0.82),
+      rgba(1, 38, 61, 0.88)
     );
     -webkit-backdrop-filter: blur(16px) saturate(1.2);
     backdrop-filter: blur(16px) saturate(1.2);
@@ -288,19 +284,19 @@
     transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
   }
   .btn-3d-primary {
-    background: var(--action-gradient);
+    background: var(--color-blue-900);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.45),
-      inset 0 -2px 0 rgba(29, 60, 131, 0.16),
+      inset 0 1px 0 rgba(37, 177, 180, 0.7),
+      inset 0 -2px 0 rgba(128, 193, 103, 0.3),
       var(--shadow-teal-glow);
   }
   .btn-3d-primary:hover {
     transform: translateY(-2px);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.45),
-      inset 0 -2px 0 rgba(29, 60, 131, 0.16),
-      0 8px 20px -2px rgba(49, 86, 211, 0.28),
-      0 18px 44px -8px rgba(112, 69, 191, 0.2);
+      inset 0 1px 0 rgba(37, 177, 180, 0.8),
+      inset 0 -2px 0 rgba(128, 193, 103, 0.4),
+      0 8px 20px -2px rgba(37, 177, 180, 0.28),
+      0 18px 44px -8px rgba(128, 193, 103, 0.2);
   }
 
   /* Texte au dégradé de marque (wordmark « Innovation ») */
@@ -314,19 +310,19 @@
     transform: translateY(1px) scale(0.99);
   }
   .btn-3d-secondary {
-    background: linear-gradient(180deg, #ffffff, #f4f7ff);
+    background: linear-gradient(180deg, #ffffff, #f4f9f9);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 1),
-      inset 0 -1px 0 rgba(49, 86, 211, 0.06),
+      inset 0 -1px 0 rgba(37, 177, 180, 0.06),
       var(--shadow-e1);
-    border: 1px solid rgba(49, 86, 211, 0.2);
+    border: 1px solid rgba(37, 177, 180, 0.2);
   }
   .btn-3d-secondary:hover {
     transform: translateY(-2px);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 1),
       var(--shadow-e2);
-    border-color: rgba(49, 86, 211, 0.5);
+    border-color: rgba(37, 177, 180, 0.5);
   }
 
   /* ============================================================
@@ -358,8 +354,8 @@
     right: -12%;
     background: radial-gradient(
       circle,
-      rgba(77, 126, 244, 0.26),
-      rgba(157, 127, 234, 0.16) 55%,
+      rgba(37, 177, 180, 0.26),
+      rgba(37, 177, 180, 0.12) 55%,
       transparent 72%
     );
     animation: aurora-drift-a 26s ease-in-out infinite alternate;
@@ -369,8 +365,8 @@
     left: -14%;
     background: radial-gradient(
       circle,
-      rgba(244, 164, 143, 0.26),
-      rgba(255, 240, 233, 0.2) 55%,
+      rgba(128, 193, 103, 0.26),
+      rgba(240, 247, 236, 0.2) 55%,
       transparent 75%
     );
     animation: aurora-drift-b 32s ease-in-out infinite alternate;
@@ -393,8 +389,8 @@
     height: 46%;
     pointer-events: none;
     background-image:
-      linear-gradient(rgba(49, 86, 211, 0.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(49, 86, 211, 0.07) 1px, transparent 1px);
+      linear-gradient(rgba(37, 177, 180, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(37, 177, 180, 0.07) 1px, transparent 1px);
     background-size: 44px 44px;
     transform: perspective(600px) rotateX(58deg) scale(1.6);
     transform-origin: bottom center;
@@ -406,7 +402,7 @@
   .dot-field {
     background-image: radial-gradient(
       circle at 1px 1px,
-      rgba(49, 86, 211, 0.08) 1px,
+      rgba(37, 177, 180, 0.08) 1px,
       transparent 0
     );
     background-size: 28px 28px;
@@ -502,10 +498,126 @@
     transform-origin: center;
     transform-box: fill-box;
   }
-  /* Repères de la page d'accueil. La grille et les espacements restent dans
-     les composants ; aucune alternance ne dépend d'une animation. */
+  /* Rubriques continues : les éléments décoratifs ne prennent aucune place
+     dans le document. Pas de hauteur d'écran, de snap ou de défilement forcé. */
+  .home-scene {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+  }
+  .home-scene-content {
+    position: relative;
+    z-index: 1;
+  }
+  .home-editorial-layout {
+    display: grid;
+    align-items: start;
+    gap: 2rem;
+  }
+  @media (min-width: 1024px) {
+    .home-editorial-layout {
+      grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+      gap: clamp(2rem, 6vw, 6rem);
+    }
+    .home-editorial-layout > .home-section-heading {
+      position: sticky;
+      top: 8rem;
+    }
+  }
+  .home-location,
+  .home-project-item {
+    border-top: 1px solid color-mix(in srgb, var(--color-blue-900) 16%, transparent);
+  }
+  .decor-backdrop {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    overflow: clip;
+    pointer-events: none;
+    user-select: none;
+  }
+  .decor-wash {
+    position: absolute;
+    width: clamp(20rem, 45vw, 48rem);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: .45;
+  }
+  .decor-wash--cyan {
+    top: -30%;
+    right: -8%;
+    background: radial-gradient(circle, var(--color-teal-100), transparent 70%);
+  }
+  .decor-wash--green {
+    bottom: -40%;
+    left: -18%;
+    background: radial-gradient(circle, var(--color-green-100), transparent 70%);
+  }
+  .decor-dots {
+    position: absolute;
+    inset: 0;
+    opacity: .2;
+    background-image: radial-gradient(circle at 1px 1px, var(--color-blue-500) .7px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: linear-gradient(100deg, transparent 30%, #000 100%);
+  }
+  .decor-geometry {
+    position: absolute;
+    width: clamp(26rem, 56vw, 58rem);
+    max-width: none;
+    height: auto;
+    top: 50%;
+    right: -8%;
+    transform: translateY(calc(-50% + var(--scene-decor-y, 0px)));
+    opacity: .36;
+    stroke: var(--color-teal-500);
+    stroke-width: 1.2;
+  }
+  .decor-orbit {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .decor-orbit--inner { stroke: var(--color-green-500); }
+  .decor-point { fill: var(--color-green-500); stroke: none; }
+  .decor-network { stroke: var(--color-blue-500); }
+  .decor-trace { stroke: var(--color-teal-500); stroke-width: 2; stroke-dasharray: 10 26; }
+  .decor-backdrop--section .decor-geometry { opacity: .22; right: -20%; }
+  .decor-backdrop--section .decor-dots { opacity: .12; }
+  @media (max-width: 767px) {
+    .decor-geometry { right: -20rem; opacity: .16; }
+    .decor-backdrop--section .decor-geometry { right: -22rem; opacity: .1; }
+    .decor-dots { opacity: .12; }
+  }
+  @media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+    html.home-motion-ready .home-scene-content {
+      transform: translate3d(0, var(--scene-enter-y, 0px), 0);
+    }
+    html.home-motion-ready .decor-orbit--outer {
+      animation: decor-orbit 80s linear infinite;
+      animation-play-state: paused;
+    }
+    html.home-motion-ready .decor-orbit--inner {
+      animation: decor-orbit 110s linear infinite reverse;
+      animation-play-state: paused;
+    }
+    html.home-motion-ready .decor-trace {
+      animation: decor-network-flow 6s linear infinite;
+      animation-play-state: paused;
+    }
+    html.home-motion-ready [data-scene-visible="true"] :is(.decor-orbit, .decor-trace) {
+      animation-play-state: running;
+    }
+  }
+  /* Native fragment/focus navigation always lands on stationary content. */
+  html.home-motion-ready .home-scene:is(:target, :focus-within) .home-scene-content,
+  html.no-js .home-scene-content {
+    transform: none;
+  }
+  @keyframes decor-orbit { to { transform: rotate(360deg); } }
+  @keyframes decor-network-flow { to { stroke-dashoffset: -72; } }
   .home-hero {
-    background: linear-gradient(125deg, #ffffff 12%, #edf2ff 72%, #f2edff 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #eef8f8 68%, #ffffff 100%);
   }
   .home-news {
     background: #ffffff;
@@ -515,10 +627,10 @@
     color: var(--color-teal-600);
   }
   .home-project {
-    background: linear-gradient(120deg, #fff8f4, #ffffff 70%);
+    background: linear-gradient(180deg, #ffffff, #f2f9f0 50%, #ffffff);
   }
   .home-innovation {
-    background: linear-gradient(120deg, #f2edff, #f8faff 75%);
+    background: linear-gradient(180deg, #ffffff, #eef8f8 50%, #ffffff);
   }
   @keyframes node-pulse {
     0%,
@@ -535,7 +647,7 @@
 
 /* Content remains usable when a script fails or is disabled. */
 [hidden] { display: none !important; }
-.filter-input { width: 100%; min-height: 2.75rem; margin-top: .4rem; padding: .6rem .75rem; border: 1px solid #7985a2; border-radius: .6rem; background: #fff; color: var(--color-ink-950); }
+.filter-input { width: 100%; min-height: 2.75rem; margin-top: .4rem; padding: .6rem .75rem; border: 1px solid #76878f; border-radius: .6rem; background: #fff; color: var(--color-ink-950); }
 .editorial-content { overflow-wrap: anywhere; }
 .editorial-content p { margin-block: 1em; line-height: 1.75; }
 .editorial-content h2 { margin-block: 1.8em .7em; font-size: 1.5rem; font-weight: 600; }
