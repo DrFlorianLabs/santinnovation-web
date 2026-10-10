@@ -511,5 +511,262 @@
       "No physical device, Safari, Firefox or complete RGAA audit",
       "OVH Web Pro CMS hosting unresolved; no OVH deployment"
     ]
+  },
+  "identity_2026_10_10": {
+    "code_revision": "e230595ea2fc6ae9a35fea934c497f226fb8e62d",
+    "branch": "codex/identite-projet-patients-2026-10-10",
+    "palette": [
+      "#023250",
+      "#25B1B4",
+      "#80C167"
+    ],
+    "local": {
+      "astro_files": 77,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 0,
+      "browser_passed": 12,
+      "routes": 21,
+      "syntheticOnly": true,
+      "screenshotsVisuallyReviewed": true
+    },
+    "github_actions": {
+      "runId": 38050692688,
+      "url": "https://github.com/DrFlorianLabs/santinnovation-web/actions/runs/38050692688",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "verify",
+          "conclusion": "success",
+          "completedAt": "2026-10-10T12:09:12Z"
+        },
+        {
+          "name": "prototype",
+          "conclusion": "success",
+          "completedAt": "2026-10-10T12:09:58Z"
+        }
+      ]
+    },
+    "github_pages": {
+      "checkedAt": "2026-10-10T12:10:31.978Z",
+      "url": "https://drflorianlabs.github.io/santinnovation-web/",
+      "revision": "e230595ea2fc6ae9a35fea934c497f226fb8e62d",
+      "viewports": [
+        {
+          "width": 390,
+          "sections": [
+            "rendez-vous",
+            "actualites",
+            "equipe",
+            "lieux",
+            "soins-et-parcours",
+            "projet-de-sante",
+            "recherche-innovation"
+          ],
+          "anchors": [
+            "equipe",
+            "lieux",
+            "soins-et-parcours",
+            "projet-de-sante",
+            "recherche-innovation",
+            "actualites"
+          ],
+          "sameDocument": true,
+          "returnFromArticle": true
+        },
+        {
+          "width": 1440,
+          "sections": [
+            "rendez-vous",
+            "actualites",
+            "equipe",
+            "lieux",
+            "soins-et-parcours",
+            "projet-de-sante",
+            "recherche-innovation"
+          ],
+          "anchors": [
+            "equipe",
+            "lieux",
+            "soins-et-parcours",
+            "projet-de-sante",
+            "recherche-innovation",
+            "actualites"
+          ],
+          "sameDocument": true,
+          "returnFromArticle": true
+        }
+      ],
+      "manifest": {
+        "prototype": true,
+        "synthetic": true,
+        "revision": "e230595ea2fc6ae9a35fea934c497f226fb8e62d"
+      },
+      "privatePaths": [
+        {
+          "path": "pro/",
+          "status": 404
+        },
+        {
+          "path": "admin/",
+          "status": 404
+        },
+        {
+          "path": "api/users",
+          "status": 404
+        },
+        {
+          "path": "cms/",
+          "status": 404
+        },
+        {
+          "path": ".local/",
+          "status": 404
+        },
+        {
+          "path": "secret",
+          "status": 404
+        },
+        {
+          "path": "cms.sqlite",
+          "status": 404
+        }
+      ],
+      "passed": true
+    },
+    "prototype_browser": {
+      "checks": 8,
+      "widths": [
+        320,
+        1440
+      ],
+      "failures": 0
+    },
+    "private_editorial_review": {
+      "checkedAt": "2026-10-10T12:06:19.498Z",
+      "reviewAnonymous": 401,
+      "cmsAnonymous": 403,
+      "cmsAuthenticated": 200,
+      "allDrafts": true,
+      "counts": {
+        "pages": 6,
+        "professionnels": 10,
+        "lieux": 1,
+        "innovations": 2,
+        "partenaires": 1,
+        "informations": 1
+      },
+      "cmsNativeLogin": true,
+      "cmsDraftFormReadable": true,
+      "cmsAuthenticatedPreview": true,
+      "realDocumentsMutatedByReview": false
+    },
+    "review_server_synthetic_security": {
+      "startedAt": "2026-10-10T12:04:34.368Z",
+      "finishedAt": "2026-10-10T12:04:34.467Z",
+      "runtime": "v24.21.0",
+      "scope": "One-off local editorial review server; synthetic fixtures only",
+      "servedRealContent": false,
+      "publicExposure": false,
+      "serverStopped": true,
+      "temporaryFixturesRemoved": true,
+      "checks": [
+        {
+          "name": "loopback_bind_only",
+          "passed": true
+        },
+        {
+          "name": "anonymous_document_401",
+          "passed": true
+        },
+        {
+          "name": "anonymous_assets_and_unknown_routes_401",
+          "passed": true
+        },
+        {
+          "name": "wrong_and_malformed_credentials_401",
+          "passed": true
+        },
+        {
+          "name": "valid_document_and_nested_page_200",
+          "passed": true
+        },
+        {
+          "name": "valid_asset_200_and_correct_type",
+          "passed": true
+        },
+        {
+          "name": "head_authenticated_and_anonymous_have_no_body",
+          "passed": true
+        },
+        {
+          "name": "all_response_statuses_no_store_noindex_csp",
+          "passed": true
+        },
+        {
+          "name": "post_put_delete_options_refused",
+          "passed": true
+        },
+        {
+          "name": "raw_and_encoded_traversal_dotpaths_refused",
+          "passed": true
+        },
+        {
+          "name": "file_directory_and_internal_symlinks_refused",
+          "passed": true
+        },
+        {
+          "name": "directory_listing_disabled",
+          "passed": true
+        },
+        {
+          "name": "credential_file_unreachable_from_web_root",
+          "passed": true
+        },
+        {
+          "name": "foreign_host_refused",
+          "passed": true
+        },
+        {
+          "name": "credential_permissions_fail_closed",
+          "passed": true
+        },
+        {
+          "name": "short_password_rejected",
+          "passed": true
+        },
+        {
+          "name": "credential_file_inside_web_root_rejected",
+          "passed": true
+        },
+        {
+          "name": "credential_symlink_rejected",
+          "passed": true
+        },
+        {
+          "name": "cli_uses_loopback_and_logs_no_credentials",
+          "passed": true
+        }
+      ],
+      "passed": 19,
+      "total": 19,
+      "limits": [
+        "No production or remote hosting tested.",
+        "Files below the served root must remain trusted and immutable while reviewing.",
+        "HTTP Basic is permitted only on the bound loopback address; this script is not a production server."
+      ]
+    },
+    "real_content_published": false,
+    "cms_public_export_counts": {
+      "professionnels": 0,
+      "lieux": 0,
+      "actualites": 0,
+      "activites": 0,
+      "innovations": 0,
+      "partenaires": 0,
+      "pages": 0,
+      "informations": 0
+    }
   }
 }

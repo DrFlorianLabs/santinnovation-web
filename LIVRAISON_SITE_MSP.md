@@ -1,15 +1,47 @@
-# Livraison Sant’Innovation — accueil patients et corrections après audit
+# Livraison Sant’Innovation — identité visuelle, contenus à relire et corrections après audit
 
-**9 octobre 2026 — prototype GitHub Pages déployé et vérifié ; administration et exploitation testées sur macOS et Linux.**
+**10 octobre 2026 — identité du kit déployée et vérifiée ; contenus réels préparés en brouillons privés.**
 
 Le périmètre initial limité aux commits locaux a été remplacé par l’autorisation utilisateur de pousser sur `main` et de conserver GitHub Pages pour présenter le prototype. La mise en production OVH et la publication de contenus institutionnels réels restent distinctes.
 
-## Révision actuelle — présentation du 9 octobre 2026
+## Révision actuelle — kit graphique du 10 octobre 2026
+
+| Référence | Valeur |
+| --- | --- |
+| Branche de préparation | `codex/identite-projet-patients-2026-10-10` |
+| **Commit exact du code actuellement déployé** | **`e230595ea2fc6ae9a35fea934c497f226fb8e62d`** |
+| GitHub / Pages | Push autorisé sur `main` ; [CI 38050692688](https://github.com/DrFlorianLabs/santinnovation-web/actions/runs/38050692688) réussie ; déploiement terminé le 10 octobre à 14 h 09 (Paris). |
+| Vérification distante | Même révision relue via `prototype.json` après déploiement ; 8 contrôles navigateur et 12 clics d’ancres réussis. |
+| Prototype public | [drflorianlabs.github.io/santinnovation-web](https://drflorianlabs.github.io/santinnovation-web/) |
+
+### Présentation
+
+Retour à la palette du kit fourni : **marine #023250, turquoise #25B1B4, vert #80C167**. Le symbole vectoriel, sa version blanche et son adaptation pour petite taille remplacent les anciennes reproductions du site et du favicon. Les originaux restent conservés dans le kit utilisateur. Les motifs géométriques animés sont rétablis ; les grands cadres sont remplacés par des fonds continus, des séparateurs légers et une présentation éditoriale aérée. Le scroll reste natif ; clavier, ancres et réduction des mouvements sont respectés. La rubrique « Soins et parcours » est volontairement vide. Voir [les choix visuels et le retour arrière](docs/IDENTITE_VISUELLE_2026-10-10.md).
+
+### Contenus réels préparés, non publiés
+
+Le projet de santé de juillet 2025, les dispositions institutionnelles des statuts et le protocole TEAM-IC v4 du 4 septembre 2026 ont servi à préparer une présentation pour les patients. Deux sujets distincts sont prêts : TEAM-IC et le partenariat avec Digital Medical Hub confirmé par l’utilisateur. Aucun résultat de recherche, recrutement ouvert ou validation réglementaire n’est inventé. La liste de dix professionnels est datée et à actualiser ; les horaires et rattachements manquants ne sont pas complétés arbitrairement. L’adresse historique de structure n’est pas présentée comme un lieu actuel de rendez-vous confirmé.
+
+**21 brouillons** ont été enregistrés dans une nouvelle base privée Payload : 6 rubriques, 10 professionnels, 1 adresse historique, 2 présentations recherche/innovation, 1 partenaire et 1 fiche générale. Relecture authentifiée par API, connexion dans l’interface, formulaire et aperçu TEAM-IC vérifiés ; tous les statuts restent `draft`. L’export public est vide dans les huit collections. Aucun worker ni déploiement ne sont raccordés à cette base de préparation ; l’essai fictif précédent est conservé.
+
+Un aperçu graphique privé est disponible localement sur le Mac à `http://127.0.0.1:4325/`, avec authentification pour chaque page et ressource. L’administration de ces brouillons est sur `http://127.0.0.1:3002/admin`. Les identifiants, guide de relecture, textes, captures et documents sources restent hors Git. L’aperçu graphique est un instantané de relecture ; l’aperçu natif Payload reflète les brouillons enregistrés. Ces services ne sont pas configurés pour redémarrer automatiquement.
+
+### Couverture de validation de cette révision
+
+- Construction de 21 pages avec les données synthétiques et typage Astro de 77 fichiers : aucun diagnostic.
+- **12 tests Chromium locaux réussis** : 21 routes à 320/768/1440 px, ancres à 390/1440 px, sans JavaScript, menu mobile et changement de préférence de mouvement à chaud. Captures ordinateur et mobile relues.
+- CI Linux complète réussie : CMS HTTP et production, typage, tests de publication/sauvegarde/restauration, interface du compte, navigation publique, état de publication et audits de dépendances.
+- Après déploiement : **8 contrôles publics** avec ressources et Axe réussis ; palette, logo, rubrique vide, ordre des sept rubriques et **12 ancres sans rechargement** vérifiés ; les sept chemins privés contrôlés répondent 404. Les textes réels sont absents du prototype public.
+- Serveur de relecture : **19 contrôles de sécurité sur fixtures synthétiques** réussis (authentification, assets, permissions, chemins, liens symboliques, absence de listing, absence de secret dans les logs). Relecture réelle refusée aux anonymes : aperçu HTTP 401 et API CMS HTTP 403.
+
+Aucun audit RGAA complet, appareil physique, Safari/Firefox ou déploiement OVH n’est revendiqué. Le serveur de relecture est un outil ponctuel limité à la boucle locale, pas un serveur de production. Les preuves actuelles figurent sous `identity_2026_10_10` dans le [fichier de résultats](docs/recette/corrections-resultats-2026-10-09.json).
+
+## Historique — présentation du 9 octobre 2026
 
 | Référence | Valeur |
 | --- | --- |
 | Branche de préparation | `codex/accueil-patients-2026-10-09` |
-| **Commit exact du code actuellement déployé** | **`5b22739da8d6b8d95962ec82a744e1080a45fa8e`** |
+| **Commit exact de la présentation précédente** | **`5b22739da8d6b8d95962ec82a744e1080a45fa8e`** |
 | GitHub / Pages | Push sur `main` et [CI 37923494674](https://github.com/DrFlorianLabs/santinnovation-web/actions/runs/37923494674) réussis ; déploiement terminé à 13 h 29 (Paris). |
 | Révision distante relue | `5b22739da8d6b8d95962ec82a744e1080a45fa8e`, via `prototype.json`, à 13 h 30 (Paris). |
 | Prototype public | [drflorianlabs.github.io/santinnovation-web](https://drflorianlabs.github.io/santinnovation-web/) |
