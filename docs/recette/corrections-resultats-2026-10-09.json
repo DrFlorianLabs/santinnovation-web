@@ -921,5 +921,527 @@
       "Unconfirmed individual booking URLs omitted",
       "CMS publish does not update GitHub prototype automatically"
     ]
+  },
+  "competences_carte_identite_2026_10_10": {
+    "functional_commit": "13f25aeecdbdf33eb9d40a488ea5a65e0e4bf9e2",
+    "deployment_revision": "4fac5e4d741bde0a00542363cf51788e1c8815be",
+    "branch": "codex/competences-carte-identite-2026-10-10",
+    "local_synthetic_tests": {
+      "unit_passed": 40,
+      "browser_passed": 17,
+      "browser_routes": 21,
+      "widths": [
+        320,
+        768,
+        1440
+      ],
+      "astro_checked_files": 84,
+      "astro_diagnostics": 0,
+      "cms_typecheck": "pass",
+      "synthetic_map_tiles": true,
+      "no_real_patient_data": true
+    },
+    "approved_build": {
+      "pages": 28,
+      "professionals": 9,
+      "locations": 3,
+      "files": 76,
+      "private_markers_absent": true
+    },
+    "approved_visual_review": {
+      "at": "2026-10-10T13:17:10.890Z",
+      "pages": [
+        {
+          "width": 320,
+          "route": "",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "equipe/",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "lieux/",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "equipe/mathilde-guillaume-sage/",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "innovations/team-ic/",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "innovations/digital-medical-hub/",
+          "axe": 0
+        },
+        {
+          "width": 768,
+          "route": "",
+          "axe": 0
+        },
+        {
+          "width": 768,
+          "route": "equipe/",
+          "axe": 0
+        },
+        {
+          "width": 768,
+          "route": "lieux/",
+          "axe": 0
+        },
+        {
+          "width": 768,
+          "route": "equipe/mathilde-guillaume-sage/",
+          "axe": 0
+        },
+        {
+          "width": 768,
+          "route": "innovations/team-ic/",
+          "axe": 0
+        },
+        {
+          "width": 768,
+          "route": "innovations/digital-medical-hub/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "equipe/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "lieux/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "equipe/mathilde-guillaume-sage/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "innovations/team-ic/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "innovations/digital-medical-hub/",
+          "axe": 0
+        }
+      ],
+      "search": [
+        {
+          "route": "",
+          "query": "pediatrie",
+          "count": 3
+        },
+        {
+          "route": "",
+          "query": "sommeil",
+          "count": 1
+        },
+        {
+          "route": "",
+          "query": "polygraphie",
+          "count": 1
+        },
+        {
+          "route": "",
+          "query": "nutrition",
+          "count": 1
+        },
+        {
+          "route": "",
+          "query": "obesite",
+          "count": 1
+        },
+        {
+          "route": "",
+          "query": "main",
+          "count": 1
+        },
+        {
+          "route": "",
+          "query": "recherche",
+          "count": 1
+        },
+        {
+          "route": "",
+          "query": "equipe",
+          "count": 1
+        },
+        {
+          "route": "equipe/",
+          "query": "pediatrie",
+          "count": 3
+        },
+        {
+          "route": "equipe/",
+          "query": "sommeil",
+          "count": 1
+        },
+        {
+          "route": "equipe/",
+          "query": "polygraphie",
+          "count": 1
+        },
+        {
+          "route": "equipe/",
+          "query": "nutrition",
+          "count": 1
+        },
+        {
+          "route": "equipe/",
+          "query": "obesite",
+          "count": 1
+        },
+        {
+          "route": "equipe/",
+          "query": "main",
+          "count": 1
+        },
+        {
+          "route": "equipe/",
+          "query": "recherche",
+          "count": 1
+        },
+        {
+          "route": "equipe/",
+          "query": "equipe",
+          "count": 1
+        }
+      ],
+      "returns": [
+        "team-ic",
+        "digital-medical-hub"
+      ],
+      "errors": [],
+      "tiles": 16
+    },
+    "cms_private_sync": {
+      "backup_sqlite_integrity": "ok",
+      "foreign_keys": "ok",
+      "professionals_updated": 6,
+      "professionals_checked": 9,
+      "partners_checked": 4,
+      "original_logos_verified": 4,
+      "legal_and_general_still_drafts": true,
+      "florence_presentation_preserved": true,
+      "no_remote_cms": true
+    },
+    "pipeline": {
+      "run": 38055244077,
+      "state": "success",
+      "intermediate_run_cancelled": 38055202049,
+      "verify": "success",
+      "prototype": "success",
+      "deployed_at": "2026-10-10T13:26:22Z"
+    },
+    "limits": [
+      "Chromium only; no physical devices or complete RGAA audit",
+      "Opening times and PMR not confirmed",
+      "No OVH production or remote CMS deployed",
+      "Logo written-rights proof not examined; provenance documented"
+    ],
+    "preservation": {
+      "unexpected_local_suffixed_copies": 13,
+      "retained_privately_with_sha256": true,
+      "deleted": false
+    },
+    "remote_verification": {
+      "at": "2026-10-10T13:27:00.970Z",
+      "revision": "4fac5e4d741bde0a00542363cf51788e1c8815be",
+      "pages": [
+        {
+          "width": 320,
+          "route": "",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "equipe/",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "lieux/",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "equipe/mathilde-guillaume-sage/",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "innovations/team-ic/",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "innovations/digital-medical-hub/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "equipe/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "lieux/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "equipe/mathilde-guillaume-sage/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "innovations/team-ic/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "innovations/digital-medical-hub/",
+          "axe": 0
+        }
+      ],
+      "privatePaths": [
+        {
+          "route": "admin/",
+          "status": 404
+        },
+        {
+          "route": "api/users/",
+          "status": 404
+        },
+        {
+          "route": "pro/",
+          "status": 404
+        },
+        {
+          "route": "pro/login/",
+          "status": 404
+        },
+        {
+          "route": ".local/",
+          "status": 404
+        },
+        {
+          "route": "equipe/magali-saada-baron/",
+          "status": 404
+        },
+        {
+          "route": "actualites/prevention-fictive/",
+          "status": 404
+        }
+      ],
+      "anchors": 12,
+      "tiles": 17,
+      "contentDigest": "5f454e5a5dc27f2ad367474b60586beaded6d7e8e9ab9a520ac118084f7e35ea"
+    },
+    "remote_visual_review": {
+      "at": "2026-10-10T13:27:08.984Z",
+      "pages": [
+        {
+          "width": 320,
+          "route": "",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "equipe/",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "lieux/",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "equipe/mathilde-guillaume-sage/",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "innovations/team-ic/",
+          "axe": 0
+        },
+        {
+          "width": 320,
+          "route": "innovations/digital-medical-hub/",
+          "axe": 0
+        },
+        {
+          "width": 768,
+          "route": "",
+          "axe": 0
+        },
+        {
+          "width": 768,
+          "route": "equipe/",
+          "axe": 0
+        },
+        {
+          "width": 768,
+          "route": "lieux/",
+          "axe": 0
+        },
+        {
+          "width": 768,
+          "route": "equipe/mathilde-guillaume-sage/",
+          "axe": 0
+        },
+        {
+          "width": 768,
+          "route": "innovations/team-ic/",
+          "axe": 0
+        },
+        {
+          "width": 768,
+          "route": "innovations/digital-medical-hub/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "equipe/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "lieux/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "equipe/mathilde-guillaume-sage/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "innovations/team-ic/",
+          "axe": 0
+        },
+        {
+          "width": 1440,
+          "route": "innovations/digital-medical-hub/",
+          "axe": 0
+        }
+      ],
+      "search": [
+        {
+          "route": "",
+          "query": "pediatrie",
+          "count": 3
+        },
+        {
+          "route": "",
+          "query": "sommeil",
+          "count": 1
+        },
+        {
+          "route": "",
+          "query": "polygraphie",
+          "count": 1
+        },
+        {
+          "route": "",
+          "query": "nutrition",
+          "count": 1
+        },
+        {
+          "route": "",
+          "query": "obesite",
+          "count": 1
+        },
+        {
+          "route": "",
+          "query": "main",
+          "count": 1
+        },
+        {
+          "route": "",
+          "query": "recherche",
+          "count": 1
+        },
+        {
+          "route": "",
+          "query": "equipe",
+          "count": 1
+        },
+        {
+          "route": "equipe/",
+          "query": "pediatrie",
+          "count": 3
+        },
+        {
+          "route": "equipe/",
+          "query": "sommeil",
+          "count": 1
+        },
+        {
+          "route": "equipe/",
+          "query": "polygraphie",
+          "count": 1
+        },
+        {
+          "route": "equipe/",
+          "query": "nutrition",
+          "count": 1
+        },
+        {
+          "route": "equipe/",
+          "query": "obesite",
+          "count": 1
+        },
+        {
+          "route": "equipe/",
+          "query": "main",
+          "count": 1
+        },
+        {
+          "route": "equipe/",
+          "query": "recherche",
+          "count": 1
+        },
+        {
+          "route": "equipe/",
+          "query": "equipe",
+          "count": 1
+        }
+      ],
+      "returns": [
+        "team-ic",
+        "digital-medical-hub"
+      ],
+      "errors": [],
+      "tiles": 10
+    }
   }
 }

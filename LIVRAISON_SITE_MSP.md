@@ -1,3 +1,56 @@
+# Livraison Sant’Innovation — compétences, carte et identité
+
+**10 octobre 2026 — retours de relecture intégrés et publication GitHub autorisée.**
+
+| Référence | Valeur |
+| --- | --- |
+| Branche de réalisation conservée | `codex/competences-carte-identite-2026-10-10` |
+| **Commit fonctionnel exact** | **`13f25aeecdbdf33eb9d40a488ea5a65e0e4bf9e2`** |
+| **Révision déployée et vérifiée** | **`4fac5e4d741bde0a00542363cf51788e1c8815be`**, incluant la précision documentaire du retour arrière |
+| Prototype | [Sant’Innovation sur GitHub Pages](https://drflorianlabs.github.io/santinnovation-web/) |
+| Vérification et déploiement | [CI 38055244077](https://github.com/DrFlorianLabs/santinnovation-web/actions/runs/38055244077) réussie ; GitHub Pages déployé à **15 h 26 (Paris)**, révision distante confirmée à 15 h 27. |
+
+## Modifications de cette version
+
+- Recherche sur le nom, la profession, **toutes les compétences et activités**, sans distinction d’accents ou de majuscules ; mots combinables avec les filtres profession et lieu. Les compétences dictées par l’utilisateur sont affichées intégralement. Florence est trouvable comme **Infirmière** et **Coordinatrice**, avec une seule fiche. Arrivée de Mathilde Guillaume–Sage le 01/01/2027 maintenue.
+- Boutons principaux : dégradé turquoise–vert du kit, texte marine et ombres conservées ; contraste calculé au minimum 5,097:1. Motif inspiré du logo plus visible, limité à la marge ; texte fixe, défilement natif, préférence de mouvement réduit et absence de JavaScript respectés.
+- Carte IGN automatique à l’approche de la rubrique, trois repères et informations pratiques en regard sur ordinateur ; carte au-dessus sur mobile. Aucune géolocalisation demandée. Information de transmission de l’IP à l’IGN affichée. Adresses et **Itinéraire** restent accessibles sans carte ; erreur et nouvelle tentative prévues.
+- Retour des fiches TEAM-IC et Digital Medical Hub vers `/#recherche-innovation`, dans la page continue. Logos originaux ajoutés. Partenaires ARS Bourgogne-Franche-Comté, CPTS CaPaciTéS Besançon & Métropole et FeMaSCo-BFC ajoutés selon la demande utilisateur. [Sources et empreintes](docs/VERIFICATION_CONTENUS.md), droits graphiques non présumés.
+- Guide d’administration complété : champ **Compétences**, activité **Coordination**, publication locale et instantané GitHub distincts. Aucun changement de schéma CMS ni de droits. Aucun document de recherche, export brut, secret ou fichier privé dans la sortie.
+
+## Contrôles locaux réalisés
+
+- **40 tests unitaires synthétiques réussis**, dont recherche multi-rôle, mots/accentuation, contrôles de contenus, publication/retrait et sauvegarde/restauration.
+- **17 tests Chromium synthétiques réussis** : 21 routes à 320/768/1440 px, ancres, clavier, sans JavaScript, recherche sur les deux annuaires, carte automatique, tuiles fictives, échec puis nouvelle tentative et retour d’innovation dans l’accueil.
+- Typage Astro **84 fichiers, zéro diagnostic** ; typage CMS réussi. Construction synthétique : 21 pages. Construction approuvée : **28 pages, 9 professionnels, 3 lieux, 76 fichiers**, contrôle de confidentialité réussi.
+- Relecture des contenus approuvés, distincte des tests fictifs : **18 combinaisons page/largeur**, zéro violation Axe détectée ; **16 recherches** de compétences conformes, double filtre de Florence vérifié, deux retours d’innovation corrects, trois repères et tuiles IGN reçues. Captures ordinateur, mobile, équipe, carte, recherche et partenaires relues.
+
+Un diagnostic de typage a été corrigé avant les succès ci-dessus. La validation stricte a également refusé treize copies locales suffixées apparues par synchronisation : elles ont été conservées dans un dossier privé avec empreintes, sans suppression ni assouplissement du contrat de publication. Un sélecteur du script de relecture visuelle a été corrigé ; la relecture complète a ensuite réussi.
+
+## Vérification sur GitHub Pages
+
+Les deux jobs de la CI finale sont réussis : vérifications CMS en HTTP et mode production, typage, 40 tests unitaires, constructions synthétique et approuvée, interfaces d’administration et de publication, 17 essais navigateur et audits des dépendances. La première exécution intermédiaire a été arrêtée volontairement au profit du commit comprenant aussi la procédure de retour arrière corrigée ; elle n’est pas comptée comme réussite.
+
+Le manifeste public confirme `4fac5e4d741bde0a00542363cf51788e1c8815be`, `approved:true`, `synthetic:false` et le digest `5f454e5a5dc27f2ad367474b60586beaded6d7e8e9ab9a520ac118084f7e35ea`. Après déploiement, 18 combinaisons page/largeur et 16 recherches de compétences sont relues avec succès ; les deux liens de retour d’innovation reviennent dans l’accueil. Les douze clics d’ancres conservent le document à 390/1440 px. Neuf itinéraires, quatre rendez-vous individuels, trois repères, tuiles IGN reçues, logos chargés ; aucune erreur JavaScript ou ressource en échec observée. Les sept chemins privés ou retirés contrôlés répondent 404. Captures publiques de carte, partenaires et accueil mobile relues.
+
+Les preuves structurées figurent dans `competences_carte_identite_2026_10_10` des [résultats](docs/recette/corrections-resultats-2026-10-09.json). Aucun test fictif ne prend un rendez-vous ni ne publie un contenu médical réel.
+
+## Administration et limites
+
+Avant synchronisation, une sauvegarde privée cohérente de SQLite, des médias et des secrets locaux a été effectuée (intégrité et clés étrangères vérifiées). Six professionnels ont été actualisés et les neuf fiches relues ; quatre partenaires et leurs logos originaux ont été synchronisés. Les informations légales et générales restent en brouillon, ainsi que le texte de confidentialité actualisé. Les autres champs et collections sont conservés. La présentation existante de Florence est gardée dans le CMS ; le snapshot public évite sa répétition avec les compétences. Les horaires, conditions d’accès PMR et contacts généraux non confirmés restent à renseigner. Les compétences sont déclarées par l’utilisateur, sans nouvelle qualification professionnelle déduite. Actualités et soins/parcours restent sans contenu inventé.
+
+Pas de certification RGAA ni de test sur appareils physiques, Safari ou Firefox. Le CMS distant, l’hébergement de son exécution et la production OVH ne sont pas déployés. **Publier dans le CMS local ne met pas automatiquement le prototype GitHub à jour.**
+
+## Retour arrière
+
+Avant cette modification, `main` était `cce881ab5495156bf40e807db885843983dbbfe5` et le site déployé utilisait `c3de708488642d47272d81e92b389f27b90b4bb0`. Préparer un revert du commit fonctionnel `13f25aeecdbdf33eb9d40a488ea5a65e0e4bf9e2`, contrôler le résultat et demander l’autorisation du retour en ligne. Le prototype approuvé précédent serait restauré ; la base CMS resterait intacte. Aucun reset forcé ni rollback effectué.
+
+Guides : [publication](GUIDE_ADMINISTRATION_SANTINNOVATION.md), [maintenance](docs/MAINTENANCE.md), [déploiement et retour arrière](docs/DEPLOIEMENT_RETOUR_ARRIERE.md).
+
+---
+
+## Historique — publication approuvée de l’équipe et de la carte, avant ces retours
+
 # Livraison Sant’Innovation — prototype approuvé, équipe et carte
 
 **10 octobre 2026 — publication des textes et informations professionnelles explicitement validée par l’utilisateur.** La présentation GitHub Pages reste distincte de la future mise en service sur OVH Web Pro.
