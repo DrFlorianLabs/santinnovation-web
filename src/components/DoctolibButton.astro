@@ -6,6 +6,7 @@ interface Props {
   /** URL spécifique (pro). Par défaut, la fiche établissement. */
   href?: string;
   label?: string;
+  ariaLabel?: string;
   variant?: "primary" | "secondary";
   size?: "md" | "lg";
   class?: string;
@@ -14,6 +15,7 @@ interface Props {
 const {
   href = doctolib.etablissement,
   label = "Prendre rendez-vous",
+  ariaLabel,
   variant = "primary",
   size = "md",
   class: className = "",
@@ -36,6 +38,7 @@ const variants = {
 
 <a
   href={href}
+  aria-label={ariaLabel ? `${ariaLabel} — nouvelle fenêtre` : `${label} — Doctolib, nouvelle fenêtre`}
   target="_blank"
   rel="noopener noreferrer"
   class={`${base} ${sizes[size]} ${variants[variant]} ${className}`}

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "henri-baigue",
+    "nom": "Site Henri et Maurice Baigue",
+    "adresse": "14 rue Henri et Maurice Baigue",
+    "codePostal": "25000",
+    "ville": "Besançon",
+    "latitude": 47.253549,
+    "longitude": 6.025856,
+    "adresseVerifiee": true,
+    "visible": true,
+    "archive": false,
+    "ordre": 0,
+    "bodyHtml": "",
+    "photos": []
+  },
+  {
+    "id": "fluttes-agasses",
+    "nom": "Site des Flûttes Agasses",
+    "adresse": "57 rue des Flûttes Agasses",
+    "codePostal": "25000",
+    "ville": "Besançon",
+    "latitude": 47.260824,
+    "longitude": 6.035409,
+    "adresseVerifiee": true,
+    "visible": true,
+    "archive": false,
+    "ordre": 1,
+    "bodyHtml": "",
+    "photos": []
+  },
+  {
+    "id": "vieilley",
+    "nom": "Site du chemin de Vieilley",
+    "adresse": "32 chemin de Vieilley",
+    "codePostal": "25000",
+    "ville": "Besançon",
+    "latitude": 47.262583,
+    "longitude": 6.031432,
+    "adresseVerifiee": true,
+    "visible": true,
+    "archive": false,
+    "ordre": 2,
+    "bodyHtml": "",
+    "photos": []
+  }
+]

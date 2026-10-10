@@ -8,7 +8,7 @@ Le site Astro statique reste compatible avec une cible Apache mutualisée. Le CM
 
 ## Prototype GitHub Pages
 
-Le workflow `.github/workflows/deploy.yml` contrôle le code, puis crée une base synthétique neuve et construit uniquement le prototype. Il n’accède jamais à une base éditoriale distante. Le seul dossier transféré est `prototype-dist/`, vérifié par `test:prototype` : bandeau explicite, meta `noindex`, aucun CMS, identifiant, brouillon ou action de rendez-vous réelle. Cette URL est **publique** ; `noindex` ne constitue pas une protection d’accès.
+Le workflow `.github/workflows/deploy.yml` contrôle le code et le mode synthétique, puis construit le snapshot public approuvé `content/approved/`. Il n’accède jamais à une base éditoriale distante. Le seul dossier transféré est `prototype-dist/`, vérifié par `test:approved-prototype` : bandeau, meta `noindex`, aucun CMS, identifiant ou brouillon. Les liens de rendez-vous vérifiés et les itinéraires réels sont actifs selon l’autorisation du 10 octobre 2026. Cette URL est **publique** ; `noindex` ne constitue pas une protection d’accès.
 
 Retour arrière : choisir un commit vérifié qui contient ce mode de génération synthétique, rejouer son workflow puis vérifier la valeur `revision` de `prototype.json` sur GitHub.io. Ne pas réinstaller aveuglément l’ancien prototype historique avec mentions incomplètes. Le workflow ne déploie rien chez OVH.
 
@@ -63,3 +63,14 @@ npm run releases:prune -- --keep 10 --apply --confirm-prune
 ```
 
 Le mode par défaut ne supprime rien. La version servie et les 10 autres releases complètes les plus récentes sont conservées ; les anciens dossiers sans manifeste sont signalés et préservés. Le tampon média ne perd que les fichiers hashés devenus inutiles selon les références contrôlées. La rotation des archives chiffrées possède également un mode à blanc et une confirmation explicite. Aucune purge de contenu réel n’a été effectuée dans la recette.
+
+## Mise à jour du prototype approuvé
+
+1. Faire valider les changements éditoriaux ; maintenir les adresses uniquement dans `lieux.json` et les rattachements dans `professionnels.json`.
+2. Mettre à jour uniquement les champs publics autorisés de `content/approved/`. Ne jamais y copier un export CMS brut, un document interne ou un secret.
+3. Construire dans un dossier neuf avec `PROTOTYPE_OUT_DIR=.local/nom-neuf npm run build:approved-prototype`, puis utiliser le même dossier pour `npm run test:approved-prototype`. Exécuter les tests synthétiques et relire le rendu mobile.
+4. Après commit et push autorisés sur `main`, attendre la réussite des deux jobs GitHub Actions. Vérifier en ligne `prototype.json` : `approved:true`, `synthetic:false`, commit attendu. Recharger les pages, liens et itinéraires.
+
+Retour arrière : préparer un revert du commit fonctionnel indiqué en tête de `LIVRAISON_SITE_MSP.md`, vérifier les tests puis pousser le revert après autorisation. Cela restaure le mode synthétique précédent sans toucher aux bases CMS. Ne pas effectuer de reset forcé ni écraser des modifications récentes. Les copies déjà reçues par des visiteurs ne sont pas révocables.
+
+Le bouton Publier du CMS local n’effectue pas ce transfert GitHub. Cette séparation demeure jusqu’au choix de la chaîne éditoriale définitive compatible avec l’hébergement retenu.

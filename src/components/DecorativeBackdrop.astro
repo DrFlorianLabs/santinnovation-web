@@ -1,33 +1,25 @@
 ---
-/** Purely decorative, local SVG. No content, focus target or network request. */
-interface Props {
-  variant?: 'hero' | 'section';
-}
-const { variant = 'section' } = Astro.props;
+/** Mount once, outside section wrappers. The motif occupies the page gutter,
+ * never the reading column. Its open roof, circuit and signal echo the logo;
+ * this is decorative linework, not a replacement or alteration of the logo.
+ */
+const positions = [9, 37, 65, 91];
 ---
 
-<div class:list={['decor-backdrop', `decor-backdrop--${variant}`]} aria-hidden="true">
-  <div class="decor-wash decor-wash--cyan"></div>
-  <div class="decor-wash decor-wash--green"></div>
-  <div class="decor-dots"></div>
-  <svg class="decor-geometry" viewBox="0 0 640 600" fill="none" focusable="false">
-    <g class="decor-orbit decor-orbit--outer">
-      <circle cx="435" cy="245" r="158"></circle>
-      <circle cx="435" cy="245" r="188" stroke-dasharray="2 14"></circle>
-      <circle class="decor-point" cx="435" cy="87" r="5"></circle>
-    </g>
-    <g class="decor-orbit decor-orbit--inner">
-      <rect x="337" y="147" width="196" height="196" rx="32" transform="rotate(24 435 245)"></rect>
-      <path d="M337 147 533 343M533 147 337 343"></path>
-    </g>
-    <g class="decor-network">
-      <path d="M91 418 190 359 285 433 368 372 487 432"></path>
-      <path class="decor-trace" d="M91 418 190 359 285 433 368 372 487 432"></path>
-      <circle cx="91" cy="418" r="11"></circle>
-      <circle cx="190" cy="359" r="14"></circle>
-      <circle cx="285" cy="433" r="10"></circle>
-      <circle cx="368" cy="372" r="13"></circle>
-      <circle cx="487" cy="432" r="9"></circle>
-    </g>
-  </svg>
+<div class="scroll-motif" data-scroll-motif aria-hidden="true">
+  {['base', 'progress'].map(layer => (
+    <div class={`scroll-motif-layer scroll-motif-${layer}`}>
+      <svg class="scroll-motif-spine" viewBox="0 0 32 640" preserveAspectRatio="none" fill="none" focusable="false">
+        <path d="M16 0V640"></path>
+      </svg>
+      {positions.map(position => (
+        <svg class="scroll-motif-mark" style={`top:${position}%`} viewBox="0 0 48 48" fill="none" focusable="false">
+          <path class="scroll-motif-roof" d="M7 24 25 8 43 24M11 27v13h14"></path>
+          <path class="scroll-motif-circuit" d="M26 40V28h9v12h5V26"></path>
+          <path class="scroll-motif-signal" d="M7 17a12 12 0 0 1 9-10M3 23A20 20 0 0 1 18 3"></path>
+          <circle class="scroll-motif-dot" cx="21" cy="3" r="1.2"></circle>
+        </svg>
+      ))}
+    </div>
+  ))}
 </div>

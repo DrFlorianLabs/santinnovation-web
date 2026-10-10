@@ -1,0 +1,23 @@
+{
+  "nom": "MSP Sant’Innovation",
+  "nomCourt": "Sant’Innovation",
+  "baseline": "Soins coordonnés · Recherche · Innovation",
+  "description": "Des professionnels de santé réunis autour d’un projet commun : des soins de proximité, une coopération attentive et des innovations utiles aux patients.",
+  "url": "https://drflorianlabs.github.io/santinnovation-web/",
+  "ville": "Besançon",
+  "secteurs": [
+    "Palente",
+    "Orchamps",
+    "Saragosse"
+  ],
+  "contactsVerifies": false,
+  "telephone": "",
+  "adresse": "",
+  "horaires": "",
+  "liens": [],
+  "contact": {
+    "general": "",
+    "secretariat": "",
+    "coordination": ""
+  }
+}

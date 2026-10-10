@@ -17,11 +17,11 @@ L’export exécuté localement est le seul composant autorisé à lire la base 
 
 Chaque transaction CMS possède sa connexion SQLite jusqu’à sa validation ou son annulation. Le succès attend le COMMIT réel ; un refus est propagé au lieu d’annoncer une écriture non persistée. Cette adaptation versionnée corrige le comportement observé des versions Payload/libsql verrouillées ; la recette de contention et d’annulation doit être rejouée à chaque mise à jour. Aucune modification des dépendances installées ni répétition automatique d’une mutation.
 
-Les anciens répertoires de build ne sont pas publics. La racine web du service CMS cible uniquement la release courante, avec revalidation du HTML et des images. Une copie déjà téléchargée par un visiteur ne peut pas être révoquée. Le prototype GitHub Pages utilise l’infrastructure et le cache de GitHub ; il n’expose que des données fictives et n’est pas la chaîne de publication du CMS.
+Les anciens répertoires de build ne sont pas publics. La racine web du service CMS cible uniquement la release courante, avec revalidation du HTML et des images. Une copie déjà téléchargée par un visiteur ne peut pas être révoquée. Le prototype GitHub Pages utilise l’infrastructure et le cache de GitHub ; il n’expose que les textes et coordonnées professionnelles explicitement approuvés et n’est pas la chaîne de publication du CMS.
 
 ## Défense du public
 
-CSP et en-têtes Apache dans `public/.htaccess`, miroir `public/_headers` et serveur de recette locale. Un éventuel proxy devra appliquer la même politique. GitHub Pages n’applique pas ces fichiers de configuration serveur : leurs en-têtes ne sont pas garantis sur le prototype. Scripts externes au HTML ; styles inline limités aux besoins du design/Leaflet. JSON-LD échappé. Fonts locales. Tuiles CARTO uniquement après clic ; pas de collecte de géolocalisation par ce site.
+CSP et en-têtes Apache dans `public/.htaccess`, miroir `public/_headers` et serveur de recette locale. Un éventuel proxy devra appliquer la même politique. GitHub Pages n’applique pas ces fichiers de configuration serveur : leurs en-têtes ne sont pas garantis sur le prototype. Scripts externes au HTML ; styles inline limités aux besoins du design/Leaflet. JSON-LD échappé. Fonts locales. Tuiles IGN uniquement après clic ; pas de collecte de géolocalisation par ce site.
 
 Démo historique GED conservée dans `src/pro/demo`, jamais routée dans le build. Aucun login simulé n’est utilisé pour protéger les contenus.
 
@@ -35,4 +35,6 @@ Contact sécurité : **à désigner et vérifier par la MSP**. Ne pas publier de
 
 ## Prototype GitHub Pages autorisé
 
-La CI crée une nouvelle base synthétique indépendante. Seuls HTML, styles, scripts et médias publiés fictifs sont transférés à GitHub Pages, après contrôles. Bandeau sur chaque page et meta `noindex` ; aucun service CMS, formulaire médical ou identifiant d’administration. Les actions de rendez-vous, e-mail fictif et itinéraires fictifs renvoient à l’avertissement du prototype. `noindex` n’est pas un contrôle d’accès : cette démonstration est publique. Les en-têtes Apache ne s’appliquent pas à GitHub Pages ; ne pas assimiler cette plateforme à une préproduction privée du CMS.
+La CI effectue ses tests sur une base synthétique indépendante. Depuis la validation utilisateur du 10 octobre 2026, le déploiement lit uniquement `content/approved/` : neuf fichiers JSON publics, contrat strict, aucune connexion CMS, HTML nettoyé, relations vérifiées, assets locaux limités. Le mode synthétique reste testé séparément, avec actions fictives neutralisées. Dans le mode approuvé, les liens Doctolib vérifiés et les itinéraires sont actifs.
+
+Les textes réglementaires du prototype signalent leurs limites ; aucune validation légale de production n’est déduite de cette approbation éditoriale. Les brouillons réglementaires et les coordonnées générales non confirmées restent privés dans le CMS. `noindex` n’est pas un contrôle d’accès : la présentation est publique. Les en-têtes Apache ne s’appliquent pas à GitHub Pages ; cette plateforme n’est pas une préproduction privée du CMS.

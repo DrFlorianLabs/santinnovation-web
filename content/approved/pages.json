@@ -1,0 +1,89 @@
+[
+  {
+    "id": "lieux",
+    "titre": "Les lieux",
+    "resume": "Trois lieux de consultation à Besançon. Vérifiez l’adresse indiquée sur votre rendez-vous avant de vous déplacer.",
+    "ordre": 99,
+    "bodyHtml": "",
+    "visible": true,
+    "archive": false,
+    "liens": []
+  },
+  {
+    "id": "equipe",
+    "titre": "L’équipe",
+    "resume": "Médecins, infirmières, kinésithérapeutes et pharmacien : retrouvez votre professionnel et son lieu de consultation.",
+    "ordre": 99,
+    "bodyHtml": "",
+    "visible": true,
+    "archive": false,
+    "liens": []
+  },
+  {
+    "id": "soins-et-parcours",
+    "titre": "Soins et parcours",
+    "resume": "",
+    "ordre": 99,
+    "bodyHtml": "",
+    "visible": true,
+    "archive": false,
+    "liens": []
+  },
+  {
+    "id": "recherche-innovation",
+    "titre": "Recherche et innovation",
+    "resume": "Étudier de nouveaux outils et de nouvelles organisations pour répondre aux besoins des patients et des équipes de santé.",
+    "ordre": 99,
+    "bodyHtml": "<p>À Sant’Innovation, l’innovation concerne autant les outils que la façon de travailler ensemble. Notre projet de santé prévoit de développer la recherche au plus près des soins du quotidien, en lien avec les acteurs hospitaliers et les partenaires du territoire.</p><p>Nous souhaitons évaluer les nouvelles approches avant d’en tirer des conclusions et partager les enseignements utiles avec d’autres équipes. TEAM-IC illustre cette démarche de recherche sur l’organisation du retour à domicile après une hospitalisation.</p>",
+    "visible": true,
+    "archive": false,
+    "liens": []
+  },
+  {
+    "id": "projet-de-sante",
+    "titre": "Notre projet de santé",
+    "resume": "Un projet collectif ancré dans les besoins des habitants et ouvert à la participation des patients.",
+    "ordre": 99,
+    "bodyHtml": "<p>Sant’Innovation réunit des professionnels de santé à Besançon autour d’un projet commun : faciliter l’accès aux soins et mieux travailler ensemble, au plus près des besoins des habitants. Ancré dans les quartiers de Palente, des Orchamps et de Saragosse, notre projet donne une place centrale à la prévention, à la coopération entre professionnels et à l’écoute des patients.</p><p>Nous souhaitons associer les usagers à l’évolution de la maison de santé, pour construire des réponses adaptées à leur quotidien. L’innovation fait partie de cette démarche : elle concerne les outils, mais aussi l’organisation du travail et les liens entre la ville et l’hôpital. La recherche en soins primaires nous aide à évaluer de nouvelles façons de travailler et à partager les enseignements utiles avec d’autres équipes.</p>",
+    "visible": true,
+    "archive": false,
+    "liens": []
+  },
+  {
+    "id": "accueil",
+    "titre": "Sant’Innovation, une équipe de santé à Besançon",
+    "resume": "Des professionnels de santé réunis autour d’un projet commun : des soins de proximité, une coopération attentive et des innovations utiles aux patients.",
+    "ordre": 99,
+    "bodyHtml": "<p>Sant’Innovation rassemble des professionnels de santé à Besançon. Notre projet associe l’accès aux soins, la prévention et le travail en équipe, avec l’ambition de mieux répondre aux besoins des habitants.</p><p>Nous souhaitons faire évoluer les pratiques avec les patients, en étudiant de nouveaux outils et de nouvelles façons de travailler ensemble.</p>",
+    "visible": true,
+    "archive": false,
+    "liens": []
+  },
+  {
+    "id": "mentions-legales",
+    "titre": "Mentions légales",
+    "resume": "Informations sur cette version de présentation.",
+    "bodyHtml": "<p>Cette version de présentation du site Sant’Innovation est publiée sur GitHub Pages avec les textes, l’équipe et les adresses validés par la MSP. Le transfert du site vers OVHcloud est prévu dans un second temps.</p><p>Les informations complètes sur l’éditeur, la direction de la publication, l’immatriculation et le contact institutionnel restent à compléter avant l’ouverture du site définitif.</p><p>Les prises de rendez-vous se font sur le site de Doctolib. Les itinéraires ouvrent Google Maps. Le fond de carte porte les crédits de son fournisseur.</p>",
+    "visible": true,
+    "archive": false,
+    "liens": []
+  },
+  {
+    "id": "confidentialite",
+    "titre": "Confidentialité",
+    "resume": "Vos données lors de la consultation de cette version de présentation.",
+    "bodyHtml": "<p>Le site ne propose ni compte patient, ni formulaire médical, ni mesure d’audience. Ne transmettez aucune donnée de santé par ce site.</p><p>Les rendez-vous sont pris directement sur Doctolib. Les liens d’itinéraire ouvrent Google Maps, où vous pouvez choisir votre point de départ. Ce site ne demande pas votre géolocalisation.</p><p>La carte interactive se charge uniquement après votre clic. L’IGN reçoit alors votre adresse IP et les informations techniques nécessaires à son affichage. GitHub Pages héberge cette version de présentation et peut traiter des journaux techniques.</p><p>Le contact pour les données personnelles et les informations réglementaires complètes restent à préciser avant l’ouverture du site définitif.</p>",
+    "visible": true,
+    "archive": false,
+    "liens": []
+  },
+  {
+    "id": "accessibilite",
+    "titre": "Accessibilité",
+    "resume": "Un site conçu pour faciliter l’accès à l’information.",
+    "bodyHtml": "<p>Le site propose une navigation au clavier, des contrastes lisibles, des adresses en texte et des liens d’itinéraire indépendants de la carte. Les décors respectent la préférence de réduction des animations.</p><p>Les contrôles automatiques et les essais de navigation ne constituent pas un audit RGAA complet. Aucune conformité RGAA n’est déclarée à ce stade. La déclaration et le contact de signalement seront complétés avant l’ouverture du site définitif.</p>",
+    "visible": true,
+    "archive": false,
+    "liens": []
+  }
+]

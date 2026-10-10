@@ -2,7 +2,8 @@
 import Icon from "./Icon.astro";
 import { withBase } from "@lib/paths";
 import DoctolibButton from "./DoctolibButton.astro";
-import type { CollectionEntry } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
+import EditorialContent from "./EditorialContent.astro";
 
 interface Props {
   pro: CollectionEntry<"professionnels">;
@@ -10,11 +11,11 @@ interface Props {
   heading?: "h2" | "h3";
   variant?: "card" | "plain";
 }
-const { pro, lieuxLabels = {}, heading: Heading = "h3", variant = "card" } = Astro.props;
+const { pro, heading: Heading = "h3", variant = "card" } = Astro.props;
 const d = pro.data;
 const aConfirmer = d.profession === "a-confirmer";
 const initiales = `${d.prenom[0] ?? ""}${d.nom[0] ?? ""}`.toUpperCase();
-const lieuxDuPro = d.lieux.map(id => lieuxLabels[id]).filter(Boolean);
+const lieuxDuPro = (await getCollection("lieux")).filter(lieu => d.lieux.includes(lieu.id));
 ---
 
 <div class:list={["h-full", variant === "card" && "tilt-scene"]}>
@@ -54,16 +55,14 @@ const lieuxDuPro = d.lieux.map(id => lieuxLabels[id]).filter(Boolean);
       </div>
     </div>
 
-    {
-      lieuxDuPro.length > 0 && (
-        <p class="mt-4 flex items-center gap-1.5 text-sm text-ink-700">
-          <span class="text-sage-500">
-            <Icon name="map-pin" size={16} />
-          </span>
-          {lieuxDuPro.join(" · ")}
-        </p>
-      )
-    }
+    {d.bodyHtml && <div class="mt-3 text-sm text-ink-700"><EditorialContent entry={pro} /></div>}
+
+    {lieuxDuPro.length > 0 && <ul class="mt-4 space-y-3 text-sm text-ink-700">
+      {lieuxDuPro.map(lieu => <li>
+        <p class="flex items-start gap-1.5"><Icon name="map-pin" size={16} /><span>{lieu.data.adresse}<br />{lieu.data.codePostal} {lieu.data.ville}</span></p>
+        <a href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${lieu.data.adresse}, ${lieu.data.codePostal} ${lieu.data.ville}`)}`} target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex items-center gap-1.5 font-medium text-teal-600 underline underline-offset-4" aria-label={`Itinéraire pour ${d.titreAffiche}, ${lieu.data.adresse} — Google Maps, nouvelle fenêtre`}><Icon name="navigation" size={16} />Itinéraire Google Maps</a>
+      </li>)}
+    </ul>}
 
     {
       d.domaines.length > 0 && (
@@ -77,13 +76,13 @@ const lieuxDuPro = d.lieux.map(id => lieuxLabels[id]).filter(Boolean);
       )
     }
 
-    <div class="tilt-pop-sm mt-auto flex items-center gap-3 pt-6">
+    <div class="tilt-pop-sm mt-auto flex flex-wrap items-center gap-3 pt-6">
       {
         aConfirmer ? (
           <span class="text-sm text-ink-500">Fiche en préparation</span>
         ) : (
           <>
-            <DoctolibButton href={d.doctolibUrl} size="md" class="flex-1" />
+            {d.doctolibUrl && <DoctolibButton href={d.doctolibUrl} size="md" label="Rendez-vous" ariaLabel={`Prendre rendez-vous avec ${d.titreAffiche} sur Doctolib`} />}
             <a
               href={withBase(`/equipe/${pro.id}`)}
               class="text-sm font-medium text-blue-900 hover:text-teal-600"

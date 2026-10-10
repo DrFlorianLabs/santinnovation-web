@@ -32,8 +32,8 @@ const itinerary = (lieu: (typeof lieux)[number]) => lieu.data.itineraireUrl ?? `
 ---
 
 <BaseLayout title="Accueil" description={accueil?.data.resume || site.description}>
+  <DecorativeBackdrop />
   <section id="rendez-vous" tabindex="-1" data-home-section aria-labelledby="accueil-title" class="home-scene home-hero relative">
-    <DecorativeBackdrop variant="hero" />
     <div class="home-scene-content container-site grid items-center gap-12 py-16 md:py-24 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,.75fr)]">
       <div class="min-w-0">
         <p class="home-kicker text-sm font-semibold uppercase tracking-wider text-teal-600">Maison de santé pluriprofessionnelle · {site.ville}</p>
@@ -102,7 +102,7 @@ const itinerary = (lieu: (typeof lieux)[number]) => lieu.data.itineraireUrl ?? `
         </li>)}
       </ul>
       {lieux.length === 0 && <p class="mt-5 text-ink-700">Les informations des établissements seront disponibles après validation.</p>}
-      {lieux.length > 0 && <details class="home-map mt-6 border-t border-blue-100 py-5"><summary class="cursor-pointer font-semibold text-blue-900">Carte et itinéraires détaillés</summary><div class="mt-5"><SiteMap lieux={lieux} id="carte-accueil" /></div></details>}
+      {lieux.length > 0 && <div class="home-map mt-8"><SiteMap lieux={lieux} id="carte-accueil" compact /></div>}
     </div>
   </section>
 
@@ -113,7 +113,6 @@ const itinerary = (lieu: (typeof lieux)[number]) => lieu.data.itineraireUrl ?? `
   </section>
 
   <section id="projet-de-sante" tabindex="-1" data-home-section aria-labelledby="projet-title" class="home-scene home-section home-project py-16 md:py-24">
-    <DecorativeBackdrop />
     <div class="home-scene-content container-site home-editorial-layout">
       <div class="home-section-heading"><p class="home-kicker text-sm font-semibold uppercase tracking-wider text-teal-600">Notre organisation collective</p><h2 id="projet-title" class="mt-3 text-3xl font-semibold sm:text-4xl">Le projet de santé</h2>{projet?.data.resume && <p class="mt-5 text-lg text-ink-700">{projet.data.resume}</p>}</div>
       <div class="home-editorial max-w-prose">
@@ -124,7 +123,6 @@ const itinerary = (lieu: (typeof lieux)[number]) => lieu.data.itineraireUrl ?? `
   </section>
 
   <section id="recherche-innovation" tabindex="-1" data-home-section aria-labelledby="innovation-title" class="home-scene home-section home-innovation py-16 md:py-24">
-    <DecorativeBackdrop />
     <div class="home-scene-content container-site home-editorial-layout">
       <div class="home-section-heading"><p class="home-kicker text-sm font-semibold uppercase tracking-wider text-teal-600">Innovation utile</p><h2 id="innovation-title" class="mt-3 text-3xl font-semibold sm:text-4xl">Recherche et innovation</h2>{innovation?.data.resume && <p class="mt-5 text-lg text-ink-700">{innovation.data.resume}</p>}</div>
       <div class="home-editorial">

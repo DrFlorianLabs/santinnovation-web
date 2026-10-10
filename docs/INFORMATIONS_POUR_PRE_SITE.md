@@ -1,3 +1,5 @@
+> Mise à jour du 10 octobre 2026 : équipe de neuf professionnels, trois lieux, textes projet de santé/TEAM-IC/DMH et identité du kit désormais validés et intégrés. Voir [la vérification actualisée](VERIFICATION_CONTENUS.md). Les demandes correspondantes ci-dessous sont donc résolues. Restent notamment les contacts généraux, horaires/accessibilité, informations réglementaires et hébergement de l’administration. Aucun portrait ni actualité réelle n’a été fourni.
+
 **Les informations à réunir pour le pré-site Sant’Innovation**
 
 L’objectif : permettre à un patient de trouver la bonne personne, prendre rendez-vous et arriver au bon endroit. Un simple document suffit pour transmettre les informations. Une donnée inconnue reste « à confirmer ».

@@ -528,94 +528,64 @@
   .home-project-item {
     border-top: 1px solid color-mix(in srgb, var(--color-blue-900) 16%, transparent);
   }
-  .decor-backdrop {
-    position: absolute;
-    z-index: 0;
-    inset: 0;
+  /* A single transparent gutter, outside every .container-site reading area.
+     At narrow widths only the hairline remains; no symbol sits behind text. */
+  .scroll-motif {
+    position: fixed;
+    z-index: 4;
+    top: 7rem;
+    bottom: 5rem;
+    right: max(.5rem, calc((100vw - var(--container-site)) / 2 - 3rem));
+    width: 2rem;
     overflow: clip;
     pointer-events: none;
     user-select: none;
+    contain: strict;
+    mask-image: linear-gradient(to bottom, transparent, #000 6%, #000 94%, transparent);
   }
-  .decor-wash {
-    position: absolute;
-    width: clamp(20rem, 45vw, 48rem);
-    aspect-ratio: 1;
-    border-radius: 50%;
-    filter: blur(60px);
-    opacity: .45;
-  }
-  .decor-wash--cyan {
-    top: -30%;
-    right: -8%;
-    background: radial-gradient(circle, var(--color-teal-100), transparent 70%);
-  }
-  .decor-wash--green {
-    bottom: -40%;
-    left: -18%;
-    background: radial-gradient(circle, var(--color-green-100), transparent 70%);
-  }
-  .decor-dots {
+  .scroll-motif-layer {
     position: absolute;
     inset: 0;
-    opacity: .2;
-    background-image: radial-gradient(circle at 1px 1px, var(--color-blue-500) .7px, transparent 1px);
-    background-size: 32px 32px;
-    mask-image: linear-gradient(100deg, transparent 30%, #000 100%);
+    color: var(--color-teal-500);
   }
-  .decor-geometry {
+  .scroll-motif-base { opacity: .045; }
+  .scroll-motif-progress {
+    opacity: .14;
+    clip-path: inset(0 0 calc((1 - var(--motif-progress, 0)) * 100%) 0);
+  }
+  .scroll-motif-spine {
     position: absolute;
-    width: clamp(26rem, 56vw, 58rem);
-    max-width: none;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    stroke: currentColor;
+    stroke-width: .6;
+  }
+  .scroll-motif-mark {
+    position: absolute;
+    left: 0;
+    width: 100%;
     height: auto;
-    top: 50%;
-    right: -8%;
-    transform: translateY(calc(-50% + var(--scene-decor-y, 0px)));
-    opacity: .36;
-    stroke: var(--color-teal-500);
-    stroke-width: 1.2;
+    transform: translateY(-50%);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
-  .decor-orbit {
-    transform-box: fill-box;
-    transform-origin: center;
+  .scroll-motif-roof { stroke: var(--color-blue-900); }
+  .scroll-motif-circuit { stroke: var(--color-teal-500); }
+  .scroll-motif-signal { stroke: var(--color-green-500); }
+  .scroll-motif-dot { fill: var(--color-green-500); }
+  @media (max-width: 1279px) {
+    .scroll-motif { width: 1.125rem; right: .4375rem; }
   }
-  .decor-orbit--inner { stroke: var(--color-green-500); }
-  .decor-point { fill: var(--color-green-500); stroke: none; }
-  .decor-network { stroke: var(--color-blue-500); }
-  .decor-trace { stroke: var(--color-teal-500); stroke-width: 2; stroke-dasharray: 10 26; }
-  .decor-backdrop--section .decor-geometry { opacity: .22; right: -20%; }
-  .decor-backdrop--section .decor-dots { opacity: .12; }
   @media (max-width: 767px) {
-    .decor-geometry { right: -20rem; opacity: .16; }
-    .decor-backdrop--section .decor-geometry { right: -22rem; opacity: .1; }
-    .decor-dots { opacity: .12; }
+    .scroll-motif { width: .375rem; right: .1875rem; }
+    .scroll-motif-mark { display: none; }
+    .scroll-motif-progress { opacity: .11; }
   }
-  @media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
-    html.home-motion-ready .home-scene-content {
-      transform: translate3d(0, var(--scene-enter-y, 0px), 0);
-    }
-    html.home-motion-ready .decor-orbit--outer {
-      animation: decor-orbit 80s linear infinite;
-      animation-play-state: paused;
-    }
-    html.home-motion-ready .decor-orbit--inner {
-      animation: decor-orbit 110s linear infinite reverse;
-      animation-play-state: paused;
-    }
-    html.home-motion-ready .decor-trace {
-      animation: decor-network-flow 6s linear infinite;
-      animation-play-state: paused;
-    }
-    html.home-motion-ready [data-scene-visible="true"] :is(.decor-orbit, .decor-trace) {
-      animation-play-state: running;
-    }
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-motif-progress { display: none; }
   }
-  /* Native fragment/focus navigation always lands on stationary content. */
-  html.home-motion-ready .home-scene:is(:target, :focus-within) .home-scene-content,
-  html.no-js .home-scene-content {
-    transform: none;
-  }
-  @keyframes decor-orbit { to { transform: rotate(360deg); } }
-  @keyframes decor-network-flow { to { stroke-dashoffset: -72; } }
   .home-hero {
     background: linear-gradient(180deg, #ffffff 0%, #eef8f8 68%, #ffffff 100%);
   }

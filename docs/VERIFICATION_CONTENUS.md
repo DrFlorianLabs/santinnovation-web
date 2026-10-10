@@ -1,3 +1,29 @@
+# Mise à jour validée — 10 octobre 2026
+
+Cette mise à jour remplace les rattachements et incertitudes historiques ci-dessous. Autorité : liste nominative et autorisation de publication explicites de l’utilisateur dans ce chat. Les orthographes Anaelle Bizet et Mathilde Varetta suivent cette validation ; Doctolib conserve son propre slug `annaelle-bizet`.
+
+| Lieu harmonisé | Professionnels validés | Position IGN/BAN WGS84 |
+| --- | --- | --- |
+| 14 rue Henri et Maurice Baigue, 25000 Besançon | Patrick Vuattoux, Florian Sibille, Mathilde Guillaume–Sage (à partir du 01/01/2027), Mathilde Varetta, Florence Delay | 47.253549, 6.025856 |
+| 57 rue des Flûttes Agasses, 25000 Besançon | Serge Mazzucotelli, Laurent Arnoux | 47.260824, 6.035409 |
+| 32 chemin de Vieilley, 25000 Besançon | Anaelle Bizet, Lara Martin del Pino | 47.262583, 6.031432 |
+
+Magali Saada-Baron retirée de l’équipe publique ; ancienne fiche archivée dans le CMS privé. Florence Delay est présentée comme infirmière, coordinatrice, infirmière d’équipe et de recherche. Les horaires, téléphone général et accès PMR ne sont pas inventés.
+
+Liens Doctolib vérifiés le 10 octobre : [MSP](https://www.doctolib.fr/maison-de-sante/besancon/msp-sant-innovation), [Patrick Vuattoux](https://www.doctolib.fr/medecin-generaliste/besancon/patrick-vuattoux), [Serge Mazzucotelli](https://www.doctolib.fr/medecin-generaliste/besancon/serge-mazzucotelli), [Florian Sibille](https://www.doctolib.fr/medecin-generaliste/besancon/florian-sibille), [Anaelle Bizet](https://www.doctolib.fr/masseur-kinesitherapeute/besancon/annaelle-bizet). Le bouton MSP ouvre la page collective sans forcer un lieu par paramètre `pid`. Les quatre boutons individuels ouvrent les fiches nominales correspondantes ; aucune réservation n’a été engagée.
+
+Aucun lien individuel correspondant confirmé pour Mathilde Guillaume–Sage, Mathilde Varetta, Florence Delay, Laurent Arnoux et Lara Martin del Pino. Cela ne prouve pas l’absence d’une page ; aucun lien supposé ni remplacement implicite par le lien collectif n’est affiché sous leur nom.
+
+Géocodage : [API IGN](https://data.geopf.fr/geocodage/search?q=14%20rue%20Henri%20et%20Maurice%20Baigue%20Besancon&limit=1), index adresses BAN, trois réponses uniques de type numéro, scores 0,977 à 0,979. Une position de numéro ne certifie pas l’entrée accessible. Les itinéraires Google Maps sont dérivés de l’adresse commune à chaque lieu, sans collecte de la position du visiteur.
+
+Fond de carte : [Plan IGN](https://cartes.gouv.fr/rechercher-une-donnee/dataset/IGNF_PLAN-IGN), Licence Ouverte, [service WMTS officiel](https://cartes.gouv.fr/aide/fr/guides-utilisateur/utiliser-les-services-de-la-geoplateforme/diffusion/wmts/), couche `GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2`, matrice `PM_0_19`. Appel sans clé vérifié ; chargement après clic et attribution maintenue. Remplace CARTO, dont les conditions actualisées le 29 septembre demandent une clé.
+
+Les textes projet de santé, TEAM-IC et DMH antérieurement soumis à relecture ont été explicitement validés pour publication par l’utilisateur. Les documents internes sources ne sont pas transférés. TEAM-IC est présenté comme projet de recherche sans résultat ni recrutement ouvert annoncé. Soins et parcours reste vide.
+
+---
+
+## Historique des vérifications antérieures
+
 # Vérification des contenus publics — Sant’Innovation
 
 Date de vérification : **9 octobre 2026**. Travail en lecture seule sur les sources, sans prise de contact ni publication.

@@ -35,7 +35,7 @@ const page = (await getCollection("pages")).find(p => p.id === "prendre-rendez-v
           min-content des libellés truncate (débordement mobile, AUD-013). */}
       <ul class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
         {
-          pros.map((pro) => (
+          pros.filter(pro => pro.data.doctolibUrl).map((pro) => (
             <li class="surface flex flex-wrap items-center gap-4 p-4">
               <span class="min-w-0 flex-1">
                 <a href={withBase(`/equipe/${pro.id}`)} class="block font-display font-semibold text-blue-900 hover:underline">
@@ -45,16 +45,17 @@ const page = (await getCollection("pages")).find(p => p.id === "prendre-rendez-v
               </span>
               <DoctolibButton
                 href={pro.data.doctolibUrl}
-                label={pro.data.doctolibUrl ? "Rendez-vous" : "Via l'établissement"}
-                variant={pro.data.doctolibUrl ? "primary" : "secondary"}
+                label="Rendez-vous"
+                ariaLabel={`Prendre rendez-vous avec ${pro.data.titreAffiche} sur Doctolib`}
+                variant="primary"
               />
             </li>
           ))
         }
       </ul>
       <p class="mt-5 text-sm text-ink-500">
-        « Via l’établissement » ouvre la fiche collective lorsque le lien individuel
-        n’est pas renseigné. Vérifiez le professionnel et le lieu avant de réserver.
+        Seuls les professionnels disposant d’un lien individuel vérifié figurent ici.
+        Vérifiez le professionnel et le lieu avant de réserver. <a href={withBase('/#equipe')} class="underline">Consulter toute l’équipe</a>.
       </p>
 
       <div class="mt-12">

@@ -16,7 +16,7 @@ const server = createServer(async (req,res) => {
     res.setHeader('Content-Type',mime[extname(file)] || 'application/octet-stream');
     res.setHeader('Cache-Control','no-store');
     res.setHeader('X-Content-Type-Options','nosniff');
-    res.setHeader('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.basemaps.cartocdn.com; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'");
+    res.setHeader('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://data.geopf.fr; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'");
     res.end(await readFile(file));
   } catch {res.statusCode=404;res.end('Page introuvable');}
 });

@@ -13,7 +13,7 @@ worker local chaque minute → export publié → projection/assainissement
 Visiteur → serveur statique → HTML / styles / scripts / médias publiés
 ```
 
-Aucun appel du navigateur public au CMS, aucun jeton CMS dans le HTML et aucun build déclenchable depuis une route publique. Carte CARTO uniquement après action du visiteur. Doctolib et itinéraires sont des liens externes.
+Aucun appel du navigateur public au CMS, aucun jeton CMS dans le HTML et aucun build déclenchable depuis une route publique. Carte IGN uniquement après action du visiteur. Doctolib et itinéraires sont des liens externes.
 
 ## Administration
 
@@ -31,10 +31,16 @@ Brouillons et versions sont natifs Payload. Aperçu distinct authentifié, rendu
 6. Seuls champs autorisés sortent dans la projection. Rich text nettoyé ; pas de scripts, HTML arbitraire ni média embarqué privé. Images par champs typés.
 7. `cms/.local`, `.local`, `.releases` et le dépôt ne sont jamais racines web. Seul `.local/site-current` est servi. Les builds précédents restent privés.
 8. Sources `/pro` déplacées vers `src/pro/demo`, conservées mais non routées. Aucune sécurité simulée n’est proposée au public.
-9. GitHub Actions contrôle le code puis déploie uniquement un prototype synthétique marqué et non indexable, sur `main`, selon la nouvelle autorisation utilisateur. Le CMS et ses données ne sont pas déployés sur GitHub Pages.
+9. GitHub Actions contrôle le code avec des données synthétiques, puis déploie uniquement le snapshot public approuvé `content/approved/`, marqué et non indexable, sur `main`, selon la validation explicite du 10 octobre 2026. Le CMS et ses données ne sont pas déployés sur GitHub Pages.
 
 ## Hébergement et limites
 
 L’utilisateur a souscrit **OVHcloud Hébergement Web Pro**, offre mutualisée. Elle est la cible confirmée du site Astro statique. L’exécution de Payload/Next et du worker Node persistants sur cet abonnement n’est pas établie ; l’architecture d’administration distante reste à adapter ou à arbitrer. Les modèles de serveur Node/Linux sont des références testables, sans achat ni déploiement, et ne décrivent pas les capacités du mutualisé. La maintenance éditoriale est sans code, l’exploitation reste technique : supervision, TLS, mises à jour, stockage, migrations, sauvegarde et restauration.
 
 Publication nominale : prochain cycle de 60 s + build. Une erreur conserve l’ancien site et affiche un statut d’échec ; une panne peut retarder une dépublication/fin d’affichage. Pas de cache persistant côté public en V1. La version distante, TLS, reverse proxy, protection de préproduction, sauvegarde et reprise doivent être testés dans l’environnement retenu.
+
+## Prototype approuvé du 10 octobre 2026
+
+Le snapshot GitHub ne consulte aucune base CMS et n’accepte aucun champ privé. Son validateur distinct n’affaiblit pas `projectContent`, qui exige toujours une validation réglementaire et les informations générales publiées pour la chaîne de production. Seuls les textes approuvés et les neuf fichiers JSON listés sont acceptés ; aucun média non approuvé, document source ou binaire privé n’est transféré. Les adresses sont centralisées dans trois lieux, les itinéraires dérivés de ces adresses et les liens individuels Doctolib affichés seulement lorsqu’ils existent.
+
+Carte : Leaflet local, Plan IGN via WMTS `data.geopf.fr`, uniquement après clic, sans clé ni géolocalisation. Les coordonnées proviennent du géocodage IGN/BAN et les affectations des professionnels de la validation utilisateur.

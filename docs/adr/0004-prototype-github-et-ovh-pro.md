@@ -10,7 +10,7 @@ L’utilisateur autorise les corrections, le push direct sur `main`, puis le mai
 
 ## Mise en œuvre
 
-1. GitHub Pages expose exclusivement un jeu fictif construit dans une base neuve par la CI, avec bandeau de démonstration et `noindex` sur chaque page. Aucune connexion à un CMS distant ni transfert de sa base, de ses brouillons ou de ses identifiants. Les liens de rendez-vous, e-mail et itinéraires fictifs sont neutralisés.
+1. Décision initiale du 9 octobre : jeu fictif. **Mise à jour explicitement autorisée le 10 octobre :** GitHub Pages expose les textes projet de santé/TEAM-IC/DMH et les neuf professionnels validés, avec trois adresses harmonisées. La source est le snapshot contrôlé `content/approved/`, sans CMS distant ni brouillon ; les liens de rendez-vous vérifiés et les itinéraires sont actifs. Bandeau et `noindex` conservés. Le jeu fictif reste réservé aux tests.
 2. Le site public Astro reste exportable en fichiers statiques pour l’hébergement Web Pro. Aucun fichier n’a été transféré chez OVH dans ce lot.
 3. Payload, Next, le worker et les outils Node sont corrigés et testés localement. Les modèles Nginx/systemd concernent un environnement Node/Linux distinct ; ils ne peuvent pas être installés tels quels sur le mutualisé Pro.
 4. La page commerciale Pro mentionne SSH, Git, bases de données et modules WordPress/Joomla, sans engagement explicite sur un processus Node permanent. La documentation [Cloud Web OVH](https://docs.ovhcloud.com/fr/guides/web-cloud/web-hosting/getting-started-cloud-web) décrit une autre offre avec moteurs d’exécution. Il ne faut pas déduire cette capacité de la seule présence de SSH sur Pro.

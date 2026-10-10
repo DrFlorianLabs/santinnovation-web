@@ -1,0 +1,27 @@
+[
+  {
+    "id": "digital-medical-hub",
+    "titre": "Notre partenariat avec Digital Medical Hub",
+    "resume": "Faire dialoguer les besoins des soignants et des patients avec la recherche et l’innovation en santé.",
+    "ordre": 1,
+    "liens": [
+      {
+        "libelle": "Découvrir Digital Medical Hub",
+        "url": "https://www.digitalmedicalhub.com/"
+      }
+    ],
+    "bodyHtml": "<p>Sant’Innovation est partenaire du Digital Medical Hub. Cet organisme accompagne les professionnels et les porteurs de projets dans la recherche et l’évaluation de solutions de santé numérique.</p><p>Cette démarche vise à mieux comprendre l’utilité des nouveaux outils dans les soins du quotidien. Les projets menés ensemble seront présentés au fur et à mesure de leur avancement.</p>",
+    "visible": true,
+    "archive": false
+  },
+  {
+    "id": "team-ic",
+    "titre": "TEAM-IC : étudier le retour à domicile après une hospitalisation",
+    "resume": "Un projet de recherche sur la coordination entre l’hôpital et les professionnels de proximité après une hospitalisation pour insuffisance cardiaque.",
+    "ordre": 0,
+    "liens": [],
+    "bodyHtml": "<p>TEAM-IC est un projet de recherche consacré au retour à domicile après une hospitalisation pour insuffisance cardiaque. Il vise à étudier la faisabilité d’une organisation associant l’équipe hospitalière, le médecin traitant, les infirmiers à domicile et une infirmière d’appui au parcours rattachée à une maison de santé.</p><p>Le protocole prévoit de comparer cette coordination au suivi habituellement proposé après l’hospitalisation, pendant trois mois. L’étude s’intéresse notamment à l’organisation pratique, à l’acceptabilité pour les patients et les professionnels et au déroulement du suivi. Cette première étape doit préparer une évaluation ultérieure à plus grande échelle.</p>",
+    "visible": true,
+    "archive": false
+  }
+]

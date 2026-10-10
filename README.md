@@ -1,6 +1,6 @@
 # Sant’Innovation — site public et administration
 
-Astro fournit le site statique ; Payload fournit une administration réelle séparée. Aucun compte patient, formulaire médical, GED ni automatisation de réseaux sociaux. Le prototype public GitHub Pages est autorisé pour les présentations à l’équipe ; il est construit exclusivement depuis des données fictives, avec un bandeau de démonstration et `noindex`. Le CMS et les contenus réels restent privés.
+Astro fournit le site statique ; Payload fournit une administration réelle séparée. Aucun compte patient, formulaire médical, GED ni automatisation de réseaux sociaux. Depuis la validation du 10 octobre 2026, le prototype public GitHub Pages présente les textes et les coordonnées professionnelles approuvés dans `content/approved/`, avec un bandeau discret et `noindex`. Le CMS, les brouillons et les documents internes restent privés. Les tests utilisent une base synthétique distincte.
 
 ## Démarrer la recette synthétique
 
@@ -52,7 +52,7 @@ npm audit
 npm --prefix cms audit
 ```
 
-Les tests CMS utilisent une base neuve synthétique à chaque exécution. Les tests navigateur utilisent la release locale synthétique. La CI contrôle le code avant de déployer uniquement le prototype fictif GitHub Pages sur un push autorisé vers `main`. Aucun déploiement OVH ni accès à un CMS distant dans ce workflow.
+Les tests CMS utilisent une base neuve synthétique à chaque exécution. Les tests navigateur utilisent la release locale synthétique. La CI contrôle le code et les deux modes de prototype avant de déployer les seuls contenus approuvés sur GitHub Pages, après un push autorisé vers `main`. Aucun déploiement OVH ni accès à un CMS distant dans ce workflow.
 
 ## Fichiers faisant autorité
 
@@ -72,7 +72,13 @@ Les tests CMS utilisent une base neuve synthétique à chaque exécution. Les te
 
 L’utilisateur a confirmé l’achat d’un **Hébergement Web Pro OVHcloud** le 9 octobre 2026. Cette offre reste la cible du site public statique. Payload et son worker nécessitent un environnement Node persistant : leur fonctionnement sur cette offre mutualisée n’est pas établi et les modèles VPS fournis ne s’y appliquent pas. Aucun achat supplémentaire ni déploiement OVH n’est engagé. Le choix d’une administration compatible avec l’offre souscrite doit être résolu avant la mise en production complète. Voir [la décision actualisée](docs/adr/0004-prototype-github-et-ovh-pro.md).
 
-## Prototype et reprise après incident
+## Prototype approuvé et reprise après incident
+
+`npm run build:approved-prototype` construit les seuls neuf fichiers JSON de `content/approved/` ; `npm run test:approved-prototype` vérifie la projection, les liens, l’absence de routes privées, le bandeau, `noindex` et le manifeste. La source est volontairement fixe, les champs sont strictement limités et le HTML nettoyé. Aucun export automatique d’une base éditoriale n’alimente GitHub Pages. Les rubriques réglementaires y exposent les limites de cette présentation : elles ne sont pas déclarées validées pour la production.
+
+La publication locale du CMS et ce prototype GitHub sont deux circuits distincts : le bouton Publier du CMS ne met pas automatiquement GitHub à jour. Les modifications du prototype doivent être approuvées puis intégrées au snapshot. Le guide sans code du CMS demeure applicable au circuit local ; son hébergement distant avec OVH Pro reste à résoudre.
+
+Le mode synthétique est conservé pour la recette :
 
 `npm run build:prototype` crée une base fictive neuve et une sortie `prototype-dist/` ; `npm run test:prototype` vérifie le bandeau, les liens, l’absence de routes privées et de marqueurs de brouillon. Pour conserver une sortie précédente, choisir un dossier neuf avec `PROTOTYPE_OUT_DIR`. La commande refuse d’écraser un dossier existant.
 

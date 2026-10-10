@@ -25,6 +25,8 @@
     "test:worker": "node tests/worker.mjs",
     "build:prototype": "node scripts/build-prototype.mjs",
     "test:prototype": "node tests/prototype.mjs",
+    "build:approved-prototype": "node scripts/build-approved-prototype.mjs",
+    "test:approved-prototype": "node tests/approved-prototype.mjs",
     "rollback": "node scripts/rollback.mjs",
     "releases:prune": "node scripts/releases-prune.mjs",
     "test:publication-robustness": "node --test tests/publication-robustness.test.mjs",

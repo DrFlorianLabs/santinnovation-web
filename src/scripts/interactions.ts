@@ -108,46 +108,34 @@ function setupParallax(): void {
   update();
 }
 
-/** Continuous native scrolling, with a small entrance movement on the content
- * wrapper only. Section positions, anchor targets and document height never
- * change. Text remains fully opaque and every action works without this code.
+/** A single decorative line gradually appears in the page gutter. Only its
+ * clipping changes: text, section positions and anchor targets never move.
+ * One scheduled frame per native scroll event; no animation loop or timers.
  */
-function setupHomeScenes(): void {
-  const scenes = Array.from(document.querySelectorAll<HTMLElement>("[data-home-section]"));
-  if (!scenes.length) return;
+function setupScrollMotif(): void {
+  const motif = document.querySelector<HTMLElement>("[data-scroll-motif]");
+  if (!motif) return;
   let frame = 0;
 
   const update = () => {
     frame = 0;
-    const enabled = !reducedMotion.matches && hoverCapable.matches;
-    const viewport = window.innerHeight;
-    for (const scene of scenes) {
-      const rect = scene.getBoundingClientRect();
-      const visible = rect.bottom > 0 && rect.top < viewport;
-      scene.dataset.sceneVisible = String(enabled && visible && !document.hidden);
-      if (!enabled || !visible) {
-        scene.style.removeProperty("--scene-enter-y");
-        scene.style.removeProperty("--scene-decor-y");
-        continue;
-      }
-      const entrance = Math.max(0, Math.min(1, (rect.top - viewport * .16) / (viewport * .84)));
-      const decor = Math.max(-14, Math.min(14, (viewport / 2 - rect.top - rect.height / 2) * .025));
-      scene.style.setProperty("--scene-enter-y", `${(entrance * 18).toFixed(2)}px`);
-      scene.style.setProperty("--scene-decor-y", `${decor.toFixed(2)}px`);
+    if (reducedMotion.matches) {
+      motif.style.removeProperty("--motif-progress");
+      return;
     }
-    document.documentElement.classList.toggle("home-motion-ready", enabled);
+    const range = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = range > 0 ? Math.max(0, Math.min(1, window.scrollY / range)) : 0;
+    motif.style.setProperty("--motif-progress", progress.toFixed(4));
   };
   const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
   window.addEventListener("scroll", schedule, { passive: true });
   window.addEventListener("resize", schedule);
   window.addEventListener("hashchange", schedule);
-  document.addEventListener("visibilitychange", schedule);
-  reducedMotion.addEventListener("change", update);
-  hoverCapable.addEventListener("change", update);
-  // The directory filters and optional map can change section heights.
+  reducedMotion.addEventListener("change", schedule);
+  // Directory filters and the optional map can change the document height.
   if ("ResizeObserver" in window) {
     const resize = new ResizeObserver(schedule);
-    scenes.forEach((scene) => resize.observe(scene));
+    resize.observe(document.body);
   }
   update();
 }
@@ -195,6 +183,6 @@ document.documentElement.classList.remove("no-js");
 setupTilt();
 setupReveal();
 setupParallax();
-setupHomeScenes();
+setupScrollMotif();
 setupHeaderElevation();
 setupSectionNavigation();

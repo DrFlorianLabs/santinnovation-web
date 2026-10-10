@@ -30,7 +30,7 @@ test('aucune démo pro ni brouillon accessible, tous liens internes résolus',as
   for(const link of links) expect((await request.get(link)).status(),link).toBe(200);
 });
 test('carte sur action seulement et parcours sans JavaScript',async({browser,page})=>{
-  const thirdParties:string[]=[];page.on('request',r=>{if(r.url().includes('cartocdn')) thirdParties.push(r.url());});
+  const thirdParties:string[]=[];page.on('request',r=>{if(r.url().includes('data.geopf.fr')) thirdParties.push(r.url());});
   await page.goto('/lieux/');await expect(page.getByRole('heading',{level:1})).toBeVisible();expect(thirdParties).toEqual([]);
   const context=await browser.newContext({javaScriptEnabled:false,viewport:{width:390,height:844}});const nojs=await context.newPage();
   await nojs.goto('/equipe/');await expect(nojs.locator('main')).toBeVisible();expect(await nojs.locator('a[href*="/equipe/"]').count()).toBeGreaterThan(0);await context.close();
@@ -50,7 +50,7 @@ test('filtres annuaire et menu mobile au clavier',async({page})=>{
 });
 test('carte déclenchée au clic avec tuiles synthétiques, image et heure événement',async({page})=>{
   const tile=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScLbtAAAAABJRU5ErkJggg==','base64');let tiles=0;
-  await page.route('https://*.basemaps.cartocdn.com/**',r=>{tiles++;return r.fulfill({status:200,contentType:'image/png',body:tile});});
+  await page.route('https://data.geopf.fr/wmts?**',r=>{tiles++;return r.fulfill({status:200,contentType:'image/png',body:tile});});
   await page.goto('/lieux/');expect(tiles).toBe(0);await page.getByRole('button',{name:'Afficher la carte interactive'}).click();await expect(page.locator('.leaflet-container')).toBeVisible();await expect.poll(()=>tiles).toBeGreaterThan(0);
   await page.goto('/actualites/prevention-fictive/');await expect(page.locator('main img')).toHaveAttribute('alt','Carré rouge synthétique pour la recette');await expect(page.locator('main')).toContainText('10:00');
 });
@@ -102,18 +102,39 @@ test('identité du kit, décors et préférence de mouvement réduite', async ({
   await page.goto('/');
   await expect(page.locator('header img[src$="/brand/symbole.svg"]')).toBeVisible();
   expect(await page.locator('header img').first().evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
-  await expect(page.locator('#rendez-vous .decor-backdrop')).toHaveAttribute('aria-hidden', 'true');
-  const orbit = page.locator('#rendez-vous .decor-orbit--outer');
-  await expect.poll(() => orbit.evaluate(el => getComputedStyle(el).animationPlayState)).toBe('running');
+  await expect(page.locator('main > .scroll-motif')).toHaveAttribute('aria-hidden', 'true');
   expect(await page.locator('#accueil-title').evaluate(el => getComputedStyle(el).color)).toBe('rgb(2, 50, 80)');
   await expect(page.locator('#soins-et-parcours')).toHaveText('Soins et parcours');
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await expect.poll(() => orbit.evaluate(el => getComputedStyle(el).animationName)).toBe('none');
-  await expect(page.locator('#rendez-vous')).toHaveAttribute('data-scene-visible', 'false');
+  // Text remains stationary; ornament stays strictly outside the reading area.
   expect(await page.locator('#rendez-vous .home-scene-content').evaluate(el => getComputedStyle(el).transform)).toBe('none');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  expect(await page.locator('.scroll-motif').evaluate(el => getComputedStyle(el).pointerEvents)).toBe('none');
   await page.getByRole('navigation', { name: 'Navigation principale', exact: true }).getByRole('link', { name: 'Projet de santé', exact: true }).click();
   await expect(page).toHaveURL(/\/#projet-de-sante$/);
   expect(await page.locator('#projet-de-sante').evaluate(el => el.getBoundingClientRect().top)).toBeGreaterThanOrEqual(64);
   await page.goto('/soins-et-parcours/');
   await expect(page.locator('main')).toHaveText('Soins et parcours');
+});
+
+// Synthetic fixtures exercise individual actions without any real booking.
+test('liens individuels et itinéraires dérivés du lieu', async ({page}) => {
+  await page.goto('/equipe/');
+  // Neither fixture has a personal booking URL: do not invent one from the MSP URL.
+  await expect(page.locator('[data-pro] a[href*="doctolib.fr"]')).toHaveCount(0);
+  for (const card of await page.locator('[data-pro]').all()) {
+    const direction = card.locator('a[href*="maps/dir/"]');
+    expect(await direction.count()).toBeGreaterThan(0);
+    for (const link of await direction.all()) {
+      const url = new URL((await link.getAttribute('href'))!);
+      expect(url.searchParams.get('api')).toBe('1');
+      expect(url.searchParams.get('destination')).toContain('25000');
+    }
+  }
+});
+test('carte indisponible : message et itinéraires conservés', async ({page}) => {
+  await page.route('https://data.geopf.fr/wmts?**', r => r.abort());
+  await page.goto('/lieux/');
+  await page.getByRole('button',{name:'Afficher la carte interactive'}).click();
+  await expect(page.locator('[data-map-status]')).toContainText('indisponible');
+  expect(await page.locator('a[href*="maps/dir/"]').count()).toBeGreaterThan(0);
 });

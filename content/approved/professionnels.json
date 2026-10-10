@@ -1,0 +1,168 @@
+[
+  {
+    "id": "patrick-vuattoux",
+    "prenom": "Patrick",
+    "nom": "Vuattoux",
+    "titreAffiche": "Dr Patrick Vuattoux",
+    "profession": "medecin-generaliste",
+    "professionLabel": "Médecin généraliste",
+    "ordre": 0,
+    "bodyHtml": "",
+    "visible": true,
+    "archive": false,
+    "lieux": [
+      "henri-baigue"
+    ],
+    "horairesParLieu": [],
+    "domaines": [],
+    "activites": [],
+    "doctolibUrl": "https://www.doctolib.fr/medecin-generaliste/besancon/patrick-vuattoux"
+  },
+  {
+    "id": "serge-mazzucotelli",
+    "prenom": "Serge",
+    "nom": "Mazzucotelli",
+    "titreAffiche": "Dr Serge Mazzucotelli",
+    "profession": "medecin-generaliste",
+    "professionLabel": "Médecin généraliste",
+    "ordre": 1,
+    "bodyHtml": "",
+    "visible": true,
+    "archive": false,
+    "lieux": [
+      "fluttes-agasses"
+    ],
+    "horairesParLieu": [],
+    "domaines": [],
+    "activites": [],
+    "doctolibUrl": "https://www.doctolib.fr/medecin-generaliste/besancon/serge-mazzucotelli"
+  },
+  {
+    "id": "florian-sibille",
+    "prenom": "Florian",
+    "nom": "Sibille",
+    "titreAffiche": "Dr Florian Sibille",
+    "profession": "medecin-generaliste",
+    "professionLabel": "Médecin généraliste",
+    "ordre": 2,
+    "bodyHtml": "",
+    "visible": true,
+    "archive": false,
+    "lieux": [
+      "henri-baigue"
+    ],
+    "horairesParLieu": [],
+    "domaines": [],
+    "activites": [],
+    "doctolibUrl": "https://www.doctolib.fr/medecin-generaliste/besancon/florian-sibille"
+  },
+  {
+    "id": "mathilde-guillaume-sage",
+    "prenom": "Mathilde",
+    "nom": "Guillaume–Sage",
+    "titreAffiche": "Dr Mathilde Guillaume–Sage",
+    "profession": "medecin-generaliste",
+    "professionLabel": "Médecin généraliste",
+    "ordre": 3,
+    "bodyHtml": "<p>Consultations à cette adresse à compter du <strong>1er janvier 2027</strong>.</p>",
+    "visible": true,
+    "archive": false,
+    "lieux": [
+      "henri-baigue"
+    ],
+    "horairesParLieu": [],
+    "domaines": [],
+    "activites": []
+  },
+  {
+    "id": "mathilde-varetta",
+    "prenom": "Mathilde",
+    "nom": "Varetta",
+    "titreAffiche": "Mathilde Varetta",
+    "profession": "infirmier",
+    "professionLabel": "Infirmière",
+    "ordre": 4,
+    "bodyHtml": "",
+    "visible": true,
+    "archive": false,
+    "lieux": [
+      "henri-baigue"
+    ],
+    "horairesParLieu": [],
+    "domaines": [],
+    "activites": []
+  },
+  {
+    "id": "florence-delay",
+    "prenom": "Florence",
+    "nom": "Delay",
+    "titreAffiche": "Florence Delay",
+    "profession": "infirmier",
+    "professionLabel": "Infirmière",
+    "ordre": 5,
+    "bodyHtml": "<p>Coordinatrice de la MSP, infirmière d’équipe et de recherche.</p>",
+    "visible": true,
+    "archive": false,
+    "lieux": [
+      "henri-baigue"
+    ],
+    "horairesParLieu": [],
+    "domaines": [],
+    "activites": []
+  },
+  {
+    "id": "anaelle-bizet",
+    "prenom": "Anaelle",
+    "nom": "Bizet",
+    "titreAffiche": "Anaelle Bizet",
+    "profession": "kinesitherapeute",
+    "professionLabel": "Masseuse-kinésithérapeute",
+    "ordre": 6,
+    "bodyHtml": "",
+    "visible": true,
+    "archive": false,
+    "lieux": [
+      "vieilley"
+    ],
+    "horairesParLieu": [],
+    "domaines": [],
+    "activites": [],
+    "doctolibUrl": "https://www.doctolib.fr/masseur-kinesitherapeute/besancon/annaelle-bizet"
+  },
+  {
+    "id": "laurent-arnoux",
+    "prenom": "Laurent",
+    "nom": "Arnoux",
+    "titreAffiche": "Laurent Arnoux",
+    "profession": "pharmacien",
+    "professionLabel": "Pharmacien",
+    "ordre": 7,
+    "bodyHtml": "",
+    "visible": true,
+    "archive": false,
+    "lieux": [
+      "fluttes-agasses"
+    ],
+    "horairesParLieu": [],
+    "domaines": [],
+    "activites": []
+  },
+  {
+    "id": "lara-martin-del-pino",
+    "prenom": "Lara",
+    "nom": "Martin del Pino",
+    "titreAffiche": "Lara Martin del Pino",
+    "profession": "kinesitherapeute",
+    "professionLabel": "Masseuse-kinésithérapeute",
+    "ordre": 8,
+    "bodyHtml": "",
+    "visible": true,
+    "archive": false,
+    "lieux": [
+      "vieilley"
+    ],
+    "horairesParLieu": [],
+    "domaines": [],
+    "activites": []
+  }
+]

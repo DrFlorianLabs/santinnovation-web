@@ -35,6 +35,14 @@ jobs:
       - run: npm --prefix cms test -- --prod
       - run: npm run check
       - run: npm run test:unit
+      - run: npm run build:prototype
+      - run: npm run test:prototype
+      - run: npm run build:approved-prototype
+        env:
+          PROTOTYPE_OUT_DIR: .local/approved-prototype-verify
+      - run: npm run test:approved-prototype
+        env:
+          PROTOTYPE_OUT_DIR: .local/approved-prototype-verify
       - run: npm run publish:local
       - run: node scripts/scan-public.mjs
       - run: npx playwright install --with-deps chromium
@@ -60,14 +68,12 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          cache-dependency-path: |
-            package-lock.json
-            cms/package-lock.json
+          cache-dependency-path: package-lock.json
       - run: npm ci
-      - run: npm --prefix cms ci
-      # Never reads editorial data or credentials from a remote CMS.
-      - run: npm run build:prototype
-      - run: npm run test:prototype
+      # Only the reviewed public JSON files in content/approved are deployed.
+      # No CMS installation, database, credentials, or remote editorial export.
+      - run: npm run build:approved-prototype
+      - run: npm run test:approved-prototype
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
