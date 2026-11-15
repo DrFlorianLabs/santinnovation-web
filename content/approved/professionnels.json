@@ -77,27 +77,6 @@
     "soinsADomicile": true
   },
   {
-    "id": "mathilde-guillaume-sage",
-    "prenom": "Mathilde",
-    "nom": "Guillaume–Sage",
-    "titreAffiche": "Dr Mathilde Guillaume–Sage",
-    "profession": "medecin-generaliste",
-    "professionLabel": "Médecin généraliste",
-    "ordre": 3,
-    "bodyHtml": "<p>Consultations à cette adresse à compter du <strong>1er janvier 2027</strong>.</p>",
-    "visible": true,
-    "archive": false,
-    "lieux": [
-      "henri-baigue"
-    ],
-    "horairesParLieu": [],
-    "domaines": [
-      "Nutrition",
-      "Prise en charge de l’obésité"
-    ],
-    "activites": []
-  },
-  {
     "id": "mathilde-varetta",
     "prenom": "Mathilde",
     "nom": "Varetta",
