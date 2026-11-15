@@ -30,7 +30,7 @@
     "@payloadcms/translations": "3.90.2",
     "drizzle-orm": "0.45.2",
     "graphql": "16.13.1",
-    "next": "16.4.0",
+    "next": "16.4.6",
     "payload": "3.90.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",
@@ -45,8 +45,12 @@
   },
   "overrides": {
     "sass": "1.105.1",
-    "undici": "7.29.1",
-    "dompurify": "3.4.16",
-    "esbuild": "0.28.2"
+    "undici": "7.30.1",
+    "dompurify": "3.4.18",
+    "esbuild": "0.28.2",
+    "@lexical/headless": {
+      "happy-dom": "21.0.4"
+    },
+    "fast-uri": "3.1.9"
   }
 }
